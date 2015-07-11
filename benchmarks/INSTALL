@@ -23,17 +23,6 @@ $ ./configure
 $ make
 $ sudo make install
 
-Install libpolyml.so.4 (for MetiTarski)
----------------------------------------
-
-$ mkdir -p ~/src && cd ~/src
-$ wget http://softlayer-ams.dl.sourceforge.net/project/polyml/polyml/5.5/polyml.5.5.tar.gz
-$ tar xf polyml.5.5.tar.gz
-$ cd polyml.5.5
-$ ./configure --enable-shared --prefix=/usr
-$ make
-$ sudo make install
-
 PVS (5.0 and 6.0)
 -----------------
 
