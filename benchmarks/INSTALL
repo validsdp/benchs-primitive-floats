@@ -1,0 +1,184 @@
+INSTALLATION PROCEDURE FOR BENCHMARKS
+=====================================
+
+Below are instructions to get the tools involved in the benchmarks.
+
+Install Sollya
+--------------
+
+Install Sollya's dependencies:
+$ sudo aptitude install build-essential # for gcc, g++, make
+$ sudo aptitude install libgmp-dev libmpfr-dev libmpfi-dev libfplll-dev
+$ sudo aptitude install libxml2-dev libtool bison flex
+$ sudo aptitude install gnuplot gnuplot-qt rlwrap
+
+Then download, configure and install Sollya from http://sollya.gforge.inria.fr/
+
+Typically, you should just run the following commands:
+$ mkdir -p ~/src && cd ~/src
+$ wget https://gforge.inria.fr/frs/download.php/33151/sollya-4.1.tar.gz
+$ tar xf sollya-4.1.tar.gz
+$ cd sollya-4.1
+$ ./configure
+$ make
+$ sudo make install
+
+Install libpolyml.so.4 (for MetiTarski)
+---------------------------------------
+
+$ mkdir -p ~/src && cd ~/src
+$ wget http://softlayer-ams.dl.sourceforge.net/project/polyml/polyml/5.5/polyml.5.5.tar.gz
+$ tar xf polyml.5.5.tar.gz
+$ cd polyml.5.5
+$ ./configure --enable-shared --prefix=/usr
+$ make
+$ sudo make install
+
+PVS (5.0 and 6.0)
+-----------------
+
+1. Go to http://pvs.csl.sri.com/download.shtml
+
+  Download PVS 5.0 and PVS 6.0
+
+2. Download the PVS NASA libraries for PVS 5.0 and PVS 6.0
+
+  You can either go to
+    http://shemesh.larc.nasa.gov/fm/ftp/larc/PVS-library/pvslib.html
+
+  or directly download the following two tarballs:
+    http://shemesh.larc.nasa.gov/fm/ftp/larc/PVS-library-archive/p50_pvslib-full.tgz
+    http://shemesh.larc.nasa.gov/fm/ftp/larc/PVS-library/nasalib-6.0.8-full.tgz
+
+3. Unzip the four tarballs and run the PVS installation scripts:
+
+  E.g., run the following commands, after replacing "..." with the actual path:
+
+  $ mkdir ~/pvs50 && cd ~/pvs50
+  $ tar xf .../pvs-5.0-ix86_64-Linux-allegro.tgz
+  $ tar xf .../p50_pvslib-full.tgz
+  $ bin/relocate
+
+  $ mkdir ~/pvs60 && cd ~/pvs60
+  $ tar xf .../pvs-6.0-ix86_64-Linux-allegro.tgz
+  $ tar xf .../nasalib-6.0.8-full.tgz
+  $ bin/relocate
+  $ cd ~/pvs60/nasalib && ./install-scripts
+
+4. Enable the nasalib patches for the proveit tool, for PVS 5.0 only:
+
+  E.g., if PVS 5.0 is located in ~/pvs50, you can run:
+
+  $ rm -i ~/.pvs.lisp ~/.pvs.l*fasl
+  $ perl -w -i.bak -p -e 's,"\(proveit\)","(progn (load \\"$ENV{HOME}/pvs50/nasalib/pvs-patches.lisp\\") (proveit))",;' ~/pvs50/proveit
+
+
+HOL Light (SOS and Taylor)
+--------------------------
+
+### Install OCaml and Camlp5
+
+$ sudo aptitude install ocaml
+$ sudo aptitude install camlp5
+$ camlp5 -pmode # should output "strict"
+  # if not, see https://code.google.com/p/hol-light/source/browse/trunk/README
+
+### Install CSDP <https://projects.coin-or.org/Csdp/>
+
+$ sudo aptitude install coinor-csdp
+
+Alternatively, you may download binaries for v6.1.0 for Linux/Windows:
+http://www.coin-or.org/download/binary/Csdp/csdp6.1.0linuxp4.tgz
+http://www.coin-or.org/download/binary/Csdp/csdp6.1.0winp4.tgz
+
+### Checkout HOL Light (r196)
+
+$ mkdir -p ~/forge/svn-anon && cd ~/forge/svn-anon
+$ svn checkout http://hol-light.googlecode.com/svn/trunk/@196 hol-light
+$ cd hol-light
+$ make
+
+### Checkout flyspeck/formal_ineqs (r3660)
+
+$ mkdir -p ~/forge/svn-anon && cd ~/forge/svn-anon
+$ svn checkout http://flyspeck.googlecode.com/svn/trunk/formal_ineqs/@3660
+
+### Install dmtcp-1.2.8 (NOT dmtcp-2.x):
+
+$ mkdir -p ~/src && cd ~/src
+$ wget http://cznic.dl.sourceforge.net/project/dmtcp/dmtcp/1.2.8/dmtcp-1.2.8.tar.gz
+$ tar xf dmtcp-1.2.8.tar.gz
+$ cd dmtcp-1.2.8
+$ ./configure && make && sudo make install
+
+### Create checkpoints using DMTCP
+
+$ export HOLLIGHT_DIR=~/forge/svn-anon/hol-light
+
+$ cd $HOLLIGHT_DIR
+$ mkdir dmtcp-multi && cd dmtcp-multi
+$ dmtcp_checkpoint -n ocaml # then run in OCaml's top-level, including the '#':
+  #use "../hol.ml";;
+  #use "../Multivariate/realanalysis.ml";;
+$ dmtcp_command --checkpoint # from another terminal (when computation is over)
+  # and finally close the OCaml top-level (with Ctrl+D)
+
+$ cd $HOLLIGHT_DIR
+$ mkdir dmtcp-multi-alex && cd dmtcp-multi-alex
+$ ../dmtcp-multi/dmtcp_restart_script.sh --ckptdir ./ # restarts the top-level
+  load_path := "../../formal_ineqs" :: !load_path;;
+  needs "verifier/m_verifier_main.hl";;
+$ dmtcp_command --checkpoint # from another terminal (when computation is over)
+  # and finally close the OCaml top-level (with Ctrl+D)
+
+Coq, CoqInterval and NLCertify
+------------------------------
+
+### Install OPAM (1.2) and Initialize it
+
+To get some instructions regarding the installation, you can go to
+  http://opam.ocaml.org/doc/Install.html
+
+Regarding the initialization, you can just run the following commands:
+  $ opam init # create ~/.opam and propose to update your ~/.bashrc
+  $ eval `opam config env`
+
+### Enable the OPAM repository for stable Coq packages
+
+$ opam repo add coq-stable https://github.com/coq/repo-stable.git
+
+### Install Coq (>= 8.4pl4), Flocq (2.4), Ssreflect (1.5) and MathComp (1.5)
+
+$ opam install coq.8.4.5 coq:flocq coq:ssreflect coq:math-comp
+
+### Install CoqInterval-2.0.0 <http://coq-interval.gforge.inria.fr/>
+
+$ mkdir -p ~/src && cd ~/src
+$ wget https://gforge.inria.fr/frs/download.php/file/34294/interval-2.0.0.tar.gz
+$ tar xf interval-2.0.0.tar.gz
+$ cd interval-2.0.0
+$ ./configure && ./remake && ./remake install
+
+### Install BLAS/LAPACK shared libraries (for lacaml)
+
+$ sudo aptitude install libblas3 libblas-dev liblapack3 liblapack-dev
+
+### Install NLCertify's dependencies (including SDPA)
+
+$ opam install ocamlfind ocamlgraph zarith lacaml
+
+$ sudo aptitude install sdpa
+
+### Checkout NLCertify (as of 2014-11-04 12:07:04)
+
+$ mkdir -p ~/forge/git-anon && cd ~/forge/git-anon
+$ git clone https://forge.ocamlcore.org/anonscm/git/nl-certify/nl-certify.git
+$ cd nl-certify
+$ git checkout --detach 9e8540429eb984c56ffa5ad74547de796250383b
+$ make
+
+Final setup (Update the path of the tools)
+------------------------------------------
+
+Open the file Makefile.common and update the variables gathered in the
+section "User parameters".

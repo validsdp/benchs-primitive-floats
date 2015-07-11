@@ -1,0 +1,173 @@
+# -*- mode: makefile; -*-
+
+# User parameters
+#================
+
+# HOM := /home/emartin
+# COQC := $(HOM)/src/coq-8.4pl4/bin/coqc
+HOM := $(HOME)
+COQC := coqc
+OCAML := ocaml
+DIR_HL := $(HOM)/forge/svn-anon/hol-light
+HL_ALEX := $(DIR_HL)/dmtcp-multi-alex/dmtcp_restart_script.sh
+# HL_SOS := $(DIR_HL)/dmtcp-sos/dmtcp_restart_script.sh # NOT USED ANYMORE
+
+DIR_PVS5 := $(HOM)/pvs50
+DIR_PVS6 := $(HOM)/pvs60
+PVS5 := PVS_LIBRARY_PATH=$(DIR_PVS5)/nasalib $(DIR_PVS5)/proveit
+PVS6 := PVS_LIBRARY_PATH=$(DIR_PVS6)/nasalib $(DIR_PVS6)/proveit
+
+SOLLYA := sollya
+
+DIR_NLC := $(HOM)/forge/git-anon/nl-certify
+
+TIME := /usr/bin/time
+
+# Developer parameters (DO NOT EDIT THE FOLLOWING LINES)
+#=======================================================
+
+NLC := $(DIR_NLC)/nlcertify
+NLC_PARAM := $(DIR_NLC)/param.transc
+NLC_PARAM_NOCOQ := ./param.transc.nocoq
+NLC_PARAM_COQ := ./param.transc.coq
+
+# Will replace $(NLC_PATT) with $(NLC_INEQ) in $(NLC_PARAM)
+NLC_PATT := =INPUT=
+# as $(NLC_PATT) is not escaped, we have to avoid special chars like $,@,%,+,*…
+NLC_INEQ := $(abspath ./input.ineq)
+NLC_LEM := $(shell perl -w -n -e 'print "$$1 " if m/let box_([0-9A-Za-z_]+) /;' $(NLC_INEQ))
+
+DIR_OUT := ./output
+SRC_SOLLYA := ./input.sollya
+OUT_SOLLYA := $(addprefix $(DIR_OUT)/,$(SRC_SOLLYA) $(SRC_SOLLYA:=.out))
+CSV_SOLLYA := $(addprefix $(DIR_OUT)/,$(SRC_SOLLYA:=.csv))
+
+LOG_NLC_NOCOQ := $(addprefix $(DIR_OUT)/,$(NLC_LEM:=_nlc_nocoq.log))
+CSV_NLC_NOCOQ := $(addprefix $(DIR_OUT)/,$(NLC_LEM:=_nlc_nocoq.csv))
+LOG_NLC_COQ := $(addprefix $(DIR_OUT)/,$(NLC_LEM:=_nlc_coq.log))
+CSV_NLC_COQ := $(addprefix $(DIR_OUT)/,$(NLC_LEM:=_nlc_coq.csv))
+
+COQFLAGS := -q
+# TIMEFLAGS := -f "%C\n%E"
+TIMEFLAGS := -v
+ifeq ($(FORCEPVS),)
+  FORCE_PVS_RERUN :=
+else
+  FORCE_PVS_RERUN := -f
+endif
+PROVEITFLAGS := $(FORCE_PVS_RERUN) -i -s -l --no-traces
+# proveit -i -s theory
+
+DIR_COQ := ./coq
+DIR_PARSE_COQ := ./ocaml/parse-coq-stmt
+PARSE_COQ := $(DIR_PARSE_COQ)/parse-coq-stmt
+SUBDIRS := $(DIR_PARSE_COQ)
+CLEAN_SUBDIRS := $(addprefix clean-,$(SUBDIRS))
+
+# SRC_COQ_1 gathers problems involving transc. functions
+# SRC_COQ_2 gathers problems involving (multivariate) polynomials
+# SRC_COQ_3 gathers all these problems with a strict final inequality
+# SRC_COQ_4 gathers the problems of SRC_COQ_2 (split into 4 files)
+SRC_COQ_1 := univ_transcend.v fpminimax.v univ_metitarski.v
+SRC_COQ_2 := multi_poly.v
+SRC_COQ_3 := univ_transcend_Rlt.v fpminimax_Rlt.v univ_metitarski_Rlt.v \
+  multi_poly_Rlt.v
+SRC_COQ_4 := multi_poly_1.v multi_poly_2.v multi_poly_3.v multi_poly_4.v
+# "multi_poly_1.v" & "multi_poly_3.v" won't terminate => use a timeout
+
+FIL_COQ_1 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_1))
+FIL_COQ_2 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_2))
+FIL_COQ_3 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_3))
+FIL_COQ_4 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_4))
+FILES_COQ := $(FIL_COQ_1) $(FIL_COQ_2) $(FIL_COQ_3) $(FIL_COQ_4)
+
+OUT_COQ := $(FILES_COQ:=.out)
+TMP_COQ := $(FILES_COQ:=.time) \
+  $(FILES_COQ:.v=.vo) $(FILES_COQ:.v=.glob) $(FILES_COQ:.v=.v.d) \
+  $(OUT_COQ:=.stmt)
+CSV_COQ := $(OUT_COQ:=.csv)
+# Remark: $(FILES_COQ:=.time) contain the overall Coq compilation timings,
+# while $(CSV_COQ_FINAL) contain the Coq computation timing of each lemma:
+FIL_COQ_FINAL := $(FIL_COQ_1) $(FIL_COQ_2)
+CSV_COQ_FINAL := $(FIL_COQ_FINAL:=.out.csv)
+
+FIL_METIT := $(addsuffix _metit.pvs,$(FIL_COQ_1:.v=) $(FIL_COQ_2:.v=))
+OUT_METIT := $(FIL_METIT:=.out)
+LOG_METIT := $(FIL_METIT:=.log)
+CSV_METIT := $(FIL_METIT:=.csv)
+
+FIL_INTERVAL := $(addsuffix _interval.pvs,$(FIL_COQ_1:.v=) $(FIL_COQ_2:.v=))
+OUT_INTERVAL := $(FIL_INTERVAL:=.out)
+LOG_INTERVAL := $(FIL_INTERVAL:=.log)
+CSV_INTERVAL := $(FIL_INTERVAL:=.csv)
+
+FIL_BERN := $(addsuffix _bern.pvs,$(FIL_COQ_2:.v=))
+OUT_BERN := $(FIL_BERN:=.out)
+LOG_BERN := $(FIL_BERN:=.log)
+CSV_BERN := $(FIL_BERN:=.csv)
+
+FIL_SOS := $(addsuffix _sos.hl,$(FIL_COQ_4:.v=))
+OUT_SOS := $(FIL_SOS:=.out)
+TIM_SOS := $(FIL_SOS:=.time)
+CSV_SOS := $(FIL_SOS:=.csv)
+
+TIM_NLC := $(CSV_NLC_NOCOQ:.csv=.time) $(CSV_NLC_COQ:.csv=.time)
+
+TIMEOUT_NLC_NOCOQ := timeout 180s
+TIMEOUT_NLC_COQ := timeout 180s
+
+TIMEOUT_SOS := timeout 250s
+# We choose 180s + 70s for this timeout, as it takes 69s for loading
+# HOL Light/REAL_SOS, without DMTCP. (Anyway, the timing data put in
+# the .csv won't include this pre-loading time.)
+
+FIL_ALEX := $(addsuffix _alex.hl,$(FIL_COQ_3:.v=))
+OUT_ALEX := $(FIL_ALEX:=.out)
+CSV_ALEX := $(FIL_ALEX:=.csv)
+
+FILES_PVS := $(FIL_METIT) $(FIL_INTERVAL) $(FIL_BERN)
+FILES_HL := $(FIL_ALEX) $(FIL_SOS)
+FILES_CSV := $(CSV_COQ) \
+  $(CSV_SOLLYA) \
+  $(CSV_METIT) $(CSV_INTERVAL) $(CSV_BERN) \
+  $(CSV_SOS) \
+  $(CSV_NLC_NOCOQ) $(CSV_NLC_COQ) \
+  $(CSV_ALEX)
+TMP_RM := $(FIL_SOS:=.err) $(FIL_SOS:=.out~) \
+  $(LOG_NLC_NOCOQ:=~) $(LOG_NLC_COQ:=~)
+TMP_KEEP := $(FILES_COQ) $(OUT_COQ) $(TMP_COQ) \
+  $(FIL_METIT) $(OUT_METIT) $(LOG_METIT) \
+  $(FIL_INTERVAL) $(OUT_INTERVAL) $(LOG_INTERVAL) \
+  $(FIL_BERN) $(OUT_BERN) $(LOG_BERN) \
+  $(FIL_SOS) $(OUT_SOS) $(TIM_SOS) \
+  $(FIL_ALEX) $(OUT_ALEX) \
+  $(OUT_SOLLYA) \
+  $(LOG_NLC_NOCOQ) $(LOG_NLC_COQ) $(TIM_NLC) \
+  $(FILES_CSV)
+
+FINAL := comparison.tex
+FINAL_AUX := $(FINAL:.tex=.csv)
+
+# Variables for tar generation
+SRC_PERL := step1.perl step3_stmt.perl step3_time.perl step4_alex.perl \
+  step4_bern.perl step4_interval.perl step4_metit.perl step4_sos.perl \
+  step6_alex.perl step6_bern.perl step6_interval.perl step6_metit.perl \
+  step6_sos_1.perl step6_nlc_nocoq_1.perl step6_nlc_coq_1.perl \
+  step6_sollya.perl step7_tex.perl
+
+SRC_NLC := input.ineq param.transc.bak param.transc.nocoq param.transc.coq
+
+SRC_OCAML := ./ocaml/OCamlMakefile $(addprefix $(DIR_PARSE_COQ)/,Makefile \
+  lexer.mll main.ml parser.mly print.ml syntax.ml testsuite/test_main.v)
+
+SRC_COQ := $(addprefix $(DIR_COQ)/,$(SRC_COQ_1) $(SRC_COQ_2) $(SRC_COQ_3) \
+  $(SRC_COQ_4))
+
+TAR_FILES := $(SRC_PERL) $(SRC_OCAML) $(SRC_COQ) $(SRC_NLC) $(SRC_SOLLYA) \
+  INSTALL Makefile Makefile.common
+
+DIST_TAR_FILES := $(TAR_FILES) \
+  $(FINAL) $(FINAL_AUX) $(TMP_RM) $(TMP_KEEP)
+
+PACK := benchmarks_coq-interval
+DIST_PACK := $(PACK)_dist
