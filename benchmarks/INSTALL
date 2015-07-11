@@ -194,3 +194,8 @@ Final setup (Update the path of the tools)
 
 Open the file Makefile.common and update the variables gathered in the
 section "User parameters".
+
+Then you can run all benchmarks by running (in the current directory):
+$ make --silent
+or to only run a subset of the benchmarks, please refer to the section
+"USAGE" located in the Makefile.
