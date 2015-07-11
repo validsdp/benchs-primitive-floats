@@ -66,7 +66,8 @@ Time intros x H; interval with (i_bisect_taylor x 5, i_depth 16).
 Qed.
 
 (* plot(cos(x) - (sin(x)/x)^2, [0, pi/2]); *)
-Lemma MT23 : forall x : R, eps <= x <= PI / 2 -> cos x < (sin x / x) ^ 2.
+Lemma MT23 : forall x : R, eps <= x <= PI / 2 ->
+  cos x < (sin x / x) * (sin x / x).
 Proof.
 Time intros x H; interval with (i_bisect_taylor x 5).
 Qed.
