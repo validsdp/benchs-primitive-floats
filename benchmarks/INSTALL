@@ -3,6 +3,11 @@ INSTALLATION PROCEDURE FOR BENCHMARKS
 
 Below are instructions to get the tools involved in the benchmarks.
 
+They have been tested on Ubuntu 14.04.2 LTS x86_64.
+
+If you have not installed the "aptitude" package manager, you can use
+"apt-get" instead.
+
 Install Sollya
 --------------
 
@@ -67,12 +72,16 @@ HOL Light (SOS and Taylor)
 
 ### Install OCaml and Camlp5
 
+Tested with OCaml 4.01.0 and Camlp5 6.11 (packaged for Ubuntu 14.04.2 LTS).
+
 $ sudo aptitude install ocaml
 $ sudo aptitude install camlp5
 $ camlp5 -pmode # should output "strict"
   # if not, see https://code.google.com/p/hol-light/source/browse/trunk/README
 
 ### Install CSDP <https://projects.coin-or.org/Csdp/>
+
+Tested with coinor-csdp version 6.1.1-1 (packaged for Ubuntu 14.04.2 LTS).
 
 $ sudo aptitude install coinor-csdp
 
@@ -82,6 +91,7 @@ http://www.coin-or.org/download/binary/Csdp/csdp6.1.0winp4.tgz
 
 ### Checkout HOL Light (r196)
 
+$ sudo aptitude install subversion
 $ mkdir -p ~/forge/svn-anon && cd ~/forge/svn-anon
 $ svn checkout http://hol-light.googlecode.com/svn/trunk/@196 hol-light
 $ cd hol-light
@@ -96,11 +106,15 @@ $ svn checkout http://flyspeck.googlecode.com/svn/trunk/formal_ineqs/@3660
 
 $ mkdir -p ~/src && cd ~/src
 $ wget http://cznic.dl.sourceforge.net/project/dmtcp/dmtcp/1.2.8/dmtcp-1.2.8.tar.gz
+$ sha1sum dmtcp-1.2.8.tar.gz
+$ echo 2569a7694e9aa034625545b7164c888557bec9d4 is the expected checksum
 $ tar xf dmtcp-1.2.8.tar.gz
 $ cd dmtcp-1.2.8
 $ ./configure && make && sudo make install
 
 ### Create checkpoints using DMTCP
+
+Note: this procedure may not work within an SSH session.
 
 $ export HOLLIGHT_DIR=~/forge/svn-anon/hol-light
 
@@ -160,6 +174,7 @@ $ sudo aptitude install sdpa
 
 ### Checkout NLCertify (as of 2014-11-04 12:07:04)
 
+$ sudo aptitude install git gitk
 $ mkdir -p ~/forge/git-anon && cd ~/forge/git-anon
 $ git clone https://forge.ocamlcore.org/anonscm/git/nl-certify/nl-certify.git
 $ cd nl-certify
