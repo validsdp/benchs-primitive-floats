@@ -148,19 +148,27 @@ Regarding the initialization, you can just run the following commands:
 
 ### Enable the OPAM repository for stable Coq packages
 
-$ opam repo add coq-stable https://github.com/coq/repo-stable.git
+$ opam repo add coq-released https://coq.inria.fr/opam/released
 
 ### Install Coq (>= 8.4pl4), Flocq (2.4), Ssreflect (1.5) and MathComp (1.5)
 
-$ opam install coq.8.4.5 coq:flocq coq:ssreflect coq:math-comp
+$ opam install coq.8.4.6 coq:flocq.2.4.0 coq:ssreflect.1.5.0 coq:math-comp.1.5.0
 
-### Install CoqInterval-2.0.0 <http://coq-interval.gforge.inria.fr/>
+### Install CoqInterval-2.0.0
+
+You can either go to the website http://coq-interval.gforge.inria.fr/
+and install CoqInterval by hand:
 
 $ mkdir -p ~/src && cd ~/src
 $ wget https://gforge.inria.fr/frs/download.php/file/34294/interval-2.0.0.tar.gz
 $ tar xf interval-2.0.0.tar.gz
 $ cd interval-2.0.0
 $ ./configure && ./remake && ./remake install
+
+or you can rely on OPAM:
+$ opam pin add coq 8.4.6
+  # for OPAM not to upgrade CoqInterval's deps (like coq 8.5~beta2)
+$ opam install coq:interval.2.0.0
 
 ### Install BLAS/LAPACK shared libraries (for lacaml)
 
