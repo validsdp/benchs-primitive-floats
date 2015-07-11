@@ -3,8 +3,6 @@
 # User parameters
 #================
 
-# HOM := /home/emartin
-# COQC := $(HOM)/src/coq-8.4pl4/bin/coqc
 HOM := $(HOME)
 COQC := coqc
 OCAML := ocaml
