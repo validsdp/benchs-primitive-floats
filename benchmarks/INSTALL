@@ -48,7 +48,7 @@ PVS (5.0 and 6.0)
 
   or directly download the following two tarballs:
     http://shemesh.larc.nasa.gov/fm/ftp/larc/PVS-library-archive/p50_pvslib-full.tgz
-    http://shemesh.larc.nasa.gov/fm/ftp/larc/PVS-library/nasalib-6.0.8-full.tgz
+    http://shemesh.larc.nasa.gov/fm/ftp/larc/PVS-library/nasalib-6.0.9-full.tgz
 
 3. Unzip the four tarballs and run the PVS installation scripts:
 
@@ -61,7 +61,7 @@ PVS (5.0 and 6.0)
 
   $ mkdir ~/pvs60 && cd ~/pvs60
   $ tar xf .../pvs-6.0-ix86_64-Linux-allegro.tgz
-  $ tar xf .../nasalib-6.0.8-full.tgz
+  $ tar xf .../nasalib-6.0.9-full.tgz
   $ bin/relocate
   $ cd ~/pvs60/nasalib && ./install-scripts
 
