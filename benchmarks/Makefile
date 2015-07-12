@@ -60,7 +60,7 @@ clean:
 dist-clean: clean clean-subdirs
 	$(RM) $(FINAL) $(FINAL_AUX)
 	$(RM) -r $(DIR_OUT)/pvsbin
-	$(RM) .pvscontext $(DIR_OUT)/.pvscontext $(FILES_PVS:.pvs=.prf)
+	$(RM) .pvscontext $(DIR_OUT)/.pvscontext
 	$(RM) $(DIR_OUT)/orphaned-proofs.prf $(FILES_PVS:.pvs=.prf~)
 
 # STEP 0: Make directory $(DIR_OUT)
