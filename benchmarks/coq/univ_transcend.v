@@ -1,4 +1,4 @@
-Require Import Reals Interval_tactic.
+Require Import Reals Interval.Interval_tactic.
 Local Open Scope R_scope.
 
 (** http://lipforge.ens-lyon.fr/www/crlibm/ *)

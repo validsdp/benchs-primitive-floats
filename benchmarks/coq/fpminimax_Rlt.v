@@ -1,4 +1,4 @@
-Require Import Reals Interval_tactic.
+Require Import Reals Interval.Interval_tactic.
 Open Scope R_scope.
 
 (** Facilities to parse negative powers and pre-compute powers of 2 *)
