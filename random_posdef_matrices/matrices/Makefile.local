@@ -1,0 +1,69 @@
+# -*- mode: makefile; -*-
+
+COQ_COMPILER := $(shell which coqc)
+
+OUT := ./output
+OUT_NATIVE := ./output_native
+
+OPS := add mul none
+
+VER := prim emul
+
+VBENCHS := $(foreach ver,$(VER),$(foreach f,$(VFILES:.v=),$(foreach o,$(OPS),$(foreach n,1 2 3 4 5,test_$(ver)_$(f)_$(o)_$(n).v))))
+
+LOGBENCHS := $(addprefix $(OUT)/,$(VBENCHS:.v=.log))
+LOGBENCHS_NATIVE := $(addprefix $(OUT_NATIVE)/,$(VBENCHS:.v=.log))
+
+VBENCHS_ALL := $(addprefix $(OUT)/,$(VBENCHS)) $(addprefix $(OUT_NATIVE)/,$(VBENCHS))
+
+benchs:: $(VOFILES) $(LOGBENCHS_NATIVE) $(LOGBENCHS)
+
+benchs.tex::
+	./coqlog2tex.pl $(LOGBENCHS) > $@
+benchs_native.tex::
+	./coqlog2tex.pl $(LOGBENCHS_NATIVE) | sed -e 's/vm_compute/native_compute/' > $@
+
+$(OUT):
+	mkdir -p -v $(OUT)
+
+$(OUT)/test_emul_%.v: test_emul.v | $(OUT)
+	@arg="$*" && mat=$${arg%%_*} && op=$${arg%_*} && op=$${op##*_} && \
+	echo "\nBuilding $@" && \
+	set -x && \
+	sed -e "s/§mat§/$$mat/; /$$op/{s/no_//}" $< > $@
+
+$(OUT)/test_prim_%.v: test_prim.v | $(OUT)
+	@arg="$*" && mat=$${arg%%_*} && op=$${arg%_*} && op=$${op##*_} && \
+	echo "\nBuilding $@" && \
+	set -x && \
+	sed -e "s/§mat§/$$mat/; /$$op/{s/no_//}" $< > $@
+
+# BEGIN Duplication :/
+$(OUT_NATIVE):
+	mkdir -p -v $(OUT_NATIVE)
+
+$(OUT_NATIVE)/test_emul_%.v: test_emul.v | $(OUT_NATIVE)
+	@arg="$*" && mat=$${arg%%_*} && op=$${arg%_*} && op=$${op##*_} && \
+	echo "\nBuilding $@" && \
+	set -x && \
+	sed -e "s/vm_compute/native_compute/; s/§mat§/$$mat/; /$$op/{s/no_//}" $< > $@
+
+$(OUT_NATIVE)/test_prim_%.v: test_prim.v | $(OUT_NATIVE)
+	@arg="$*" && mat=$${arg%%_*} && op=$${arg%_*} && op=$${op##*_} && \
+	echo "\nBuilding $@" && \
+	set -x && \
+	sed -e "s/vm_compute/native_compute/; s/§mat§/$$mat/; /$$op/{s/no_//}" $< > $@
+# END Duplication
+
+%.log %.vo %.glob: %.v
+	$(COQ_COMPILER) -native-compiler yes -R . FloatBench $< 2>&1 | tee $(<:.v=.log)
+
+.SECONDARY: $(VBENCHS_ALL)
+
+.INTERMEDIATE: $(VBENCHS_ALL:.v=.vo) $(VBENCHS_ALL:.v=.glob)
+
+clean::
+	$(RM) $(VBENCHS_ALL) $(VBENCHS_ALL:.v=.vo) $(VBENCHS_ALL:.v=.glob)
+
+distclean:: clean
+	$(RM) $(LOGBENCHS) $(LOGBENCHS_NATIVE)
