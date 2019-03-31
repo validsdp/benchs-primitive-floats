@@ -102,28 +102,32 @@ let pp_coq fmt lm =
       (pp_matrix ~begl:":: " pp_print_float_coq) m in
   Format.fprintf
     fmt
-    "@[<v>(* randomly generated positive definite matrix *)@ \
-@ \
-From Bignums Require Import BigZ.@ \
-Require Import Interval.Interval_specific_ops.@ \
-Require Import mathcomp.ssreflect.seq.@ \
-@ \
-Local Open Scope bigZ_scope.@ \
-@ \
-%a@ \
-@ \
-Require Import ValidSDP.posdef_check.@ \
-@ \
-Definition matrix_float := Eval vm_compute in map (map BigZFloat2Prim) matrix.@ \
-@ \
-(* Goal posdef_seqF matrix.@ \
-idtac \"size %d\".@ \
-Time posdef_check.@ \
-Qed.@ \
-Goal posdef_seqF matrix.@ \
-Time primitive_posdef_check.@ \
-Qed. *)@]"
-    pp_m lm (Array.length lm)
+    {|@[<v>(* randomly generated positive definite matrix *)
+
+From Bignums Require Import BigZ.
+Require Import Interval.Interval_specific_ops.
+Require Import mathcomp.ssreflect.seq.
+
+Local Open Scope bigZ_scope.
+%a
+
+Require Import ValidSDP.posdef_check.
+
+Definition matrix_float := Eval vm_compute in map (map BigZFloat2Prim) matrix.
+
+(* EMULATED
+Goal posdef_seqF matrix.
+idtac "emulated, size %d".
+Time posdef_check.
+Qed.
+EMULATED *)
+(* PRIMITIVE
+Goal posdef_seqF matrix.
+idtac "primitive, size %d".
+Time primitive_posdef_check.
+Qed.
+PRIMITIVE *)@]|}
+    pp_m lm (Array.length lm) (Array.length lm)
 
 let pp_file filename f =
   let oc = open_out filename in

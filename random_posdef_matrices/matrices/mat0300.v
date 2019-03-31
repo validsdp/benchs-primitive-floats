@@ -45013,10 +45013,15 @@ Require Import ValidSDP.posdef_check.
 
 Definition matrix_float := Eval vm_compute in map (map BigZFloat2Prim) matrix.
 
-(* Goal posdef_seqF matrix.
-idtac "size 300".
+(* EMULATED
+Goal posdef_seqF matrix.
+idtac "emulated, size 300".
 Time posdef_check.
 Qed.
+EMULATED *)
+(* PRIMITIVE
 Goal posdef_seqF matrix.
+idtac "primitive, size 300".
 Time primitive_posdef_check.
-Qed. *)
+Qed.
+PRIMITIVE *)
