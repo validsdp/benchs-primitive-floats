@@ -40,7 +40,7 @@ sub parse_args {
     my @args = @_;
     foreach my $f_log (@args) {
 	my ($prim, $mat, $num) =
-	    ($f_log =~ m/test_([0-9A-Za-z]+)_([0-9A-Za-z]+)_([0-9]+).log/);
+	    ($f_log =~ m/tac_([0-9A-Za-z]+)_([0-9A-Za-z]+)_([0-9]+).log/);
 	my @trans = parse_log($f_log);
 	my @times = map {
 	    my $str = $_;
