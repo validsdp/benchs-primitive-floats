@@ -80,7 +80,7 @@ prompt protection.
 ```bash
  # cd "the_folder_containing_this_README"
 
-docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_compiler-edge ./run.sh
+docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_compiler-edge bash -c "./run.sh"
 
 pdflatex tac_benchs.tex
 pdflatex tac_benchs_native.tex
