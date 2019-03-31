@@ -1,4 +1,6 @@
-all:: run
+all::
+	$(info Pos. def. matrices of size 50 upto 400 have already be generated and committed.)
+	$(info If you want to regenerate them, type 'make run'.)
 
 compile:: random_posdef_matrices
 
