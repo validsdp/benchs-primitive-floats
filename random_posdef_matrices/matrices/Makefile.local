@@ -22,7 +22,10 @@ OPS_LOGBENCHS_NATIVE := $(addprefix $(OUT_NATIVE)/,$(OPS_VBENCHS:.v=.log))
 
 VBENCHS_ALL := $(addprefix $(OUT)/,$(TAC_VBENCHS)) $(addprefix $(OUT_NATIVE)/,$(OPS_VBENCHS))
 
-benchs:: tac_benchs_vm tac_benchs_native ops_benchs_vm ops_benchs_native
+benchs:: coq_version tac_benchs_vm tac_benchs_native ops_benchs_vm ops_benchs_native
+
+coq_version::
+	$(COQ_COMPILER) --version
 
 tex:: tac_benchs.tex tac_benchs_native.tex ops_benchs.tex ops_benchs_native.tex
 
