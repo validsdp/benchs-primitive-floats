@@ -24,6 +24,21 @@ VBENCHS_ALL := $(addprefix $(OUT)/,$(TAC_VBENCHS)) $(addprefix $(OUT_NATIVE)/,$(
 
 benchs:: tac_benchs_vm tac_benchs_native ops_benchs_vm ops_benchs_native
 
+tex:: tac_benchs.tex tac_benchs_native.tex ops_benchs.tex ops_benchs_native.tex
+
+DRYRUN := output/tac_prim_mat0050_1.log output/tac_emul_mat0050_1.log \
+  output_native/tac_prim_mat0050_1.log output_native/tac_emul_mat0050_1.log \
+  output/test_prim_mat0500_none_1.log output/test_prim_mat0500_add_1.log \
+  output/test_emul_mat0500_none_1.log output/test_emul_mat0500_add_1.log \
+  output_native/test_prim_mat0500_none_1.log output_native/test_prim_mat0500_add_1.log \
+  output_native/test_emul_mat0500_none_1.log output_native/test_emul_mat0500_add_1.log
+
+dryrun:: $(DRYRUN)
+	./tac_coqlog2tex.pl output/tac_prim_mat0050_1.log output/tac_emul_mat0050_1.log > tac_benchs0.tex
+	./tac_coqlog2tex.pl output_native/tac_prim_mat0050_1.log output_native/tac_emul_mat0050_1.log | sed -e 's/vm_compute/native_compute/' > tac_benchs_native0.tex
+	./ops_coqlog2tex.pl output/test_prim_mat0500_none_1.log output/test_prim_mat0500_add_1.log output/test_emul_mat0500_none_1.log output/test_emul_mat0500_add_1.log > ops_benchs0.tex
+	./ops_coqlog2tex.pl output_native/test_prim_mat0500_none_1.log output_native/test_prim_mat0500_add_1.log output_native/test_emul_mat0500_none_1.log output_native/test_emul_mat0500_add_1.log | sed -e 's/vm_compute/native_compute/' > ops_benchs_native0.tex
+
 tac_benchs_vm:: $(VOFILES) $(TAC_LOGBENCHS)
 tac_benchs_native:: $(VOFILES) $(TAC_LOGBENCHS_NATIVE)
 ops_benchs_vm:: $(VOFILES) $(OPS_LOGBENCHS)
