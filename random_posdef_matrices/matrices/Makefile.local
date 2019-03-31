@@ -28,16 +28,16 @@ tex:: tac_benchs.tex tac_benchs_native.tex ops_benchs.tex ops_benchs_native.tex
 
 DRYRUN := output/tac_prim_mat0050_1.log output/tac_emul_mat0050_1.log \
   output_native/tac_prim_mat0050_1.log output_native/tac_emul_mat0050_1.log \
-  output/test_prim_mat0500_none_1.log output/test_prim_mat0500_add_1.log \
-  output/test_emul_mat0500_none_1.log output/test_emul_mat0500_add_1.log \
-  output_native/test_prim_mat0500_none_1.log output_native/test_prim_mat0500_add_1.log \
-  output_native/test_emul_mat0500_none_1.log output_native/test_emul_mat0500_add_1.log
+  output/test_prim_mat0050_none_1.log output/test_prim_mat0050_add_1.log \
+  output/test_emul_mat0050_none_1.log output/test_emul_mat0050_add_1.log \
+  output_native/test_prim_mat0050_none_1.log output_native/test_prim_mat0050_add_1.log \
+  output_native/test_emul_mat0050_none_1.log output_native/test_emul_mat0050_add_1.log
 
 dryrun:: $(DRYRUN)
 	./tac_coqlog2tex.pl output/tac_prim_mat0050_1.log output/tac_emul_mat0050_1.log > tac_benchs0.tex
 	./tac_coqlog2tex.pl output_native/tac_prim_mat0050_1.log output_native/tac_emul_mat0050_1.log | sed -e 's/vm_compute/native_compute/' > tac_benchs_native0.tex
-	./ops_coqlog2tex.pl output/test_prim_mat0500_none_1.log output/test_prim_mat0500_add_1.log output/test_emul_mat0500_none_1.log output/test_emul_mat0500_add_1.log > ops_benchs0.tex
-	./ops_coqlog2tex.pl output_native/test_prim_mat0500_none_1.log output_native/test_prim_mat0500_add_1.log output_native/test_emul_mat0500_none_1.log output_native/test_emul_mat0500_add_1.log | sed -e 's/vm_compute/native_compute/' > ops_benchs_native0.tex
+	./ops_coqlog2tex.pl output/test_prim_mat0050_none_1.log output/test_prim_mat0050_add_1.log output/test_emul_mat0050_none_1.log output/test_emul_mat0050_add_1.log > ops_benchs0.tex
+	./ops_coqlog2tex.pl output_native/test_prim_mat0050_none_1.log output_native/test_prim_mat0050_add_1.log output_native/test_emul_mat0050_none_1.log output_native/test_emul_mat0050_add_1.log | sed -e 's/vm_compute/native_compute/' > ops_benchs_native0.tex
 
 tac_benchs_vm:: $(VOFILES) $(TAC_LOGBENCHS)
 tac_benchs_native:: $(VOFILES) $(TAC_LOGBENCHS_NATIVE)
@@ -88,13 +88,13 @@ $(OUT_NATIVE)/tac_emul_%.v: | $(OUT_NATIVE)
 	@arg="$*" && mat=$${arg%%_*} && \
 	echo "\nBuilding $@" && \
 	set -x && \
-	sed -e 's/_check/_check_native/; s/^.*EMULATED.*$$//; s/^.*DEFINITION.*$$//; s/^.*TEST.*$$/'"From FloatBench Require Import $$mat./" "$$mat.v" > $@
+	sed -e 's/Time posdef_check/Time posdef_check_native/; s/^.*EMULATED.*$$//; s/^.*DEFINITION.*$$//; s/^.*TEST.*$$/'"From FloatBench Require Import $$mat./" "$$mat.v" > $@
 
 $(OUT_NATIVE)/tac_prim_%.v: | $(OUT_NATIVE)
 	@arg="$*" && mat=$${arg%%_*} && \
 	echo "\nBuilding $@" && \
 	set -x && \
-	sed -e 's/_check/_check_native/; s/^.*PRIMITIVE.*$$//; s/^.*DEFINITION.*$$//; s/^.*TEST.*$$/'"From FloatBench Require Import $$mat./" "$$mat.v" > $@
+	sed -e 's/Time primitive_posdef_check/Time primitive_posdef_check_native/; s/^.*PRIMITIVE.*$$//; s/^.*DEFINITION.*$$//; s/^.*TEST.*$$/'"From FloatBench Require Import $$mat./" "$$mat.v" > $@
 
 $(OUT_NATIVE)/test_emul_%.v: test_emul.v | $(OUT_NATIVE)
 	@arg="$*" && mat=$${arg%%_*} && op=$${arg%_*} && op=$${op##*_} && \
