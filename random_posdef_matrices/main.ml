@@ -139,7 +139,7 @@ let rec rand_matrices from_sz to_sz incr =
 
 let _ =
   Random.init 42;
-  let matrices = rand_matrices 200 400 50 in
+  let matrices = rand_matrices 50 400 50 in
   List.iter
     (fun mx ->
       let filename = Printf.sprintf "matrices/mat%04d.v" (Array.length mx) in

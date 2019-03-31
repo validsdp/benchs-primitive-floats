@@ -1,6 +1,9 @@
 -R . FloatBench
 -arg -native-compiler -arg yes
 
+mat0050.v
+mat0100.v
+mat0150.v
 mat0200.v
 mat0250.v
 mat0300.v
