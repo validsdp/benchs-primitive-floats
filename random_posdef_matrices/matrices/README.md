@@ -79,9 +79,26 @@ prompt protection.
 ## Running the benchmarks using Docker
 
 ```bash
- # cd "the_folder_containing_this_README"
+# cd "the_folder_containing_this_README"
 
-docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_compiler-edge bash -c "./run.sh"
+docker pull registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_compiler-edge
+# note that this may take a while as the compressed size of this Docker image is 1.3 GB,
+# and you'll need enough space (in the '/' partition) as its uncompressed size is 4.0 GB
+
+docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_compiler-edge ./run_example.sh
+
+pdflatex tac_benchs_ex.tex
+pdflatex tac_benchs_native_ex.tex
+pdflatex ops_benchs_ex.tex
+pdflatex ops_benchs_native_ex.tex
+```
+
+The `docker run` command above will only run one example benchmark with a 100x100 matrix.
+
+To run all benchmarks, you should execute instead:
+
+```bash
+docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_compiler-edge ./run_full.sh
 
 pdflatex tac_benchs.tex
 pdflatex tac_benchs_native.tex
