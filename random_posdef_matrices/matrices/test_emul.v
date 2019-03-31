@@ -17,8 +17,9 @@ Module F := SpecificFloat BigIntRadix2.
 
 From FloatBench Require Import §mat§.
 
-(* Profile each floating-point arithmetic operation. *)
+(* Profile floating-point arithmetic operations. *)
 
+(* Tip to avoid the pretty-printing overhead when doing "Time Eval" *)
 Lemma qed A (t : A) : unit.
 exact tt.
 Qed.
@@ -30,12 +31,8 @@ Definition select_float (a b : float) := a.
 Notation doubling1 f := (let r1 := (f) in
                         let r2 := (f) in
                         select_intvl r1 r2) (only parsing).
-Notation doubling2 f := (let r1 := (f) in
-                        let r2 := (f) in
-                        select_float r1 r2) (only parsing).
 
 Notation no_doubling1 f := (f) (only parsing).
-Notation no_doubling2 f := (f) (only parsing).
 
 Section test_CoqInterval.
 Local Notation T := F.type (only parsing).
@@ -45,9 +42,9 @@ Definition two := Eval compute in
 
 Instance : add_of T := fun a b => no_doubling1 (F.add rnd_NE 53%bigZ a b).
 Instance : mul_of T := fun a b => no_doubling1 (F.mul rnd_NE 53%bigZ a b).
-Instance : sqrt_of T := fun a => no_doubling1 (F.sqrt rnd_NE 53%bigZ a).
-Instance : div_of T := fun a b => no_doubling1 (F.div rnd_NE 53%bigZ a b).
-Instance : opp_of T := fun a => no_doubling1 (F.neg a).
+Instance : sqrt_of T := fun a => (F.sqrt rnd_NE 53%bigZ a).
+Instance : div_of T := fun a b => (F.div rnd_NE 53%bigZ a b).
+Instance : opp_of T := fun a => (F.neg a).
 Instance : zero_of T := F.zero.
 Instance : one_of T := Float 1%bigZ 0%bigZ.
 
