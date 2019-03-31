@@ -107,13 +107,20 @@ let pp_coq fmt lm =
 From Bignums Require Import BigZ.
 Require Import Interval.Interval_specific_ops.
 Require Import mathcomp.ssreflect.seq.
+Require Import ValidSDP.posdef_check.
+
+(*
+BEGIN DEFINITION *)
 
 Local Open Scope bigZ_scope.
 %a
 
-Require Import ValidSDP.posdef_check.
-
 Definition matrix_float := Eval vm_compute in map (map BigZFloat2Prim) matrix.
+
+(* END DEFINITION
+ *)
+
+(* TEST *)
 
 (* EMULATED
 Goal posdef_seqF matrix.

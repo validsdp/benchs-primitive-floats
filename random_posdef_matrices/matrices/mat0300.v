@@ -3,6 +3,10 @@
 From Bignums Require Import BigZ.
 Require Import Interval.Interval_specific_ops.
 Require Import mathcomp.ssreflect.seq.
+Require Import ValidSDP.posdef_check.
+
+(*
+BEGIN DEFINITION *)
 
 Local Open Scope bigZ_scope.
 
@@ -45009,9 +45013,12 @@ Definition matrix :=
           Float (5829280523759622) (-49); Float (8375840901635220) (-50);
           Float (5400199276112728) (-50); Float (6913922555688043) (-45)]].
 
-Require Import ValidSDP.posdef_check.
-
 Definition matrix_float := Eval vm_compute in map (map BigZFloat2Prim) matrix.
+
+(* END DEFINITION
+ *)
+
+(* TEST *)
 
 (* EMULATED
 Goal posdef_seqF matrix.
