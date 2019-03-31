@@ -9,22 +9,49 @@ OPS := add mul none
 
 VER := prim emul
 
-VBENCHS := $(foreach ver,$(VER),$(foreach f,$(VFILES:.v=),$(foreach o,$(OPS),$(foreach n,1 2 3 4 5,test_$(ver)_$(f)_$(o)_$(n).v))))
+TAC_VFILES := mat0050.v mat0100.v mat0150.v mat0200.v mat0250.v mat0300.v mat0350.v mat0400.v
+OPS_VFILES := mat0200.v mat0250.v mat0300.v mat0350.v mat0400.v
 
-LOGBENCHS := $(addprefix $(OUT)/,$(VBENCHS:.v=.log))
-LOGBENCHS_NATIVE := $(addprefix $(OUT_NATIVE)/,$(VBENCHS:.v=.log))
+TAC_VBENCHS := $(foreach ver,$(VER),$(foreach f,$(TAC_VFILES:.v=),$(foreach n,1 2 3 4 5,tac_$(ver)_$(f)_$(n).v)))
+OPS_VBENCHS := $(foreach ver,$(VER),$(foreach f,$(OPS_VFILES:.v=),$(foreach o,$(OPS),$(foreach n,1 2 3 4 5,test_$(ver)_$(f)_$(o)_$(n).v))))
 
-VBENCHS_ALL := $(addprefix $(OUT)/,$(VBENCHS)) $(addprefix $(OUT_NATIVE)/,$(VBENCHS))
+TAC_LOGBENCHS := $(addprefix $(OUT)/,$(TAC_VBENCHS:.v=.log))
+TAC_LOGBENCHS_NATIVE := $(addprefix $(OUT_NATIVE)/,$(TAC_VBENCHS:.v=.log))
+OPS_LOGBENCHS := $(addprefix $(OUT)/,$(OPS_VBENCHS:.v=.log))
+OPS_LOGBENCHS_NATIVE := $(addprefix $(OUT_NATIVE)/,$(OPS_VBENCHS:.v=.log))
 
-benchs:: $(VOFILES) $(LOGBENCHS_NATIVE) $(LOGBENCHS)
+VBENCHS_ALL := $(addprefix $(OUT)/,$(TAC_VBENCHS)) $(addprefix $(OUT_NATIVE)/,$(OPS_VBENCHS))
 
-benchs.tex::
-	./coqlog2tex.pl $(LOGBENCHS) > $@
-benchs_native.tex::
-	./coqlog2tex.pl $(LOGBENCHS_NATIVE) | sed -e 's/vm_compute/native_compute/' > $@
+benchs:: tac_benchs_vm tac_benchs_native ops_benchs_vm ops_benchs_native
+
+tac_benchs_vm:: $(VOFILES) $(TAC_LOGBENCHS)
+tac_benchs_native:: $(VOFILES) $(TAC_LOGBENCHS_NATIVE)
+ops_benchs_vm:: $(VOFILES) $(OPS_LOGBENCHS)
+ops_benchs_native:: $(OPS_LOGBENCHS_NATIVE)
+
+tac_benchs.tex::
+	./tac_coqlog2tex.pl $(TAC_LOGBENCHS) > $@
+tac_benchs_native.tex::
+	./tac_coqlog2tex.pl $(TAC_LOGBENCHS_NATIVE) | sed -e 's/vm_compute/native_compute/' > $@
+ops_benchs.tex::
+	./ops_coqlog2tex.pl $(OPS_LOGBENCHS) > $@
+ops_benchs_native.tex::
+	./ops_coqlog2tex.pl $(OPS_LOGBENCHS_NATIVE) | sed -e 's/vm_compute/native_compute/' > $@
 
 $(OUT):
 	mkdir -p -v $(OUT)
+
+$(OUT)/tac_emul_%.v: | $(OUT)
+	@arg="$*" && mat=$${arg%%_*} && \
+	echo "\nBuilding $@" && \
+	set -x && \
+	sed -e 's/^.*EMULATED.*$$//; s/^.*DEFINITION.*$$//; s/^.*TEST.*$$/'"From FloatBench Require Import $$mat./" "$$mat.v" > $@
+
+$(OUT)/tac_prim_%.v: | $(OUT)
+	@arg="$*" && mat=$${arg%%_*} && \
+	echo "\nBuilding $@" && \
+	set -x && \
+	sed -e 's/^.*PRIMITIVE.*$$//; s/^.*DEFINITION.*$$//; s/^.*TEST.*$$/'"From FloatBench Require Import $$mat./" "$$mat.v" > $@
 
 $(OUT)/test_emul_%.v: test_emul.v | $(OUT)
 	@arg="$*" && mat=$${arg%%_*} && op=$${arg%_*} && op=$${op##*_} && \
@@ -41,6 +68,18 @@ $(OUT)/test_prim_%.v: test_prim.v | $(OUT)
 # BEGIN Duplication :/
 $(OUT_NATIVE):
 	mkdir -p -v $(OUT_NATIVE)
+
+$(OUT_NATIVE)/tac_emul_%.v: | $(OUT_NATIVE)
+	@arg="$*" && mat=$${arg%%_*} && \
+	echo "\nBuilding $@" && \
+	set -x && \
+	sed -e 's/_check/_check_native/; s/^.*EMULATED.*$$//; s/^.*DEFINITION.*$$//; s/^.*TEST.*$$/'"From FloatBench Require Import $$mat./" "$$mat.v" > $@
+
+$(OUT_NATIVE)/tac_prim_%.v: | $(OUT_NATIVE)
+	@arg="$*" && mat=$${arg%%_*} && \
+	echo "\nBuilding $@" && \
+	set -x && \
+	sed -e 's/_check/_check_native/; s/^.*PRIMITIVE.*$$//; s/^.*DEFINITION.*$$//; s/^.*TEST.*$$/'"From FloatBench Require Import $$mat./" "$$mat.v" > $@
 
 $(OUT_NATIVE)/test_emul_%.v: test_emul.v | $(OUT_NATIVE)
 	@arg="$*" && mat=$${arg%%_*} && op=$${arg%_*} && op=$${op##*_} && \
@@ -66,4 +105,4 @@ clean::
 	$(RM) $(VBENCHS_ALL) $(VBENCHS_ALL:.v=.vo) $(VBENCHS_ALL:.v=.glob)
 
 distclean:: clean
-	$(RM) $(LOGBENCHS) $(LOGBENCHS_NATIVE)
+	$(RM) $(TAC_LOGBENCHS) $(TAC_LOGBENCHS_NATIVE) $(OPS_LOGBENCHS) $(OPS_LOGBENCHS_NATIVE)

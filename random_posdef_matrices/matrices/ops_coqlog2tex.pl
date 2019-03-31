@@ -1,13 +1,13 @@
 #!/usr/bin/env perl
 # -*- coding: utf-8-unix; -*-
-# Copyright (c) 2014, 2018  Erik Martin-Dorel
+# Copyright (c) 2014, 2018-2019  Erik Martin-Dorel
 # Parse Coq output, Compute total CPU time (user+sys) & Print TeX data
 use strict;
 use warnings;
 use Data::Dumper;
 
 if ($#ARGV < 0) {
-    warn "Usage:\n\n\$ $0 test_mat0200_none_1.log test_mat0200_add_1.log ... > benchs.tex\n";
+    warn "Usage:\n\n\$ $0 test_prim_mat0200_1.log test_prim_mat0200_1.log ... > ops_benchs.tex\n";
     die "\nNote: please follow the file name convention above.\n";
 }
 
@@ -170,5 +170,5 @@ sub main {
 main();
 
 # Local Variables:
-# compile-command: "./coqlog2tex.pl output/*.log > benchs.tex"
+# compile-command: "./ops_coqlog2tex.pl output/*.log > ops_benchs.tex"
 # End:
