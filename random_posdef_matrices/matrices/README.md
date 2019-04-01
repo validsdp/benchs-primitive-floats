@@ -106,9 +106,9 @@ pdflatex ops_benchs.tex
 pdflatex ops_benchs_native.tex
 ```
 
-To just experience with primitive floats in Coq, one can simply run :
+To just experience with primitive floats in Coq, one can simply run:
 
-```
+```bash
 docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_compiler-edge
 $ coqtop  # or emacs (with proof-general)
 Coq < Require Import Float.
