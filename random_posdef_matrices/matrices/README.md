@@ -105,3 +105,13 @@ pdflatex tac_benchs_native.tex
 pdflatex ops_benchs.tex
 pdflatex ops_benchs_native.tex
 ```
+
+To just experience with primitive floats in Coq, one can simply run :
+
+```
+docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_compiler-edge
+$ coqtop  # or emacs (with proof-general)
+Coq < Require Import Float.
+Coq < Open Scope float_scope.
+Coq < Eval vm_compute in 1 + 0.5.
+```
