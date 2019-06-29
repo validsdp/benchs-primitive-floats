@@ -1,16 +1,17 @@
 # Benchmarks for primitive-floats in Coq
 
 Building
-[coq with primitive-floats](https://github.com/coq/coq/pull/9867),
+[Coq with primitive-floats](https://github.com/coq/coq/pull/9867),
 then the
-[posdef_check tactic with its dependencies](https://github.com/validsdp/validsdp/blob/posdef_check/theories/posdef_check.v)
-takes around 75mn.
+[posdef_check tactic](https://github.com/validsdp/validsdp/blob/posdef_check/theories/posdef_check.v)
+with its dependencies takes around 75mn.
 
 To make the process faster and less tedious, we prepared Docker images
 gathering all this material prebuilt. They are available in this
 [GitLab CI registry](https://gitlab.com/erikmd/docker-coq-primitive-floats/container_registry)
 and these images are built from this
-[Dockerfile](https://gitlab.com/erikmd/docker-coq-primitive-floats/blob/master/Dockerfile).
+[Dockerfile](https://gitlab.com/erikmd/docker-coq-primitive-floats/blob/1.0/Dockerfile)
+and [GitLab CI configuration](https://gitlab.com/erikmd/docker-coq-primitive-floats/blob/1.0/.gitlab-ci.yml).
 
 The sequel of this document describes how to install Docker, and how
 to run the benchmarks using Docker.
