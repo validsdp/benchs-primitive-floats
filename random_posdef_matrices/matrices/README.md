@@ -1,7 +1,7 @@
 # Benchmarks for primitive-floats in Coq
 
 Building
-[coq with primitive-floats](https://github.com/validsdp/coq/tree/primitive-floats),
+[coq with primitive-floats](https://github.com/coq/coq/pull/9867),
 then the
 [posdef_check tactic with its dependencies](https://github.com/validsdp/validsdp/blob/posdef_check/theories/posdef_check.v)
 takes around 75mn.

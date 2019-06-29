@@ -1,7 +1,7 @@
 # Benchmarks for primitive-floats in Coq
 
 This repo gathers benchmarks accompanying the
-[primitive-floats](https://github.com/validsdp/coq/tree/primitive-floats)
+[primitive-floats](https://github.com/coq/coq/pull/9867)
 implementation of `binary64` floating-point arithmetic in Coq.
 
 See the `README.md` in the
