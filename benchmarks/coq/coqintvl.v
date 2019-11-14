@@ -250,7 +250,7 @@ Lemma remez_sqrt :
                    + 407 / 334) * x + 227 / 925))
     <= 5/65536.
 Time intros x H;
-  (* interval with (i_bisect_diff x). *)
+  (* Time interval with (i_bisect_diff x). *)
   interval with (i_bisect_taylor x 5).
 Qed.
 
@@ -284,7 +284,14 @@ Lemma rel_err_geodesic :
   Rabs ((rp phi - arp phi) / rp phi) <= 23/16777216.
 Proof.
 Time unfold (*rp, arp,*) a, umf2, f, max; intros phi Hphi;
-(* interval with (i_bisect_diff phi). *)
+  interval with (i_bisect_diff phi).
+Qed.
+
+Lemma rel_err_geodesic' :
+  forall phi, 0 <= phi <= max ->
+  Rabs ((rp phi - arp phi) / rp phi) <= 23/16777216.
+Proof.
+Time unfold (*rp, arp,*) a, umf2, f, max; intros phi Hphi;
   interval with (i_bisect_taylor phi 5).
 Qed.
 End Rel_err_geodesic.
@@ -547,4 +554,321 @@ Lemma cos_cos_d8__2 :
   forall x, D x -> (p8 x - f x) / f x < eps8.
 Proof.
 Time intros x H; interval with (i_bisect_taylor x 4).
+Qed.
+
+(* From coq-interval/testsuite/bug-20120927.v *)
+
+Goal
+  forall x, (-1/2 <= x <= 0)%R ->
+  True.
+Proof.
+intros x Hx.
+Time interval_intro (Rabs x + x)%R upper with (i_bisect_diff x, i_depth 5).
+exact I.
+Qed.
+
+(* From coq-interval/testsuite/bug-20140723.v *)
+
+Goal True.
+Time interval_intro PI lower.
+Time interval_intro (PI/2)%R upper.
+exact I.
+Qed.
+
+(* From coq-interval/testsuite/bug-20140728.v *)
+
+Goal forall x : R, exp x >= 0.
+Time intros; interval.
+Qed.
+
+(*
+(* From coq-interval/testsuite/bug-20150924.v *)
+
+Goal forall x : R,
+  (Rabs (x - x) <= 1/5)%R.
+Proof.
+intros x.
+Time interval with (i_bisect_diff x).
+Qed.
+
+(* From coq-interval/testsuite/bug-20150925.v *)
+
+Goal forall x, (-1 / 3 <= x - x <= 1 / 7)%R.
+Proof.
+intros x.
+Time interval with (i_bisect_diff x).
+Qed.
+*)
+
+(* From coq-interval/testsuite/bug-20160218.v *)
+
+Goal forall x, (0 <= x <= 1 -> 2 <= 3)%R.
+Proof.
+intros x Hx.
+Time interval with (i_bisect_diff x).
+Qed.
+
+(* From coq-interval/testsuite/example_20071016.v *)
+
+Goal
+  forall x, -1 <= x <= 1 ->
+  sqrt (1 - x) <= 3/2.
+Proof.
+  intros.
+  Time interval.
+Qed.
+
+Goal
+  forall x, -1 <= x <= 1 ->
+  sqrt (1 - x) <= 141422/100000.
+Proof.
+  intros.
+  Time interval.
+Qed.
+
+Goal
+  forall x, -1 <= x <= 1 ->
+  sqrt (1 - x) <= 141422/100000.
+Proof.
+  intros.
+  Time interval_intro (sqrt (1 - x)) upper as H'.
+  apply Rle_trans with (1 := H').
+  Time interval.
+Qed.
+
+Goal
+  forall x, 3/2 <= x <= 2 ->
+  forall y, 1 <= y <= 33/32 ->
+  Rabs (sqrt(1 + x/sqrt(x+y)) - 144/1000*x - 118/100) <= 71/32768.
+Proof.
+  intros.
+  Time interval with (i_prec 19, i_bisect x).
+Qed.
+
+Goal
+  forall x, 1/2 <= x <= 2 ->
+  Rabs (sqrt x - (((((122 / 7397 * x + (-1733) / 13547) * x
+                   + 529 / 1274) * x + (-767) / 999) * x
+                   + 407 / 334) * x + 227 / 925))
+    <= 5/65536.
+Proof.
+  intros.
+  Time interval with (i_bisect_taylor x 3).
+Qed.
+
+Goal
+  forall x, -1 <= x ->
+  x < 1 + powerRZ x 3.
+Proof.
+  intros.
+  apply Rminus_lt.
+  Time interval with (i_bisect_diff x).
+Qed.
+
+Require Import Coquelicot.Coquelicot.
+
+Goal
+  Rabs (RInt (fun x => atan (sqrt (x*x + 2)) / (sqrt (x*x + 2) * (x*x + 1))) 0 1
+        - 5/96*PI*PI) <= 1/1000.
+Proof.
+  Time interval with (i_integral_prec 9, i_integral_depth 1, i_integral_deg 5).
+  (* Time integral with (i_fuel 2, i_degree 5). *)
+Qed.
+
+(*
+Goal
+  RInt_gen (fun x => 1 * (powerRZ x 3 * ln x^2))
+           (at_right 0) (at_point 1) = 1/32.
+Proof.
+  refine ((fun H => Rle_antisym _ _ (proj2 H) (proj1 H)) _).
+  Time integral.
+Qed.
+*)
+
+Goal
+  Rabs (RInt_gen (fun t => 1/sqrt t * exp (-(1*t)))
+                 (at_point 1) (Rbar_locally p_infty)
+        - 2788/10000) <= 1/1000.
+Proof.
+  Time interval.
+Qed.
+
+(* From coq-interval/testsuite/example-20120205.v *)
+
+Goal forall x, (1 <= x)%R -> (0 < x)%R.
+Proof.
+intros.
+Time interval.
+Qed.
+
+Goal forall x, (1 <= x)%R -> (x <= x * x)%R.
+Proof.
+intros.
+apply Rminus_le.
+Time interval with (i_bisect_diff x).
+Qed.
+
+Goal forall x, (2 <= x)%R -> (x < x * x)%R.
+Proof.
+intros.
+apply Rminus_lt.
+Time interval with (i_bisect_diff x).
+Qed.
+
+Goal forall x, (-1 <= x)%R -> (x < 1 + powerRZ x 3)%R.
+Proof.
+intros.
+apply Rminus_lt.
+Time interval with (i_bisect_diff x).
+Qed.
+
+(* From coq-interval/testsuite/example-20140221.v *)
+
+(*
+Example taken from:
+John Harrison, Verifying the Accuracy of Polynomial Approximations in HOL.
+In TPHOLs, pages 137-152, 1997.
+*)
+
+Goal
+  forall x : R,
+    (-10831/1000000 <= x /\ x <= 10831/1000000) ->
+    Rabs ((exp x - 1) - (x + (8388676/2^24) * x^2 + (11184876/2^26) * x^3))
+    <= (23/27) / (2^33).
+Proof.
+intros x H.
+Time interval with (i_bisect_diff x, i_prec 50, i_depth 16).
+Qed.
+
+Goal
+  forall x : R,
+    (-10831/1000000 <= x /\ x <= 10831/1000000) ->
+    Rabs ((exp x - 1) - (x + (8388676/2^24) * x^2 + (11184876/2^26) * x^3))
+    <= (23/27) / (2^33).
+Proof.
+intros x H.
+Time interval with (i_bisect_taylor x 3, i_prec 50).
+Qed.
+
+(* From coq-interval/testsuite/example-20140610.v *)
+
+(*
+Example taken from:
+Marc Daumas and Guillaume Melquiond and César Muñoz,
+Guaranteed Proofs Using Interval Arithmetic.
+In IEEE ARITH 17, pages 188-195, 2005.
+*)
+
+Definition a := 6378137.
+Definition f' := 1000000000/298257223563.
+Definition umf2 := (1 - f')².
+Definition max := 715/512.
+Definition rp phi := a / sqrt (1 + umf2 * (tan phi)²).
+Definition arp phi :=
+  let x := max² - phi² in
+  4439091/4 + x * (9023647/4 + x * (
+    13868737/64 + x * (13233647/2048 + x * (
+      -1898597/16384 + x * (-6661427/131072))))).
+
+Goal forall phi, 0 <= phi <= max ->
+  Rabs ((rp phi - arp phi) / rp phi) <= 23/16777216.
+Proof.
+unfold rp, arp, umf2, a, f', max.
+intros phi Hphi.
+Time interval with (i_bisect_diff phi).
+Qed.
+
+Goal forall phi, 0 <= phi <= max ->
+  Rabs ((rp phi - arp phi) / rp phi) <= 23/16777216.
+Proof.
+unfold rp, arp, umf2, a, f', max.
+intros phi Hphi.
+Time interval with (i_bisect_taylor phi 5).
+Qed.
+
+(* From coq-interval/testsuite/example-20150105.v *)
+
+Notation pow2 := (Raux.bpow Zaux.radix2).
+
+(*
+Example taken from:
+William J. Cody Jr. and William Waite
+Software Manual for the Elementary Functions
+*)
+
+Goal forall x : R, Rabs x <= 35/100 ->
+  let p := fun t => 1 * pow2 (-2) + t * (1116769 * pow2 (-28)) in
+  let q := fun t => 1 * pow2 (-1) + t * (13418331 * pow2 (-28)) in
+  let r := 2 * (x * p (x^2) / (q (x^2) - x * p (x^2)) + 1 * pow2 (-1)) in
+  Rabs ((r - exp x) / exp x) <= 17 * pow2 (-34).
+Proof.
+intros x Hx p q r.
+unfold r, p, q.
+Time interval with (i_prec 40, i_bisect_taylor x 3).
+Qed.
+
+(* From coq-interval/testsuite/example-20160218.v *)
+
+Lemma exp_0_3 :
+  Rabs (RInt (fun x => exp x) 0 3 - (exp(1) ^ 3 - 1)) <= 1/(1000*1000).
+Proof.
+Time interval with (i_integral_depth 0, i_integral_deg 12).
+Qed.
+
+Lemma exp_0_3' :
+  Rabs (RInt (fun x => exp x) 0 3 - (exp(1) ^ 3 - 1)) <= 1/(1000*1000).
+Proof.
+Time interval with (i_integral_depth 1, i_integral_prec 20).
+Qed.
+
+Lemma x_ln1p_0_1 :
+  Rabs (RInt (fun x => x * ln(1 + x)) 0 1 - 1/4) <= 1/1000.
+Proof.
+Time interval with (i_integral_depth 0).
+Qed.
+
+Lemma circle :
+  Rabs (RInt (fun x => sqrt(1 - x * x)) 0 1 - PI / 4) <= 1/100.
+Proof.
+Time interval with (i_integral_depth 10, i_integral_deg 1).
+Qed.
+
+Lemma exp_cos_0_1 :
+  Rabs (RInt (fun x => sin(x) * exp(cos x)) 0 1 - (exp 1 - exp(cos 1))) <= 1/1000.
+Proof.
+Time interval with (i_integral_depth 0).
+Qed.
+
+Lemma arctan_0_1 :
+  Rabs (RInt (fun x => 1 / (1 + x*x)) 0 1 - PI / 4) <= 1/1000.
+Proof.
+Time interval with (i_integral_depth 0, i_integral_deg 13).
+Qed.
+
+Lemma arctan_0_1' :
+  Rabs (RInt (fun x => 1 / (1 + x*x)) 0 1 - PI / 4) <= 1/1000.
+Proof.
+Time interval with (i_integral_depth 1).
+Qed.
+
+(* From coq-interval/testsuite/example-20171018.v *)
+
+(*
+Lemma h_54_ln_2  h :
+  -53 <= h <= 0 ->
+  -  Rnearbyint rnd_DN (h * ln 2 / ln 5) * ln 5 <= 54 * ln 2.
+Proof.
+intros.
+Time interval.
+Qed.
+ *)
+
+(* From coq-interval/testsuite/example_ln.v *)
+
+Goal forall x : R, (0 <= x <= 1 -> ln (exp x) <= 1 + 1/1024)%R.
+Time intros; interval.
+Qed.
+
+Goal (693/1000 < ln 2 < 694/1000)%R.
+Time split; interval.
 Qed.
