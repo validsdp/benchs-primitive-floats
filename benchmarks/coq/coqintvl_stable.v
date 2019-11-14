@@ -216,7 +216,7 @@ Qed.
 (* plot(cos(x)-sin(x)/x, [0, pi]); *)
 (* Lemma MT22 : forall x : R, eps <= x <= PI -> cos x <= sin x / x. *)
 (* Proof. *)
-idtac "MT22".
+(* idtac "MT22". *)
 (* Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x 5, i_depth 16). *)
 (* Qed. *)
 
@@ -715,6 +715,7 @@ Proof.
 idtac "example20071016_3".
   Time interval_intro (sqrt (1 - x)) upper as H'.
   apply Rle_trans with (1 := H').
+idtac "example20071016_3'".
   Time interval.
 Qed.
 
