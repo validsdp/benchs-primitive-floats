@@ -558,7 +558,7 @@ Qed.
 
 (* From coq-interval/testsuite/bug-20120927.v *)
 
-Goal
+Lemma bug20120927 :
   forall x, (-1/2 <= x <= 0)%R ->
   True.
 Proof.
@@ -569,7 +569,7 @@ Qed.
 
 (* From coq-interval/testsuite/bug-20140723.v *)
 
-Goal True.
+Lemma bug20140723 : True.
 Time interval_intro PI lower.
 Time interval_intro (PI/2)%R upper.
 exact I.
@@ -577,14 +577,14 @@ Qed.
 
 (* From coq-interval/testsuite/bug-20140728.v *)
 
-Goal forall x : R, exp x >= 0.
+Lemma bug20140728 : forall x : R, exp x >= 0.
 Time intros; interval.
 Qed.
 
 (*
 (* From coq-interval/testsuite/bug-20150924.v *)
 
-Goal forall x : R,
+Lemma bug20150924_1 : forall x : R,
   (Rabs (x - x) <= 1/5)%R.
 Proof.
 intros x.
@@ -593,7 +593,7 @@ Qed.
 
 (* From coq-interval/testsuite/bug-20150925.v *)
 
-Goal forall x, (-1 / 3 <= x - x <= 1 / 7)%R.
+Lemma bug20150924_1 : forall x, (-1 / 3 <= x - x <= 1 / 7)%R.
 Proof.
 intros x.
 Time interval with (i_bisect_diff x).
@@ -602,7 +602,7 @@ Qed.
 
 (* From coq-interval/testsuite/bug-20160218.v *)
 
-Goal forall x, (0 <= x <= 1 -> 2 <= 3)%R.
+Lemma bug20160218 : forall x, (0 <= x <= 1 -> 2 <= 3)%R.
 Proof.
 intros x Hx.
 Time interval with (i_bisect_diff x).
@@ -610,7 +610,7 @@ Qed.
 
 (* From coq-interval/testsuite/example_20071016.v *)
 
-Goal
+Lemma example20071016_1 :
   forall x, -1 <= x <= 1 ->
   sqrt (1 - x) <= 3/2.
 Proof.
@@ -618,7 +618,7 @@ Proof.
   Time interval.
 Qed.
 
-Goal
+Lemma example20071016_2 :
   forall x, -1 <= x <= 1 ->
   sqrt (1 - x) <= 141422/100000.
 Proof.
@@ -626,7 +626,7 @@ Proof.
   Time interval.
 Qed.
 
-Goal
+Lemma example20071016_3 :
   forall x, -1 <= x <= 1 ->
   sqrt (1 - x) <= 141422/100000.
 Proof.
@@ -636,7 +636,7 @@ Proof.
   Time interval.
 Qed.
 
-Goal
+Lemma example20071016_4 :
   forall x, 3/2 <= x <= 2 ->
   forall y, 1 <= y <= 33/32 ->
   Rabs (sqrt(1 + x/sqrt(x+y)) - 144/1000*x - 118/100) <= 71/32768.
@@ -645,7 +645,7 @@ Proof.
   Time interval with (i_prec 19, i_bisect x).
 Qed.
 
-Goal
+Lemma example20071016_5 :
   forall x, 1/2 <= x <= 2 ->
   Rabs (sqrt x - (((((122 / 7397 * x + (-1733) / 13547) * x
                    + 529 / 1274) * x + (-767) / 999) * x
@@ -656,7 +656,7 @@ Proof.
   Time interval with (i_bisect_taylor x 3).
 Qed.
 
-Goal
+Lemma example20071016_6 :
   forall x, -1 <= x ->
   x < 1 + powerRZ x 3.
 Proof.
@@ -667,7 +667,7 @@ Qed.
 
 Require Import Coquelicot.Coquelicot.
 
-Goal
+Lemma example20071016_7 :
   Rabs (RInt (fun x => atan (sqrt (x*x + 2)) / (sqrt (x*x + 2) * (x*x + 1))) 0 1
         - 5/96*PI*PI) <= 1/1000.
 Proof.
@@ -676,7 +676,7 @@ Proof.
 Qed.
 
 (*
-Goal
+Lemma example20071016_8 :
   RInt_gen (fun x => 1 * (powerRZ x 3 * ln x^2))
            (at_right 0) (at_point 1) = 1/32.
 Proof.
@@ -685,7 +685,7 @@ Proof.
 Qed.
 *)
 
-Goal
+Lemma example20071016_9 :
   Rabs (RInt_gen (fun t => 1/sqrt t * exp (-(1*t)))
                  (at_point 1) (Rbar_locally p_infty)
         - 2788/10000) <= 1/1000.
@@ -695,27 +695,28 @@ Qed.
 
 (* From coq-interval/testsuite/example-20120205.v *)
 
-Goal forall x, (1 <= x)%R -> (0 < x)%R.
+Lemma example20120205_1 :
+  forall x, (1 <= x)%R -> (0 < x)%R.
 Proof.
 intros.
 Time interval.
 Qed.
 
-Goal forall x, (1 <= x)%R -> (x <= x * x)%R.
+Lemma example20120205_2 : forall x, (1 <= x)%R -> (x <= x * x)%R.
 Proof.
 intros.
 apply Rminus_le.
 Time interval with (i_bisect_diff x).
 Qed.
 
-Goal forall x, (2 <= x)%R -> (x < x * x)%R.
+Lemma example20120205_3 : forall x, (2 <= x)%R -> (x < x * x)%R.
 Proof.
 intros.
 apply Rminus_lt.
 Time interval with (i_bisect_diff x).
 Qed.
 
-Goal forall x, (-1 <= x)%R -> (x < 1 + powerRZ x 3)%R.
+Lemma example20120205_4 : forall x, (-1 <= x)%R -> (x < 1 + powerRZ x 3)%R.
 Proof.
 intros.
 apply Rminus_lt.
@@ -730,7 +731,7 @@ John Harrison, Verifying the Accuracy of Polynomial Approximations in HOL.
 In TPHOLs, pages 137-152, 1997.
 *)
 
-Goal
+Lemma example20140221_1 :
   forall x : R,
     (-10831/1000000 <= x /\ x <= 10831/1000000) ->
     Rabs ((exp x - 1) - (x + (8388676/2^24) * x^2 + (11184876/2^26) * x^3))
@@ -740,7 +741,7 @@ intros x H.
 Time interval with (i_bisect_diff x, i_prec 50, i_depth 16).
 Qed.
 
-Goal
+Lemma example20140221_2 :
   forall x : R,
     (-10831/1000000 <= x /\ x <= 10831/1000000) ->
     Rabs ((exp x - 1) - (x + (8388676/2^24) * x^2 + (11184876/2^26) * x^3))
@@ -770,7 +771,7 @@ Definition arp phi :=
     13868737/64 + x * (13233647/2048 + x * (
       -1898597/16384 + x * (-6661427/131072))))).
 
-Goal forall phi, 0 <= phi <= max ->
+Lemma example20140610_1 : forall phi, 0 <= phi <= max ->
   Rabs ((rp phi - arp phi) / rp phi) <= 23/16777216.
 Proof.
 unfold rp, arp, umf2, a, f', max.
@@ -778,7 +779,7 @@ intros phi Hphi.
 Time interval with (i_bisect_diff phi).
 Qed.
 
-Goal forall phi, 0 <= phi <= max ->
+Lemma example20140610_2 : forall phi, 0 <= phi <= max ->
   Rabs ((rp phi - arp phi) / rp phi) <= 23/16777216.
 Proof.
 unfold rp, arp, umf2, a, f', max.
@@ -796,7 +797,7 @@ William J. Cody Jr. and William Waite
 Software Manual for the Elementary Functions
 *)
 
-Goal forall x : R, Rabs x <= 35/100 ->
+Lemma example20150105 : forall x : R, Rabs x <= 35/100 ->
   let p := fun t => 1 * pow2 (-2) + t * (1116769 * pow2 (-28)) in
   let q := fun t => 1 * pow2 (-1) + t * (13418331 * pow2 (-28)) in
   let r := 2 * (x * p (x^2) / (q (x^2) - x * p (x^2)) + 1 * pow2 (-1)) in
@@ -865,10 +866,10 @@ Qed.
 
 (* From coq-interval/testsuite/example_ln.v *)
 
-Goal forall x : R, (0 <= x <= 1 -> ln (exp x) <= 1 + 1/1024)%R.
+Lemma example_ln_1 : forall x : R, (0 <= x <= 1 -> ln (exp x) <= 1 + 1/1024)%R.
 Time intros; interval.
 Qed.
 
-Goal (693/1000 < ln 2 < 694/1000)%R.
+Lemma example_ln_2 : (693/1000 < ln 2 < 694/1000)%R.
 Time split; interval.
 Qed.
