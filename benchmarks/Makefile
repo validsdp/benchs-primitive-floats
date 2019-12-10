@@ -54,6 +54,11 @@ $(DIR_OUT)/%_stable_bigz_int31.v $(DIR_OUT)/%_stable_bigz_int63.v: $(DIR_COQ)/%_
 	cp $< $@
 	@echo Step 1: Finished $@
 
+$(DIR_OUT)/coqintvl_dev_%.v: $(DIR_COQ)/coqintvl_dev_%.v | $(DIR_OUT)
+	@echo Step 1: Building $@
+	cp $< $@
+	@echo Step 1: Finished $@
+
 # STEP 2: COQC
 %.v.out: %.v
 	@echo Step 2: Building $@
