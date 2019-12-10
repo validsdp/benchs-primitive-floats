@@ -38,5 +38,3 @@ while (<>) {
         $next = 1;
     }
 }
-
-print "\n";
