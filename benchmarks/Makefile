@@ -15,37 +15,25 @@ include Makefile.common
 # Delete the default suffixes
 .SUFFIXES:
 
-# For testing verify_ineq (by Alexey.Solovyev) we use a checkpointed
-# version of HOL Light (based on DMTCP), but it is not really possible
-# to run multiple instances of HOL Light in parallel.
-# Hence:
+# Run benchmarks sequentially
 .NOTPARALLEL:
 
 ### Rules
 .SECONDARY: $(TMP_KEEP)
 .PHONY: all clean dist-clean \
-  subdirs $(SUBDIRS) clean-subdirs $(CLEAN_SUBDIRS) \
   341-bigz-int31 341-bigz-int63 dev-bigz-int63 dev-primfloat \
   tar dist-tar
-all: subdirs $(FINAL)
-subdirs: $(SUBDIRS)
-$(SUBDIRS):
-	@echo Building subdir $@ ...
-	$(MAKE) -C $@
+all: $(FINAL)
 coq: $(CSV_COQ)
-clean-subdirs: $(CLEAN_SUBDIRS)
-$(CLEAN_SUBDIRS):
-	@echo Cleaning subdir $(@:clean-%=%) ...
-	$(MAKE) -C $(@:clean-%=%) clean
 clean:
 	$(RM) $(TMP_KEEP)
-dist-clean: clean clean-subdirs
+dist-clean: clean
 	$(RM) $(FINAL) $(FINAL_AUX)
 
 341-bigz-int31: $(FIL_COQ_1_31)
 341-bigz-int63: $(FIL_COQ_1_63)
-dev-bigz-int63: $(FIL_COQ_2_z)
-dev-primfloat: $(FIL_COQ_2_f)
+dev-bigz-int63: $(FIL_COQ_2)
+dev-primfloat: $(FIL_COQ_3)
 
 # STEP 1: Make directory $(DIR_OUT)
 $(DIR_OUT):
@@ -61,7 +49,7 @@ $(DIR_OUT):
 # 	./step1.perl $< >> $@ || ( RV=$$?; rm -f "$@"; exit $${RV} )
 # 	@echo Step 1: Finished $@
 
-$(DIR_OUT)/%_stable_bigz_int31.v: $(DIR_COQ)/%_stable.v | $(DIR_OUT)
+$(DIR_OUT)/%_stable_bigz_int31.v $(DIR_OUT)/%_stable_bigz_int63.v: $(DIR_COQ)/%_stable.v | $(DIR_OUT)
 	@echo Step 1: Building $@
 	cp $< $@
 	@echo Step 1: Finished $@
@@ -77,7 +65,7 @@ $(DIR_OUT)/%_stable_bigz_int31.v: $(DIR_COQ)/%_stable.v | $(DIR_OUT)
 # STEP 3: Parse Coq output
 %.v.out.csv: %.v.out
 	@echo Step 3: Building $@
-	./step3_time.perl -f $*.v $< > $@ || ( RV=$$?; rm -f "$@"; exit $${RV} )
+	./step3_time.perl $< > $@ || ( RV=$$?; rm -f "$@"; exit $${RV} )
 	@echo Step 3: Finished $@
 
 # STEP 4: Generate the LaTeX

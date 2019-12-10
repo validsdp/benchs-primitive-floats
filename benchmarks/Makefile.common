@@ -19,21 +19,18 @@ COQFLAGS := -q
 TIMEFLAGS := -v
 
 DIR_COQ := ./coq
-DIR_PARSE_COQ := ./ocaml/parse-coq-stmt
-PARSE_COQ := $(DIR_PARSE_COQ)/parse-coq-stmt
-SUBDIRS := $(DIR_PARSE_COQ)
-CLEAN_SUBDIRS := $(addprefix clean-,$(SUBDIRS))
 
 # SRC_COQ_1 is compatible with Coq-Interval stable
 # SRC_COQ_2 is compatible with Coq-Interval dev (branch primitive-floats)
 SRC_COQ_1 := coqintvl_stable.v
-SRC_COQ_2 := coqintvl_dev.v
+SRC_COQ_2 := coqintvl_dev_bigz_int63.v
+SRC_COQ_3 := coqintvl_dev_primfloat.v
 
 FIL_COQ_1_31 := $(addsuffix _bigz_int31.v,$(addprefix $(DIR_OUT)/,$(SRC_COQ_1:.v=)))
 FIL_COQ_1_63 := $(addsuffix _bigz_int63.v,$(addprefix $(DIR_OUT)/,$(SRC_COQ_1:.v=)))
-FIL_COQ_2_z := $(addsuffix _bigz_int63.v,$(addprefix $(DIR_OUT)/,$(SRC_COQ_2:.v=)))
-FIL_COQ_2_f := $(addprefix _primfloat.v,$(DIR_OUT)/,$(SRC_COQ_2:.v=))
-FILES_COQ := $(FIL_COQ_1_31) $(FIL_COQ_1_63) $(FIL_COQ_2_z) $(FIL_COQ_2_f)
+FIL_COQ_2 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_2:.v=))
+FIL_COQ_3 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_3:.v=))
+FILES_COQ := $(FIL_COQ_1_31) $(FIL_COQ_1_63) $(FIL_COQ_2) $(FIL_COQ_3)
 
 OUT_COQ := $(FILES_COQ:=.out)
 TMP_COQ := $(FILES_COQ:=.time) \
@@ -58,7 +55,7 @@ SRC_PERL := step1.perl step3_stmt.perl step3_time.perl step4_alex.perl \
   step6_sos_1.perl step6_nlc_nocoq_1.perl step6_nlc_coq_1.perl \
   step6_sollya.perl step7_tex.perl
 
-SRC_COQ := $(addprefix $(DIR_COQ)/,$(SRC_COQ_1) $(SRC_COQ_2))
+SRC_COQ := $(addprefix $(DIR_COQ)/,$(SRC_COQ_1) $(SRC_COQ_2) $(SRC_COQ_3))
 
 TAR_FILES := $(SRC_PERL) $(SRC_COQ) \
   INSTALL Makefile Makefile.common
