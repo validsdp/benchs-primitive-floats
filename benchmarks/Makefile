@@ -1,7 +1,6 @@
 # -*- compile-command: "make -k -s"; -*-
 
 # Makefile to automate benchmarks for the Coq.Interval tactic and related tools
-# Author: Erik Martin-Dorel, 2014
 
 # USAGE:
 # $ make -s # to make all benchmarks (-s = --silent)

@@ -3,8 +3,8 @@ import csv
 
 configs = {"coqintvl_stable_bigz_int31.v": "stable-bigz-int31",
            "coqintvl_stable_bigz_int63.v": "stable-bigz-int63",
-#           "coqintvl_dev_bigz_int63_coq810.v": "dev-bigz-int63-coq810",
-#           "coqintvl_dev_bigz_int63_coq811.v": "dev-bigz-int63-coq811",
+           "coqintvl_dev_bigz_int63_coq810.v": "dev-bigz-int63-coq810",
+           "coqintvl_dev_bigz_int63_coq811.v": "dev-bigz-int63-coq811",
            "coqintvl_dev_primfloat.v": "dev-primfloat"}
 
 filenames = list(configs.keys())

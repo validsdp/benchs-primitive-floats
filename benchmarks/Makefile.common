@@ -23,7 +23,7 @@ DIR_COQ := ./coq
 # SRC_COQ_1 is compatible with Coq-Interval stable
 # SRC_COQ_2 is compatible with Coq-Interval dev (branch primitive-floats)
 SRC_COQ_1 := coqintvl_stable.v
-SRC_COQ_2 := coqintvl_dev_bigz_int63.v
+SRC_COQ_2 := coqintvl_dev_bigz_int63_coq810.v coqintvl_dev_bigz_int63_coq811.v
 SRC_COQ_3 := coqintvl_dev_primfloat.v
 
 FIL_COQ_1_31 := $(addsuffix _bigz_int31.v,$(addprefix $(DIR_OUT)/,$(SRC_COQ_1:.v=)))
