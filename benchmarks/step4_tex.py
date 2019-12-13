@@ -68,7 +68,6 @@ def main():
                 res[p] = {}
             res[p][f] = mapf[p]
 
-    emit_start()
     i = 0
     problems = sorted(list(res.keys()))
 
@@ -93,6 +92,7 @@ Problems """, end='')
 \\midrule""")
         ### END Hack duplication
 
+    emit_start()
     for p in problems:
         i += 1
         print(p.replace('_', '\\_'), end='')
