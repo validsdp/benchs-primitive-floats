@@ -40,6 +40,8 @@ FIL_COQ_1_63 := $(addsuffix _bigz_int63.v,$(addprefix $(DIR_OUT)/,$(SRC_COQ_1:.v
 FIL_COQ_2_10 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_2_10))
 FIL_COQ_2_11 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_2_11))
 FIL_COQ_3 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_3))
+
+#FIXME
 FILES_COQ := $(FIL_COQ_1_31) $(FIL_COQ_1_63) $(FIL_COQ_2) $(FIL_COQ_3)
 
 OUT_COQ := $(FILES_COQ:=.out)
@@ -48,6 +50,8 @@ TMP_COQ := $(FILES_COQ:=.time) \
 CSV_COQ := $(OUT_COQ:=.csv)
 # Remark: $(FILES_COQ:=.time) contain the overall Coq compilation timings,
 # while $(CSV_COQ_FINAL) contain the Coq computation timing of each lemma:
+
+#FIXME
 FIL_COQ_FINAL := $(FIL_COQ_1) $(FIL_COQ_2)
 CSV_COQ_FINAL := $(FIL_COQ_FINAL:=.out.csv)
 

@@ -37,11 +37,11 @@ clean:
 dist-clean: clean
 	$(RM) $(FINAL) $(FINAL_AUX)
 
-341-bigz-int31: $(FIL_COQ_1_31)
-341-bigz-int63: $(FIL_COQ_1_63)
-dev-bigz-int63-810: $(FIL_COQ_2_10)
-dev-bigz-int63-811: $(FIL_COQ_2_11)
-dev-primfloat: $(FIL_COQ_3)
+341-bigz-int31: $(FIL_COQ_1_31:=.out.csv)
+341-bigz-int63: $(FIL_COQ_1_63:=.out.csv)
+dev-bigz-int63-810: $(FIL_COQ_2_10:=.out.csv)
+dev-bigz-int63-811: $(FIL_COQ_2_11:=.out.csv)
+dev-primfloat: $(FIL_COQ_3:=.out.csv)
 
 # STEP 1: Make directory $(DIR_OUT)
 $(DIR_OUT):
