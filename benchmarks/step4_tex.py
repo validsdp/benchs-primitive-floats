@@ -63,7 +63,7 @@ Problems """, end='')
         for f in filenames:
             print(' & \\col{%s}' % get_title(f), end='')
     
-            print(" \\\\")
+        print(" \\\\")
 
     def emit_end():
         print("""\\bottomrule
