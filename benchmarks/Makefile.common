@@ -59,7 +59,7 @@ FILES_CSV := $(CSV_COQ)
 TMP_KEEP := $(FILES_COQ) $(OUT_COQ) $(TMP_COQ) \
   $(FILES_CSV)
 
-FINAL := comparison.tex
+FINAL := primfloat_comparison.tex
 FINAL_AUX := $(FINAL:.tex=.csv)
 
 # Variables for tar generation

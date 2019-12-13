@@ -792,13 +792,13 @@ idtac "example20120205_1".
 Time interval.
 Qed.
 
-Lemma example20120205_2 : forall x, (1 <= x)%R -> (x <= x * x)%R.
+(* Lemma example20120205_2 : forall x, (1 <= x)%R -> (x <= x * x)%R.
 Proof.
 intros.
 apply Rminus_le.
 idtac "example20120205_2".
 Time interval with (i_bisect_diff x).
-Qed.
+Qed. *)
 
 Lemma example20120205_3 : forall x, (2 <= x)%R -> (x < x * x)%R.
 Proof.
@@ -915,13 +915,6 @@ idtac "exp_0_3".
 Time interval with (i_integral_depth 0, i_integral_deg 12).
 Qed.
 
-Lemma exp_0_3' :
-  Rabs (RInt (fun x => exp x) 0 3 - (exp(1) ^ 3 - 1)) <= 1/(1000*1000).
-Proof.
-idtac "exp_0_3'".
-Time interval with (i_integral_depth 1, i_integral_prec 20).
-Qed.
-
 Lemma x_ln1p_0_1 :
   Rabs (RInt (fun x => x * ln(1 + x)) 0 1 - 1/4) <= 1/1000.
 Proof.
@@ -948,13 +941,6 @@ Lemma arctan_0_1 :
 Proof.
 idtac "arctan_0_1".
 Time interval with (i_integral_depth 0, i_integral_deg 13).
-Qed.
-
-Lemma arctan_0_1' :
-  Rabs (RInt (fun x => 1 / (1 + x*x)) 0 1 - PI / 4) <= 1/1000.
-Proof.
-idtac "arctan_0_1'".
-Time interval with (i_integral_depth 1).
 Qed.
 
 (* From coq-interval/testsuite/example-20171018.v *)

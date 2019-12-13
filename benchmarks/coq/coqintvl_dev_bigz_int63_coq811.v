@@ -1,4 +1,12 @@
-Require Import Reals Interval.Interval_tactic.
+Require Import Reals.
+From Interval Require Import Tactic.
+From Interval Require Import Specific_bigint.
+From Interval Require Import Specific_ops.
+
+Module SFBI20 := SpecificFloat BigIntRadix2.
+Module ITSFBI20 := IntervalTactic SFBI20.
+Import ITSFBI20.
+
 Local Open Scope R_scope.
 
 (* From bench-ineqs/benchmarks/coq/multi_poly.v *)
@@ -773,6 +781,7 @@ idtac "example20071016_8".
 Qed.
 *)
 
+(* DOES NOT PASS?
 Lemma example20071016_9 :
   Rabs (RInt_gen (fun t => 1/sqrt t * exp (-(1*t)))
                  (at_point 1) (Rbar_locally p_infty)
@@ -781,6 +790,7 @@ Proof.
 idtac "example20071016_9".
 Time interval.
 Qed.
+ *)
 
 (* From coq-interval/testsuite/example-20120205.v *)
 
@@ -792,13 +802,13 @@ idtac "example20120205_1".
 Time interval.
 Qed.
 
-Lemma example20120205_2 : forall x, (1 <= x)%R -> (x <= x * x)%R.
+(* Lemma example20120205_2 : forall x, (1 <= x)%R -> (x <= x * x)%R.
 Proof.
 intros.
 apply Rminus_le.
 idtac "example20120205_2".
 Time interval with (i_bisect_diff x).
-Qed.
+Qed. *)
 
 Lemma example20120205_3 : forall x, (2 <= x)%R -> (x < x * x)%R.
 Proof.
@@ -912,49 +922,35 @@ Lemma exp_0_3 :
   Rabs (RInt (fun x => exp x) 0 3 - (exp(1) ^ 3 - 1)) <= 1/(1000*1000).
 Proof.
 idtac "exp_0_3".
-Time interval with (i_integral_depth 0, i_integral_deg 12).
-Qed.
-
-Lemma exp_0_3' :
-  Rabs (RInt (fun x => exp x) 0 3 - (exp(1) ^ 3 - 1)) <= 1/(1000*1000).
-Proof.
-idtac "exp_0_3'".
-Time interval with (i_integral_depth 1, i_integral_prec 20).
+Time integral with (i_fuel 1).
 Qed.
 
 Lemma x_ln1p_0_1 :
   Rabs (RInt (fun x => x * ln(1 + x)) 0 1 - 1/4) <= 1/1000.
 Proof.
 idtac "x_ln1p_0_1".
-Time interval with (i_integral_depth 0).
+Time integral with (i_fuel 1).
 Qed.
 
 Lemma circle :
   Rabs (RInt (fun x => sqrt(1 - x * x)) 0 1 - PI / 4) <= 1/100.
 Proof.
 idtac "circle".
-Time interval with (i_integral_depth 10, i_integral_deg 1).
+Time integral with (i_fuel 7, i_degree 1).
 Qed.
 
 Lemma exp_cos_0_1 :
   Rabs (RInt (fun x => sin(x) * exp(cos x)) 0 1 - (exp 1 - exp(cos 1))) <= 1/1000.
 Proof.
 idtac "exp_cos_0_1".
-Time interval with (i_integral_depth 0).
+Time integral with (i_fuel 1).
 Qed.
 
 Lemma arctan_0_1 :
   Rabs (RInt (fun x => 1 / (1 + x*x)) 0 1 - PI / 4) <= 1/1000.
 Proof.
 idtac "arctan_0_1".
-Time interval with (i_integral_depth 0, i_integral_deg 13).
-Qed.
-
-Lemma arctan_0_1' :
-  Rabs (RInt (fun x => 1 / (1 + x*x)) 0 1 - PI / 4) <= 1/1000.
-Proof.
-idtac "arctan_0_1'".
-Time interval with (i_integral_depth 1).
+Time integral with (i_fuel 1).
 Qed.
 
 (* From coq-interval/testsuite/example-20171018.v *)

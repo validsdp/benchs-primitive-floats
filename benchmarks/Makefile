@@ -82,11 +82,12 @@ $(DIR_OUT)/coqintvl_dev_%.v: $(DIR_COQ)/coqintvl_dev_%.v | $(DIR_OUT)
 	@echo Step 3: Finished $@
 
 # STEP 4: Generate the LaTeX
-$(FINAL): $(FILES_CSV) ./step7_tex.perl
-	@echo Step 7: Building $@
+$(FINAL): ./step4_tex.py
+	# & $(FILES_CSV)
+	@echo Step 4: Building $@
 	cat $(FILES_CSV) > $(FINAL_AUX)
-	./step7_tex.perl $(addprefix --aux-coq=,$(FIL_COQ_FINAL)) $(addprefix --coq=,$(CSV_COQ_FINAL)) $(addprefix --metit=,$(CSV_METIT)) $(addprefix --interval=,$(CSV_INTERVAL)) $(addprefix --bern=,$(CSV_BERN)) $(addprefix --hl-sos=,$(CSV_SOS)) $(addprefix --hl-alex=,$(CSV_ALEX)) $(addprefix --sollya=,$(CSV_SOLLYA)) $(addprefix --nlc-nocoq=,$(CSV_NLC_NOCOQ)) $(addprefix --nlc-coq=,$(CSV_NLC_COQ)) > $@ || ( RV=$$?; rm -f "$@"; exit $${RV} )
-	@echo Step 7: Finished $@
+	./step4_tex.py > $@ || ( RV=$$?; rm -f "$@"; exit $${RV} )
+	@echo Step 4: Finished $@
 
 tar:
 	@echo Building $(PACK).tar.gz
