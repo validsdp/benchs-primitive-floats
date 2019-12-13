@@ -773,14 +773,14 @@ idtac "example20071016_8".
 Qed.
 *)
 
-Lemma example20071016_9 :
+(* TODO/FIXME Lemma example20071016_9 :
   Rabs (RInt_gen (fun t => 1/sqrt t * exp (-(1*t)))
                  (at_point 1) (Rbar_locally p_infty)
         - 2788/10000) <= 1/1000.
 Proof.
 idtac "example20071016_9".
 Time interval.
-Qed.
+Qed. *)
 
 (* From coq-interval/testsuite/example-20120205.v *)
 
