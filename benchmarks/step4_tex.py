@@ -11,6 +11,9 @@ configs = {"coqintvl_stable_bigz_int31.v": [0, "stable-bigz-int31"],
 filenames = sorted(list(configs.keys()), key=(lambda x: configs[x]))
 
 
+nrows = 25
+
+
 def get_full_filename(filename):
     return "output/" + filename + ".out.csv"
 
@@ -48,18 +51,28 @@ def main():
 \\title{Benchs Coq 8.11 + coq-interval/primitive-floats}
 \\begin{document}
 \\maketitle
+""", end='')
 
-\\begingroup
+    def emit_start():
+        print("""\\begingroup
 \\setlength\\tabcolsep{3pt} % 6pt by default
 \\begin{tabular}{llllllllll}
 \\toprule
 Problems """, end='')
     
-    for f in filenames:
-        print(' & \\col{%s}' % get_title(f), end='')
+        for f in filenames:
+            print(' & \\col{%s}' % get_title(f), end='')
     
-    print(" \\\\")
-    
+            print(" \\\\")
+
+    def emit_end():
+        print("""\\bottomrule
+\\end{tabular}
+\\endgroup
+
+\\end{document}
+""")
+   
     res = {}
     
     for f in filenames:
@@ -69,20 +82,21 @@ Problems """, end='')
                 res[p] = {}
             res[p][f] = mapf[p]
 
+    emit_start()
+    i = 0
     problems = sorted(list(res.keys()))
     for p in problems:
+        i += 1
         print(p.replace('_', '\\_'), end='')
         for f in filenames:
             print(" & %s" % res[p][f], end = '')
         print(""" \\\\
 \\midrule""")
-    
-    print("""\\bottomrule
-\\end{tabular}
-\\endgroup
 
-\\end{document}
-""")
+        if i % nrows == 0:
+            emit_end()
+            emit_start()
 
+    emit_end()  # may lead to a last empty tabular
 
 main()
