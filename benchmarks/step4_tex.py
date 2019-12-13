@@ -56,7 +56,7 @@ def main():
     def emit_start():
         print("""\\begingroup
 \\setlength\\tabcolsep{3pt} % 6pt by default
-\\begin{tabular}{llllllllll}
+\\begin{tabular}{llllll}
 \\toprule
 Problems """, end='')
     
