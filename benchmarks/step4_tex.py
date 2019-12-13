@@ -2,8 +2,8 @@
 import csv
 
 # dictionary {"filename.v": "tabular-caption"}
-configs = {"coqintvl_stable_bigz_int31.v": [0, "stable-bigz-int31"],
-           "coqintvl_stable_bigz_int63.v": [1, "stable-bigz-int63"],
+configs = {"coqintvl_stable_bigz_int31.v": [0, "stable-bigz-int31-coq89"],
+           "coqintvl_stable_bigz_int63.v": [1, "stable-bigz-int63-coq810"],
            "coqintvl_dev_bigz_int63_coq810.v": [2, "dev-bigz-int63-coq810"],
            "coqintvl_dev_bigz_int63_coq811.v": [3, "dev-bigz-int63-coq811"],
            "coqintvl_dev_primfloat.v": [4, "dev-primfloat"]}
@@ -53,18 +53,6 @@ def main():
 \\maketitle
 """, end='')
 
-    def emit_start():
-        print("""\\begingroup
-\\setlength\\tabcolsep{3pt} % 6pt by default
-\\begin{tabular}{llllll}
-\\toprule
-Problems """, end='')
-    
-        for f in filenames:
-            print(' & \\col{%s}' % get_title(f), end='')
-    
-        print(" \\\\")
-
     def emit_end():
         print("""\\bottomrule
 \\end{tabular}
@@ -83,6 +71,28 @@ Problems """, end='')
     emit_start()
     i = 0
     problems = sorted(list(res.keys()))
+
+    # Hack: extract the first problem which gathers the column titles
+    columns = problems.pop(0)
+    def emit_start():
+        print("""\\begingroup
+\\setlength\\tabcolsep{3pt} % 6pt by default
+\\begin{tabular}{llllll}
+\\toprule
+Problems """, end='')
+    
+        for f in filenames:
+            print(' & \\col{%s}' % get_title(f), end='')
+    
+        print(" \\\\")
+        ### BEGIN Hack duplication
+        print(columns.replace('_', '\\_'), end='')
+        for f in filenames:
+            print(" & %s" % res[columns][f], end = '')
+        print(""" \\\\
+\\midrule""")
+        ### END Hack duplication
+
     for p in problems:
         i += 1
         print(p.replace('_', '\\_'), end='')
