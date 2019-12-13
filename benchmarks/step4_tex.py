@@ -69,8 +69,6 @@ Problems """, end='')
         print("""\\bottomrule
 \\end{tabular}
 \\endgroup
-
-\\end{document}
 """)
    
     res = {}
@@ -98,5 +96,9 @@ Problems """, end='')
             emit_start()
 
     emit_end()  # may lead to a last empty tabular
+
+    print("""
+\\end{document}
+""")
 
 main()
