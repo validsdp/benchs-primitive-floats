@@ -8,7 +8,8 @@ COQ810_INTVL_STABLE := registry.gitlab.com/erikmd/docker-coq-interval-primitive-
 COQ810_INTVL_DEV := registry.gitlab.com/erikmd/docker-coq-interval-primitive-floats/master_coq-8.10-interval-dev
 COQ811_INTVL_DEV := registry.gitlab.com/erikmd/docker-coq-interval-primitive-floats/master_coq-8.11-interval-dev
 
-OPAM_INFO_COMMAND := opam repo list; opam config list; opam pin list; echo -n coq-interval:; opam show -f source-hash coq-interval.dev
+OPAM_INFO_COMMAND := opam repo list; opam config list; opam pin list
+OPAM_INTVL_DEV := echo -n coq-interval:; opam show -f source-hash coq-interval.dev
 
 HOM := $(HOME)
 COQC := coqc
