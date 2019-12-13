@@ -2,13 +2,13 @@
 import csv
 
 # dictionary {"filename.v": "tabular-caption"}
-configs = {"coqintvl_stable_bigz_int31.v": "stable-bigz-int31",
-           "coqintvl_stable_bigz_int63.v": "stable-bigz-int63",
-           "coqintvl_dev_bigz_int63_coq810.v": "dev-bigz-int63-coq810",
-           "coqintvl_dev_bigz_int63_coq811.v": "dev-bigz-int63-coq811",
-           "coqintvl_dev_primfloat.v": "dev-primfloat"}
+configs = {"coqintvl_stable_bigz_int31.v": [0, "stable-bigz-int31"],
+           "coqintvl_stable_bigz_int63.v": [1, "stable-bigz-int63"],
+           "coqintvl_dev_bigz_int63_coq810.v": [2, "dev-bigz-int63-coq810"],
+           "coqintvl_dev_bigz_int63_coq811.v": [3, "dev-bigz-int63-coq811"],
+           "coqintvl_dev_primfloat.v": [4, "dev-primfloat"]}
 
-filenames = list(configs.keys())
+filenames = sorted(list(configs.keys()), key=(lambda x: configs[x]))
 
 
 def get_full_filename(filename):
@@ -23,13 +23,15 @@ def get_map(filename):
             res[row[0]] = row[1]
     return res
 
+
 def get_title(filename):
-    return configs[filename]
+    return configs[filename][1]
+
 
 def main():
 
     print("""
-\\documentclass[a4paper,10pt]{article}
+\\documentclass[a4paper,landscape,10pt]{article}
 %%% BEGIN OF SECTION TO BE ADDED INTO THE LATEX PREAMBLE
 \\usepackage{calc}
 \\usepackage{rotating}
@@ -43,8 +45,9 @@ def main():
 
 \\pagestyle{empty}
 \\thispagestyle{empty}
-
+\\title{Benchs Coq 8.11 + coq-interval/primitive-floats}
 \\begin{document}
+\\maketitle
 
 \\begingroup
 \\setlength\\tabcolsep{3pt} % 6pt by default
