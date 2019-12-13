@@ -22,7 +22,15 @@ include Makefile.common
 .PHONY: all clean dist-clean \
   341-bigz-int31 341-bigz-int63 dev-bigz-int63 dev-primfloat \
   tar dist-tar
-all: $(FINAL)
+
+all:
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" $(COQ89_INTVL_STABLE) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 341-bigz-int31" > make.COQ89_INTVL_STABLE.$$(date +'%Y%m%d_%H%M%S').log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" $(COQ810_INTVL_STABLE) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 341-bigz-int63" > make.COQ810_INTVL_STABLE.$$(date +'%Y%m%d_%H%M%S').log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" $(COQ810_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make dev-bigz-int63-810" > make.COQ810_INTVL_DEV.$$(date +'%Y%m%d_%H%M%S').log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" $(COQ811_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make dev-bigz-int63-811" > make.COQ11_INTVL_DEV.$$(date +'%Y%m%d_%H%M%S').log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" $(COQ811_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make dev-primfloat" > make.COQ811_INTVL_DEV.$$(date +'%Y%m%d_%H%M%S').log
+	$(MAKE) $(FINAL)
+
 coq: $(CSV_COQ)
 clean:
 	$(RM) $(TMP_KEEP)
@@ -31,7 +39,8 @@ dist-clean: clean
 
 341-bigz-int31: $(FIL_COQ_1_31)
 341-bigz-int63: $(FIL_COQ_1_63)
-dev-bigz-int63: $(FIL_COQ_2)
+dev-bigz-int63-810: $(FIL_COQ_2_10)
+dev-bigz-int63-811: $(FIL_COQ_2_11)
 dev-primfloat: $(FIL_COQ_3)
 
 # STEP 1: Make directory $(DIR_OUT)

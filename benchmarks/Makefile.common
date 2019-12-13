@@ -3,6 +3,13 @@
 # User parameters
 #================
 
+COQ89_INTVL_STABLE := registry.gitlab.com/erikmd/docker-coq-interval-primitive-floats/master_coq-8.9-interval-3.4.1
+COQ810_INTVL_STABLE := registry.gitlab.com/erikmd/docker-coq-interval-primitive-floats/master_coq-8.10-interval-3.4.1
+COQ810_INTVL_DEV := registry.gitlab.com/erikmd/docker-coq-interval-primitive-floats/master_coq-8.10-interval-dev
+COQ811_INTVL_DEV := registry.gitlab.com/erikmd/docker-coq-interval-primitive-floats/master_coq-8.11-interval-dev
+
+OPAM_INFO_COMMAND := opam repo list; opam config list; opam pin list; echo -n coq-interval:; opam show -f source-hash coq-interval.dev
+
 HOM := $(HOME)
 COQC := coqc
 OCAML := ocaml
@@ -23,12 +30,14 @@ DIR_COQ := ./coq
 # SRC_COQ_1 is compatible with Coq-Interval stable
 # SRC_COQ_2 is compatible with Coq-Interval dev (branch primitive-floats)
 SRC_COQ_1 := coqintvl_stable.v
-SRC_COQ_2 := coqintvl_dev_bigz_int63_coq810.v coqintvl_dev_bigz_int63_coq811.v
+SRC_COQ_2_10 := coqintvl_dev_bigz_int63_coq810.v
+SRC_COQ_2_11 := coqintvl_dev_bigz_int63_coq811.v
 SRC_COQ_3 := coqintvl_dev_primfloat.v
 
 FIL_COQ_1_31 := $(addsuffix _bigz_int31.v,$(addprefix $(DIR_OUT)/,$(SRC_COQ_1:.v=)))
 FIL_COQ_1_63 := $(addsuffix _bigz_int63.v,$(addprefix $(DIR_OUT)/,$(SRC_COQ_1:.v=)))
-FIL_COQ_2 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_2))
+FIL_COQ_2_10 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_2_10))
+FIL_COQ_2_11 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_2_11))
 FIL_COQ_3 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_3))
 FILES_COQ := $(FIL_COQ_1_31) $(FIL_COQ_1_63) $(FIL_COQ_2) $(FIL_COQ_3)
 
