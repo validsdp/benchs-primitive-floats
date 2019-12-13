@@ -46,7 +46,7 @@ Lemma MT1 :
            2 * Rabs x / (2 + x) <= Rabs (ln (1 + x)) + eps.
 Proof.
 idtac "MT1".
-Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x 3).
+Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x).
 Qed.
 
 (* plot(abs(log(1+x)) + log(1 - abs(x)), [-1, 1]); *)
@@ -55,7 +55,7 @@ Lemma MT2 :
            Rabs (ln (1 + x)) <= - ln (1 - Rabs x) + eps.
 Proof.
 idtac "MT2".
-Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x 3).
+Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x).
 Qed.
 
 (* plot(abs(x)/(1 + abs(x)) - abs(log(1+x)), [-1, 1]); *)
@@ -107,7 +107,7 @@ Lemma MT8 :
   Rabs (exp x - (1 + x)) <= Rabs (exp (Rabs x) - (1 + Rabs x)).
 Proof.
 idtac "MT8".
-Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x 2, i_prec 40).
+Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x, i_prec 40).
 Qed.
 
 (* plot(abs(exp(x)-(1+x/2)^2) - abs(exp(abs(x))-(1+abs(x)/2)^2), [-10, 10]); *)
@@ -116,7 +116,7 @@ Lemma MT9 :
   Rabs (exp x - (1 + x / 2) ^ 2) <= Rabs (exp (Rabs x) - (1 + (Rabs x) / 2) ^ 2).
 Proof.
 idtac "MT9".
-Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x 3, i_prec 40).
+Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x, i_prec 40).
 Qed.
 
 (* plot(2*x/(2+x) - log(1+x), [0, 10]); *)
@@ -124,7 +124,7 @@ Lemma MT10 :
   forall x : R, 0 <= x <= 10 -> 2 * x / (2 + x) <= ln (1 + x) + eps.
 Proof.
 idtac "MT10".
-Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x 3).
+Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x).
 Qed.
 
 (* plot(x/sqrt(1+x) - log(1+x), [-1/3,0]); *)
@@ -132,7 +132,7 @@ Lemma MT11 :
   forall x : R, -1/3 <= x <= 0 -> x / sqrt (1 + x) <= ln (1 + x) + eps.
 Proof.
 idtac "MT11".
-Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x 3, i_prec 40).
+Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x, i_prec 40).
 Qed.
 
 (* plot(log((1+x)/x)-(12*x^2 + 12*x + 1)/(12*x^3 + 18*x^2 + 6*x), [1/3, 10]); *)
@@ -141,7 +141,7 @@ Lemma MT12 :
   ln ((1 + x) / x) <= (12*x^2 + 12*x + 1) / (12*x^3 + 18*x^2 + 6*x).
 Proof.
 idtac "MT12".
-Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x 3).
+Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x).
 Qed.
 
 (* plot(log((1+x)/x)-1/sqrt(x^2 + x), [1/3, 10]); *)
@@ -150,7 +150,7 @@ Lemma MT13 :
   ln ((1 + x) / x) <= 1 / sqrt (x ^ 2 + x).
 Proof.
 idtac "MT13".
-Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x 3, i_prec 40).
+Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x, i_prec 40).
 Qed.
 
 (* plot(exp(x - x^2) - 1 - x, [0, 1]); *)
@@ -185,7 +185,7 @@ Qed.
 Lemma MT18 : forall x : R, -10 <= x <= 10 -> cos x - 1 + x^2 / 2 + eps >= 0.
 Proof.
 idtac "MT18".
-Time intros x H; apply Rminus_ge; interval with (i_bisect_taylor x 2).
+Time intros x H; apply Rminus_ge; interval with (i_bisect_taylor x).
 Qed.
 
 (* plot(8 * sqrt(3) * x / (3 * sqrt(3) + sqrt(75 + 80 * x^2)) - atan(x), [0, 10]); *)
@@ -217,14 +217,14 @@ Qed.
 (* Lemma MT22 : forall x : R, eps <= x <= PI -> cos x <= sin x / x. *)
 (* Proof. *)
 (* idtac "MT22". *)
-(* Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x 5, i_depth 16). *)
+(* Time intros x H; apply Rminus_le; interval with (i_bisect_taylor x, i_depth 16). *)
 (* Qed. *)
 
 (* plot(cos(x) - (sin(x)/x)^2, [0, pi/2]); *)
 Lemma MT23 : forall x : R, eps <= x <= PI / 2 -> cos x < (sin x / x) ^ 2.
 Proof.
 idtac "MT23".
-Time intros x H; apply Rminus_lt; interval with (i_bisect_taylor x 5).
+Time intros x H; apply Rminus_lt; interval with (i_bisect_taylor x).
 Qed.
 
 (* plot(sin(x)/3 + sin(3*x)/6, [pi/3-1, 2*pi/3+1]); *)
@@ -282,7 +282,7 @@ Lemma remez_sqrt :
 idtac "remez_sqrt".
 Time intros x H;
   (* Time interval with (i_bisect_diff x). *)
-  interval with (i_bisect_taylor x 5).
+  interval with (i_bisect_taylor x).
 Qed.
 
 (** Daumas_Lester_Munoz_TC2009 paper with a tighter bound *)
@@ -326,7 +326,7 @@ Lemma rel_err_geodesic' :
 Proof.
 idtac "rel_err_geodesic'".
 Time unfold (*rp, arp,*) a, umf2, f, max; intros phi Hphi;
-  interval with (i_bisect_taylor phi 5).
+  interval with (i_bisect_taylor phi).
 Qed.
 End Rel_err_geodesic.
 
@@ -340,7 +340,7 @@ Lemma harrison97 :
   <= ((23/27) / (2^33)).
 idtac "harrison97".
 Time intros x H;
-  interval with (i_bisect_taylor x 3, i_prec 50).
+  interval with (i_bisect_taylor x, i_prec 50).
 Qed.
 
 (* From bench-ineqs/benchmarks/coq/univ_metitarski_Rlt.v *)
@@ -383,7 +383,7 @@ Qed.
 Lemma MT18' : forall x : R, -10 <= x <= 10 -> cos x - 1 + x^2 / 2 + eps > 0.
 Proof.
 idtac "MT18'".
-Time intros x H; interval with (i_bisect_taylor x 2).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 (* plot(8 * sqrt(3) * x / (3 * sqrt(3) + sqrt(75 + 80 * x^2)) - atan(x), [0, 10]); *)
@@ -414,7 +414,7 @@ Qed.
 (* plot(cos(x)-sin(x)/x, [0, pi]); *)
 (* Lemma MT22' : forall x : R, eps <= x <= PI -> cos x < sin x / x. *)
 (* idtac "MT22'". *)
-(* Time intros x H; apply Rminus_lt; interval with (i_bisect_taylor x 5, i_depth 16). *)
+(* Time intros x H; apply Rminus_lt; interval with (i_bisect_taylor x, i_depth 16). *)
 (* Qed. *)
 
 (* plot(cos(x) - (sin(x)/x)^2, [0, pi/2]); *)
@@ -422,7 +422,7 @@ Lemma MT23' : forall x : R, eps <= x <= PI / 2 ->
   cos x < (sin x / x) * (sin x / x).
 Proof.
 idtac "MT23'".
-Time intros x H; apply Rminus_lt; interval with (i_bisect_taylor x 5).
+Time intros x H; apply Rminus_lt; interval with (i_bisect_taylor x).
 Qed.
 
 (* plot(sin(x)/3 + sin(3*x)/6, [pi/3-1, 2*pi/3+1]); *)
@@ -451,7 +451,7 @@ Lemma cos_cos_d2 :
   forall x, D x -> Rabs ((p2 x - f x) / f x) <= eps2.
 Proof.
 idtac "cos_cos_d2".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 (** Degree-3 *)
@@ -462,7 +462,7 @@ Lemma cos_cos_d3 :
   forall x, D x -> Rabs ((p3 x - f x) / f x) <= eps3.
 Proof.
 idtac "cos_cos_d3".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 (** Degree-4 *)
@@ -473,7 +473,7 @@ Lemma cos_cos_d4 :
   forall x, D x -> Rabs ((p4 x - f x) / f x) <= eps4.
 Proof.
 idtac "cos_cos_d4".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 (** Degree-5 *)
@@ -484,7 +484,7 @@ Lemma cos_cos_d5 :
   forall x, D x -> Rabs ((p5 x - f x) / f x) <= eps5.
 Proof.
 idtac "cos_cos_d5".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 (** Degree-6 *)
@@ -495,7 +495,7 @@ Lemma cos_cos_d6 :
   forall x, D x -> Rabs ((p6 x - f x) / f x) <= eps6.
 Proof.
 idtac "cos_cos_d6".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 (** Degree-7 *)
@@ -506,7 +506,7 @@ Lemma cos_cos_d7 :
   forall x, D x -> Rabs ((p7 x - f x) / f x) <= eps7.
 Proof.
 idtac "cos_cos_d7".
-Time intros x H; interval with (i_bisect_taylor x 4).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 (** Degree-8 *)
@@ -517,7 +517,7 @@ Lemma cos_cos_d8 :
   forall x, D x -> Rabs ((p8 x - f x) / f x) <= eps8.
 Proof.
 idtac "cos_cos_d8".
-Time intros x H; interval with (i_bisect_taylor x 4).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 (* From bench-ineqs/benchmarks/coq/fpminmax.v *)
@@ -530,98 +530,98 @@ Lemma cos_cos_d2__1 :
   forall x, D x -> (p2 x - f x) / f x > - eps2.
 Proof.
 idtac "cos_cos_d2__1".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d2__2 :
   forall x, D x -> (p2 x - f x) / f x < eps2.
 Proof.
 idtac "cos_cos_d2__2".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d3__1 :
   forall x, D x -> (p3 x - f x) / f x > - eps3.
 Proof.
 idtac "cos_cos_d3__1".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d3__2 :
   forall x, D x -> (p3 x - f x) / f x < eps3.
 Proof.
 idtac "cos_cos_d3__2".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d4__1 :
   forall x, D x -> (p4 x - f x) / f x > - eps4.
 Proof.
 idtac "cos_cos_d4__1".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d4__2 :
   forall x, D x -> (p4 x - f x) / f x < eps4.
 Proof.
 idtac "cos_cos_d4__2".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d5__1 :
   forall x, D x -> (p5 x - f x) / f x > - eps5.
 Proof.
 idtac "cos_cos_d5__1".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d5__2 :
   forall x, D x -> (p5 x - f x) / f x < eps5.
 Proof.
 idtac "cos_cos_d5__2".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d6__1 :
   forall x, D x -> (p6 x - f x) / f x > - eps6.
 Proof.
 idtac "cos_cos_d6__1".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d6__2 :
   forall x, D x -> (p6 x - f x) / f x < eps6.
 Proof.
 idtac "cos_cos_d6__2".
-Time intros x H; interval with (i_bisect_taylor x 3).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d7__1 :
   forall x, D x -> (p7 x - f x) / f x > - eps7.
 Proof.
 idtac "cos_cos_d7__1".
-Time intros x H; interval with (i_bisect_taylor x 4).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d7__2 :
   forall x, D x -> (p7 x - f x) / f x < eps7.
 Proof.
 idtac "cos_cos_d7__2".
-Time intros x H; interval with (i_bisect_taylor x 4).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d8__1 :
   forall x, D x -> (p8 x - f x) / f x > - eps8.
 Proof.
 idtac "cos_cos_d8__1".
-Time intros x H; interval with (i_bisect_taylor x 4).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 Lemma cos_cos_d8__2 :
   forall x, D x -> (p8 x - f x) / f x < eps8.
 Proof.
 idtac "cos_cos_d8__2".
-Time intros x H; interval with (i_bisect_taylor x 4).
+Time intros x H; interval with (i_bisect_taylor x).
 Qed.
 
 (* From coq-interval/testsuite/bug-20120927.v *)
@@ -738,7 +738,7 @@ Lemma example20071016_5 :
 Proof.
   intros.
 idtac "example20071016_5".
-  Time interval with (i_bisect_taylor x 3).
+  Time interval with (i_bisect_taylor x).
 Qed.
 
 Lemma example20071016_6 :
@@ -758,8 +758,8 @@ Lemma example20071016_7 :
         - 5/96*PI*PI) <= 1/1000.
 Proof.
 idtac "example20071016_7".
-Time interval with (i_integral_prec 9, i_integral_depth 1, i_integral_deg 5).
-  (* Time integral with (i_fuel 2, i_degree 5). *)
+(* Time interval with (i_integral_prec 9, i_integral_depth 1, i_integral_deg 5). **)
+Time integral with (i_fuel 2, i_degree 5).
 Qed.
 
 (*
@@ -843,7 +843,7 @@ Lemma example20140221_2 :
 Proof.
 intros x H.
 idtac "example20140221_2".
-Time interval with (i_bisect_taylor x 3, i_prec 50).
+Time interval with (i_bisect_taylor x, i_prec 50).
 Qed.
 
 (* From coq-interval/testsuite/example-20140610.v *)
@@ -881,7 +881,7 @@ Proof.
 unfold rp, arp, umf2, a, f', max.
 intros phi Hphi.
 idtac "example20140610_2".
-Time interval with (i_bisect_taylor phi 5).
+Time interval with (i_bisect_taylor phi).
 Qed.
 
 (* From coq-interval/testsuite/example-20150105.v *)
@@ -903,7 +903,7 @@ Proof.
 intros x Hx p q r.
 unfold r, p, q.
 idtac "example20150105".
-Time interval with (i_prec 40, i_bisect_taylor x 3).
+Time interval with (i_prec 40, i_bisect_taylor x).
 Qed.
 
 (* From coq-interval/testsuite/example-20160218.v *)
