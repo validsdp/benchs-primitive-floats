@@ -11,7 +11,7 @@ configs = {"coqintvl_stable_bigz_int31.v": [0, "stable-bigz-int31"],
 filenames = sorted(list(configs.keys()), key=(lambda x: configs[x]))
 
 
-nrows = 25
+nrows = 20
 
 
 def get_full_filename(filename):
