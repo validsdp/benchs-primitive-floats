@@ -24,11 +24,11 @@ include Makefile.common
   tar dist-tar
 
 all:
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" $(COQ89_INTVL_STABLE) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 341-bigz-int31" > make.COQ89_INTVL_STABLE.$$(date +'%Y%m%d_%H%M%S').log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" $(COQ810_INTVL_STABLE) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 341-bigz-int63" > make.COQ810_INTVL_STABLE.$$(date +'%Y%m%d_%H%M%S').log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" $(COQ810_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make dev-bigz-int63-810" > make.COQ810_INTVL_DEV.$$(date +'%Y%m%d_%H%M%S').log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" $(COQ811_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make dev-bigz-int63-811" > make.COQ11_INTVL_DEV.$$(date +'%Y%m%d_%H%M%S').log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" $(COQ811_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make dev-primfloat" > make.COQ811_INTVL_DEV.$$(date +'%Y%m%d_%H%M%S').log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ89_INTVL_STABLE) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 341-bigz-int31" | tee make.$$(date +'%Y%m%d_%H%M%S').COQ89_INTVL_STABLE.log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ810_INTVL_STABLE) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 341-bigz-int63" | tee make.$$(date +'%Y%m%d_%H%M%S').COQ810_INTVL_STABLE.log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ810_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make dev-bigz-int63-810" | tee make.$$(date +'%Y%m%d_%H%M%S').COQ810_INTVL_DEV.log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ811_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make dev-bigz-int63-811" | tee make.$$(date +'%Y%m%d_%H%M%S').COQ11_INTVL_DEV.log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ811_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make dev-primfloat" | tee make.$$(date +'%Y%m%d_%H%M%S').COQ811_INTVL_DEV.log
 	$(MAKE) $(FINAL)
 
 coq: $(CSV_COQ)
