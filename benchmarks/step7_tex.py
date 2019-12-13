@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import csv
 
+# dictionary {"filename.v": "tabular-caption"}
 configs = {"coqintvl_stable_bigz_int31.v": "stable-bigz-int31",
            "coqintvl_stable_bigz_int63.v": "stable-bigz-int63",
            "coqintvl_dev_bigz_int63_coq810.v": "dev-bigz-int63-coq810",
@@ -28,7 +29,7 @@ def get_title(filename):
 def main():
 
     print("""
-\\documentclass{article}
+\\documentclass[a4paper,10pt]{article}
 %%% BEGIN OF SECTION TO BE ADDED INTO THE LATEX PREAMBLE
 \\usepackage{calc}
 \\usepackage{rotating}
