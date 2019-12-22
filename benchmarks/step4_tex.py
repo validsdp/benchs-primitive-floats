@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import csv
+import sys
 
 # dictionary {"filename.v": "tabular-caption"}
 configs = {"coqintvl_stable_bigz_int31.v": [0, "stable-bigz-int31-coq89"],
@@ -25,8 +26,9 @@ def get_map(filename):
         csv_reader = csv.reader(csv_file)
         # Hack: extract the first row which gathers the column titles
         first_row = next(csv_reader)
+
         for row in csv_reader:
-            res[row[0]] = row[1]
+            res[row[0]] = row[1]  # Note: only keep the row 1
     return (first_row, res)
 
 
@@ -64,10 +66,10 @@ def main():
 
     res = {}
     # Hack: extract the first rows which gather the column titles
-    columns = {}
+    first_rows = {}
     for f in filenames:
         first_row, mapf = get_map(f)
-        columns[f] = first_row
+        first_rows[f] = first_row
         for p in mapf.keys():
             if p not in res:
                 res[p] = {}
@@ -75,6 +77,23 @@ def main():
 
     i = 0
     problems = sorted(list(res.keys()))
+
+    def error(message):
+        print(message, file=sys.stderr)
+        exit(1)
+
+    def check_same(dic):
+        cur = None
+        for f in dic.keys():
+            if cur and dic[f] != cur:
+                error('The first row (%a) of file %s is different from other files' % (cur, f))
+            else:
+                cur = dic[f]
+        return cur
+
+    columns = check_same(first_rows)
+    col0 = columns[0]
+    col1 = columns[1] # Note: only keep the row 1
 
     def emit_start():
         print("""\\begingroup
@@ -88,9 +107,9 @@ Problems """, end='')
 
         print(" \\\\")
         ### BEGIN Hack duplication
-        print(columns.replace('_', '\\_'), end='')
+        print(col0.replace('_', '\\_'), end='')
         for f in filenames:
-            print(" & %s" % res[columns][f], end='')
+            print(" & %s" % col1, end='')
         print(""" \\\\
 \\midrule""")
         ### END Hack duplication
