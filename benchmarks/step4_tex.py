@@ -20,11 +20,14 @@ def get_full_filename(filename):
 
 def get_map(filename):
     res = {}
+    first_row = None
     with open(get_full_filename(filename), mode='r') as csv_file:
         csv_reader = csv.reader(csv_file)
+        # Hack: extract the first row which gathers the column titles
+        first_row = next(csv_reader)
         for row in csv_reader:
             res[row[0]] = row[1]
-    return res
+    return (first_row, res)
 
 
 def get_title(filename):
@@ -58,11 +61,13 @@ def main():
 \\end{tabular}
 \\endgroup
 """)
-   
+
     res = {}
-    
+    # Hack: extract the first rows which gather the column titles
+    columns = {}
     for f in filenames:
-        mapf = get_map(f)
+        first_row, mapf = get_map(f)
+        columns[f] = first_row
         for p in mapf.keys():
             if p not in res:
                 res[p] = {}
@@ -71,23 +76,21 @@ def main():
     i = 0
     problems = sorted(list(res.keys()))
 
-    # Hack: extract the first problem which gathers the column titles
-    columns = problems.pop(0)
     def emit_start():
         print("""\\begingroup
 \\setlength\\tabcolsep{3pt} % 6pt by default
 \\begin{tabular}{llllll}
 \\toprule
 Problems """, end='')
-    
+
         for f in filenames:
             print(' & \\col{%s}' % get_title(f), end='')
-    
+
         print(" \\\\")
         ### BEGIN Hack duplication
         print(columns.replace('_', '\\_'), end='')
         for f in filenames:
-            print(" & %s" % res[columns][f], end = '')
+            print(" & %s" % res[columns][f], end='')
         print(""" \\\\
 \\midrule""")
         ### END Hack duplication
@@ -97,7 +100,7 @@ Problems """, end='')
         i += 1
         print(p.replace('_', '\\_'), end='')
         for f in filenames:
-            print(" & %s" % res[p][f], end = '')
+            print(" & %s" % res[p][f], end='')
         print(""" \\\\
 \\midrule""")
 
@@ -110,5 +113,6 @@ Problems """, end='')
     print("""
 \\end{document}
 """)
+
 
 main()
