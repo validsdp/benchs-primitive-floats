@@ -1,0 +1,48 @@
+#!/bin/bash
+
+switch="4.05.0+coq8.11"
+compiler="ocaml-base-compiler.4.05.0"
+# => see https://github.com/coq/coq/pull/7522
+NJOBS="7"
+
+main() {
+    set -ex
+
+    # opam switch create -y ${switch} ${compiler} || true
+    eval $(opam env --switch=${switch} --set-switch)
+
+    pushd ~/forge/git/bignums/
+    git clean -dxf .
+    ( COQFLAGS="-native-compiler yes" make -j 2 && make install )
+    opam pin add -n -k version coq-bignums 8.11.dev
+    opam install -y --fake coq-bignums.8.11.dev
+    popd
+    
+    # opam install -y camlp5 ocamlfind merlin zarith ocplib-simplex camlp4 osdp
+
+    #opam repo add coq-released https://coq.inria.fr/opam/released
+    #opam repo add coq-core-dev https://coq.inria.fr/opam/core-dev
+    #opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
+
+    #opam update
+
+    #pushd "${COQ_DIR}"
+    #git checkout primitive-floats
+    #make clean
+    #git clean -dxf .  # a bit aggressive but required
+    #./configure -annot -bin-annot -prefix $HOME/.opam/${switch}
+    #make -j ${NJOBS}
+    #make install
+    #opam install -y num
+    #opam pin add -n -k version coq dev
+    #opam install -y --fake coq.dev
+    #popd
+
+    opam pin add -n -y -k version coq-mathcomp-ssreflect 1.10.0
+    opam pin add -n -y -k git coq-interval.dev "git+https://gitlab.inria.fr/coqinterval/interval.git#primitive-floats"
+    
+    COQFLAGS="-native-compiler yes" opam install -y -v -j ${NJOBS} --ignore-constraints=coq coq-mathcomp-ssreflect.1.10.0
+    COQC="$(which coqc) -native-compiler yes" opam install -y -v -j ${NJOBS} --ignore-constraints=coq,coq-mathcomp-ssreflect coq-flocq.dev coq-coquelicot.dev coq-interval.dev
+ }
+
+main
