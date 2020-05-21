@@ -979,13 +979,11 @@ idtac "bissect".
 Time integral with (i_degree 13, i_fuel 13, i_prec 53).
 Qed.
 
-(*
 Lemma Chebyshev :
   (RInt (fun x => (2048 * x^12 - 6144 * x^10 + 6912 * x^8 - 3584 * x^6 + 840 * x^4 - 72 * x^2 + 1) * exp (-(x - 3/4)^2) * sqrt (1 - x*x)) (-1) 1 + 32555895745 / 10000000000000000) <= 1/100000000000.
 idtac "Chebyshev".
 Time integral with (i_degree 10, i_fuel 100, i_prec 53).
 Qed.
-*)
 
 Lemma Rump_Tucker :
   Rabs (RInt (fun x => sin (x + exp x)) 0 8 - 3474/10000) <= 1/1000000.
