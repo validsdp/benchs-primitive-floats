@@ -12,7 +12,7 @@ Lemma adaptiveLV : forall x1 x2 x3 x4 : R,
     -2 <= x1 <= 2 -> -2 <= x2 <= 2 -> -2 <= x3 <= 2 -> -2 <= x4 <= 2 ->
     -20801/1000 <= x1*x2^2 + x1 * x3^2 + x1*x4^2 - 11/10 * x1 + 1.
 idtac "adaptiveLV".
-Time intros x1 x2 x3 x4 H1 H2 H3 H4; interval with (i_bisect x1).
+Time intros x1 x2 x3 x4 H1 H2 H3 H4; interval with (i_bisect x1, i_autodiff x1).
 Qed.
 
 Lemma butcher : forall x1 x2 x3 x4 x5 x6 : R,
@@ -21,7 +21,7 @@ Lemma butcher : forall x1 x2 x3 x4 x5 x6 : R,
     -144/100 <= x6 * x2^2 + x5 * x3 ^2 - x1 * x4^2 + x4^3 + x4^2 - x1/3 + 4*x4/3.
 idtac "butcher".
 Time intros x1 x2 x3 x4 x5 x6 H1 H2 H3 H4 H5 H6;
-  interval with (i_bisect x4).
+  interval with (i_bisect x4, i_autodiff x4).
 Qed.
 
 Lemma magnetism : forall x1 x2 x3 x4 x5 x6 x7 : R,
@@ -157,7 +157,7 @@ Qed.
 Lemma MT14 : forall x : R, 0 <= x <= 1 -> exp (x - x^2) <= 1 + x + eps.
 Proof.
 idtac "MT14".
-Time intros x H; apply Rminus_le; interval with (i_bisect x).
+Time intros x H; apply Rminus_le; interval with (i_bisect x, i_autodiff x).
 Qed.
 
 (* plot(exp(-x/(1-x))-(1-x), [-10,1/2]); *)
@@ -171,7 +171,7 @@ Qed.
 Lemma MT16 : forall x : R, -1 <= x <= 1 -> Rabs (sin x) <= 6/5 * Rabs x + eps.
 Proof.
 idtac "MT16".
-Time intros x H; apply Rminus_le; interval with (i_bisect x).
+Time intros x H; apply Rminus_le; interval with (i_bisect x, i_autodiff x).
 Qed.
 
 (* plot(1 - 2 * x - cos(pi * x), [0, 1/2]); *)
@@ -209,7 +209,7 @@ Lemma MT21 :
   forall x : R, 0 <= x <= 10 -> eps + atan x > 3 * x / (1 + 2 * sqrt (1 + x^2)).
 Proof.
 idtac "MT21".
-Time intros x H; apply Rminus_lt; interval with (i_bisect x).
+Time intros x H; apply Rminus_lt; interval with (i_bisect x, i_autodiff x).
 Qed.
 
 (* plot(cos(x)-sin(x)/x, [0, pi]); *)
@@ -338,7 +338,7 @@ End Rel_err_geodesic.
 Lemma MT16__1 : forall x : R, (-1 <= x <= 0) -> (sin x) > - (6/5 * - x + eps).
 Proof.
 idtac "MT16__1".
-Time intros x H; apply Rminus_lt; interval with (i_bisect x).
+Time intros x H; apply Rminus_lt; interval with (i_bisect x, i_autodiff x).
 Qed.
 
 Lemma MT16__2 : forall x : R, (-1 <= x <= 0) -> (sin x) < 6/5 * - x + eps.
@@ -356,7 +356,7 @@ Qed.
 Lemma MT16__4 : forall x : R, (0 <= x <= 1) -> (sin x) < 6/5 * x + eps.
 Proof.
 idtac "MT16__4".
-Time intros x H; apply Rminus_lt; interval with (i_bisect x).
+Time intros x H; apply Rminus_lt; interval with (i_bisect x, i_autodiff x).
 Qed.
 
 (* plot(1 - 2 * x - cos(pi * x), [0, 1/2]); *)
@@ -379,7 +379,7 @@ Lemma MT19' :
   eps + atan x > 8 * sqrt 3 * x / (3 * sqrt 3 + sqrt (75 + 80 * x^2)).
 Proof.
 idtac "MT19'".
-Time intros x H; apply Rminus_lt; interval with (i_bisect x).
+Time intros x H; apply Rminus_lt; interval with (i_bisect x, i_autodiff x).
 Qed.
 
 (* plot((x + 1/x) * arctan(x) - 1, [0,5]); *)
@@ -397,12 +397,12 @@ idtac "MT21'".
 Time intros x H; apply Rminus_lt; interval with (i_bisect x).
 Qed.
 
-(* foire en flottants primitifs *)
+(* OK en flottants primitifs *)
 (* plot(cos(x)-sin(x)/x, [0, pi]); *)
-(* Lemma MT22' : forall x : R, eps <= x <= PI -> cos x < sin x / x. *)
-(* idtac "MT22'". *)
-(* Time intros x H; apply Rminus_lt; interval with (i_bisect_taylor x, i_depth 16). *)
-(* Qed. *)
+Lemma MT22' : forall x : R, eps <= x <= PI -> cos x < sin x / x.
+idtac "MT22'".
+Time intros x H; apply Rminus_lt; interval with (i_bisect_taylor x, i_depth 16).
+Qed.
 
 (* plot(cos(x) - (sin(x)/x)^2, [0, pi/2]); *)
 Lemma MT23' : forall x : R, eps <= x <= PI / 2 ->
@@ -652,7 +652,7 @@ Lemma bug20150924 : forall x : R,
 Proof.
 intros x.
 idtac "bug20150924".
-Time interval with (i_bisect x, i_autodiff x).
+Time interval with (i_autodiff x).
 Qed.
 
 (* From coq-interval/testsuite/bug-20150925.v *)
@@ -815,7 +815,7 @@ Lemma example20140221_1 :
 Proof.
 intros x H.
 idtac "example20140221_1".
-Time interval with (i_bisect x, i_autodiff x, i_depth 16 (* i_prec 50 *)).
+Time interval with (i_bisect x, i_autodiff x, i_depth 16)).
 Qed.
 
 Lemma example20140221_2 :
@@ -826,7 +826,7 @@ Lemma example20140221_2 :
 Proof.
 intros x H.
 idtac "example20140221_2".
-Time interval with (i_bisect x, i_taylor x (* i_prec 50 *)).
+Time interval with (i_bisect x, i_taylor x).
 Qed.
 
 (* From coq-interval/testsuite/example-20140610.v *)
@@ -886,7 +886,7 @@ Proof.
 intros x Hx p q r.
 unfold r, p, q.
 idtac "example20150105".
-Time interval with (i_prec 40, i_bisect x, i_taylor x).
+Time interval with (i_bisect x, i_taylor x).
 Qed.
 
 (* From coq-interval/testsuite/example-20160218.v *)
@@ -956,17 +956,17 @@ Qed.
 Lemma bissect :
   Rabs (RInt (fun x => x * sin x / (1 + cos x * cos x)) 0 PI - PI*PI/4) <= 1/1000000000000.
 idtac "bissect".
-Time integral with (i_degree 13, i_fuel 13, i_prec 53).
+Time integral with (i_degree 13, i_fuel 13).
 Qed.
 
 Lemma Chebyshev :
   (RInt (fun x => (2048 * x^12 - 6144 * x^10 + 6912 * x^8 - 3584 * x^6 + 840 * x^4 - 72 * x^2 + 1) * exp (-(x - 3/4)^2) * sqrt (1 - x*x)) (-1) 1 + 32555895745 / 10000000000000000) <= 1/100000000000.
 idtac "Chebyshev".
-Time integral with (i_degree 10, i_fuel 100, i_prec 53).
+Time integral with (i_degree 10, i_fuel 100).
 Qed.
 
 Lemma Rump_Tucker :
   Rabs (RInt (fun x => sin (x + exp x)) 0 8 - 3474/10000) <= 1/1000000.
 idtac "Rump_Tucker".
-Time integral with (i_degree 7, i_fuel 4000, i_prec 53).
+Time integral with (i_degree 7, i_fuel 4000).
 Qed.
