@@ -105,7 +105,7 @@ let pp_coq fmt lm =
     {|@[<v>(* randomly generated positive definite matrix *)
 
 From Bignums Require Import BigZ.
-Require Import Interval.Interval_specific_ops.
+Require Import Interval.Float.Specific_ops.
 Require Import mathcomp.ssreflect.seq.
 Require Import ValidSDP.posdef_check.
 
