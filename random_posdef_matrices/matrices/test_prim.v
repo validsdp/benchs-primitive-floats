@@ -2,16 +2,16 @@
 
 From Bignums Require Import BigZ.
 Require Import mathcomp.ssreflect.seq.
-Require Import Interval.Interval_bigint_carrier.
-Require Import Interval.Interval_definitions.
-Require Import Interval.Interval_specific_ops.
+Require Import Interval.Float.Specific_bigint.
+Require Import Interval.Interval.Interval.
+Require Import Interval.Float.Specific_ops.
 Require Import CoqEAL.refinements.seqmx.
 Require Import CoqEAL.refinements.refinements.
 Require Import CoqEAL.refinements.hrel.
 Require Import CoqEAL.refinements.seqmx_complements.
 From ValidSDP Require Import cholesky_prog iteri_ord posdef_check.
 Import Refinements.Op.
-Require Import Float.
+Require Import Floats.
 
 Module F := SpecificFloat BigIntRadix2.
 
