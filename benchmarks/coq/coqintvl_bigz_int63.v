@@ -204,6 +204,7 @@ idtac "MT20".
 Time intros x H; interval with (i_prec 25, i_bisect x, i_autodiff x, i_depth 25).
 Qed.
 
+(* TODO: try to remove Rminus_alt etc. *)
 (* plot(3 * x / (1 + 2 * sqrt(1 + x^2)) - atan(x), [0, 10]); *)
 Lemma MT21 :
   forall x : R, 0 <= x <= 10 -> eps + atan x > 3 * x / (1 + 2 * sqrt (1 + x^2)).
@@ -257,6 +258,7 @@ Notation p x := (x + 1/2 * x^2 + c3 * x^3 + c4 * x^4)%R (only parsing).
 Notation eps' := (1/1048576)%R (only parsing).
 Notation meps' := (-1/1048576)%R (only parsing).
 
+(* TODO: try to remove the unfold here *)
 Lemma crlibm_exp :
   forall x : R,
   (-355/4194304 <= x <= meps') \/ (eps' <= x <= 355/4194304) ->
@@ -333,6 +335,7 @@ End Rel_err_geodesic.
 
 (** MetiTarski_JAR2010 paper *)
 
+(* TODO Maybe merge lemmas if there's too many lines in the array *)
 (* plot(abs(sin(x)) - 6/5 * abs(x), [-1, 1]); *)
 Lemma MT16__1 : forall x : R, (-1 <= x <= 0) -> (sin x) > - (6/5 * - x + eps).
 Proof.
@@ -612,6 +615,7 @@ Qed.
 
 (* From coq-interval/testsuite/bug-20120927.v *)
 
+(* TODO: Remove these lemmas from the "optimal prec" column *)
 Lemma bug20120927 :
   forall x, (-1/2 <= x <= 0)%R ->
   True.
@@ -923,8 +927,6 @@ Time integral with (i_prec 13, i_fuel 1).
 Qed.
 
 (* From coq-interval/testsuite/example-20171018.v *)
-
-Search "near".
 
 Lemma h_54_ln_2  h :
   -53 <= h <= 0 ->

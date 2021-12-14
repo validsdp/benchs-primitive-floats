@@ -928,8 +928,6 @@ Qed.
 
 (* From coq-interval/testsuite/example-20171018.v *)
 
-Search "near".
-
 Lemma h_54_ln_2  h :
   -53 <= h <= 0 ->
   -  Basic.Rnearbyint Basic.rnd_DN (h * ln 2 / ln 5) * ln 5 <= 54 * ln 2.
