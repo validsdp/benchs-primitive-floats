@@ -117,7 +117,11 @@ Problems """, end='')
         i += 1
         print(p.replace('_', '\\_'), end='')
         for f in filenames:
-            print(" & %s" % res[p][f], end='')
+            if f in res[p]:
+                value = res[p][f]
+            else:
+                value = "N/A"
+            print(" & %s" % value, end='')
         print(""" \\\\
 \\midrule""")
 
