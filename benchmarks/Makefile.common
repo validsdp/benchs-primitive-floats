@@ -38,7 +38,7 @@ FIL_COQ_1 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_1))
 FIL_COQ_2 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_2))
 FIL_COQ_3 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_3))
 
-FILES_COQ := $(FIL_COQ_1_31) $(FIL_COQ_1_63) $(FIL_COQ_2_10) $(FIL_COQ_2_11) $(FIL_COQ_3)
+FILES_COQ := $(FIL_COQ_1) $(FIL_COQ_2) $(FIL_COQ_3)
 
 OUT_COQ := $(FILES_COQ:=.out)
 TMP_COQ := $(FILES_COQ:=.time) \
