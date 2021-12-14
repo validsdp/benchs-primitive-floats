@@ -51,7 +51,7 @@ def main():
 
 \\pagestyle{empty}
 \\thispagestyle{empty}
-\\title{Benchs Coq 8.11 + coq-interval/primitive-floats}
+\\title{Benchs Coq 8.14 + coq-interval 4.3.1}
 \\begin{document}
 \\maketitle
 """, end='')
