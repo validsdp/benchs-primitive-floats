@@ -3,11 +3,9 @@ import csv
 import sys
 
 # dictionary {"filename.v": "tabular-caption"}
-configs = {"coqintvl_stable_bigz_int31.v": [0, "stable-bigz-int31-coq89"],
-           "coqintvl_stable_bigz_int63.v": [1, "stable-bigz-int63-coq810"],
-           "coqintvl_dev_bigz_int63_coq810.v": [2, "dev-bigz-int63-coq810"],
-           "coqintvl_dev_bigz_int63_coq811.v": [3, "dev-bigz-int63-coq811"],
-           "coqintvl_dev_primfloat.v": [4, "dev-primfloat"]}
+configs = {"coqintvl_bigz_int63_prec53.v": [0, "431-bigz-prec53"],
+           "coqintvl_bigz_int63.v": [1, "431-bigz-int63"],
+           "coqintvl_dev_primfloat.v": [2, "431-primfloat"]}
 
 filenames = sorted(list(configs.keys()), key=(lambda x: configs[x]))
 

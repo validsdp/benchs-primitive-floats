@@ -4,10 +4,9 @@
 
 # USAGE:
 # $ make -s # to make all benchmarks (-s = --silent)
-# $ make -s 341-bigz-int31
-# $ make -s 341-bigz-int63
-# $ make -s dev-bigz-int63
-# $ make -s dev-primfloat
+# $ make -s 431-bigz-prec53
+# $ make -s 431-bigz-int63
+# $ make -s 431-primfloat
 
 include Makefile.common
 
@@ -20,16 +19,14 @@ include Makefile.common
 ### Rules
 .SECONDARY: $(TMP_KEEP)
 .PHONY: all clean dist-clean \
-  341-bigz-int31 341-bigz-int63 dev-bigz-int63 dev-primfloat \
+  431-bigz-prec53 431-bigz-int63 431-primfloat \
   tar dist-tar
 
 all:
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ811_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); $(OPAM_INTVL_DEV); make dev-primfloat" | tee make.$$(date +'%Y%m%d_%H%M%S').COQ811_INTVL_DEV.log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ814_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); $(OPAM_INTVL_DEV); make 431-primfloat" | tee make.$$(date +'%Y%m%d_%H%M%S').431-primfloat.log
 	#
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ89_INTVL_STABLE) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 341-bigz-int31" | tee make.$$(date +'%Y%m%d_%H%M%S').COQ89_INTVL_STABLE.log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ810_INTVL_STABLE) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 341-bigz-int63" | tee make.$$(date +'%Y%m%d_%H%M%S').COQ810_INTVL_STABLE.log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ810_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); $(OPAM_INTVL_DEV); make dev-bigz-int63-810" | tee make.$$(date +'%Y%m%d_%H%M%S').COQ810_INTVL_DEV.log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ811_INTVL_DEV) /bin/bash --login -c "$(OPAM_INFO_COMMAND); $(OPAM_INTVL_DEV); make dev-bigz-int63-811" | tee make.$$(date +'%Y%m%d_%H%M%S').COQ11_INTVL_DEV.log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ814_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 431-bigz-prec53" | tee make.$$(date +'%Y%m%d_%H%M%S').431-bigz-prec53.log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ814_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 431-bigz-int63" | tee make.$$(date +'%Y%m%d_%H%M%S').431-bigz-int63.log
 	$(MAKE) $(FINAL)
 
 coq: $(CSV_COQ)
@@ -38,11 +35,9 @@ clean:
 dist-clean: clean
 	$(RM) $(FINAL) $(FINAL_AUX)
 
-341-bigz-int31: $(FIL_COQ_1_31:=.out.csv)
-341-bigz-int63: $(FIL_COQ_1_63:=.out.csv)
-dev-bigz-int63-810: $(FIL_COQ_2_10:=.out.csv)
-dev-bigz-int63-811: $(FIL_COQ_2_11:=.out.csv)
-dev-primfloat: $(FIL_COQ_3:=.out.csv)
+431-bigz-prec53: $(FIL_COQ_1:=.out.csv)
+431-bigz-int63: $(FIL_COQ_2:=.out.csv)
+431-primfloat: $(FIL_COQ_3:=.out.csv)
 
 # STEP 1: Make directory $(DIR_OUT)
 $(DIR_OUT):
@@ -58,7 +53,12 @@ $(DIR_OUT):
 # 	./step1.perl $< >> $@ || ( RV=$$?; rm -f "$@"; exit $${RV} )
 # 	@echo Step 1: Finished $@
 
-$(DIR_OUT)/%_stable_bigz_int31.v $(DIR_OUT)/%_stable_bigz_int63.v: $(DIR_COQ)/%_stable.v | $(DIR_OUT)
+# $(DIR_OUT)/%_stable_bigz_int31.v $(DIR_OUT)/%_stable_bigz_int63.v: $(DIR_COQ)/%_stable.v | $(DIR_OUT)
+# 	@echo Step 1: Building $@
+# 	cp $< $@
+# 	@echo Step 1: Finished $@
+
+$(DIR_OUT)/coqintvl_bigz_%.v: $(DIR_COQ)/coqintvl_bigz_%.v | $(DIR_OUT)
 	@echo Step 1: Building $@
 	cp $< $@
 	@echo Step 1: Finished $@
