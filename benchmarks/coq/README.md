@@ -9,10 +9,10 @@
 ## Benchs CoqInterval
 
 - (flottants primitifs / flottants émulés avec prec opt / flottants émulés 53-bit)
-  × (vm_compute / native-compute)
+  × (vm_compute / TODO native-compute)
 
 ## ValidSDP
 
-- [ ] TODO check ValidSDP compile avec Coq 8.14
+- [x] Check ValidSDP compile avec Coq 8.14
 - [ ] TODO rerun the ValidSDP benchmarks as is:
   https://github.com/validsdp/benchs-primitive-floats/tree/master/random_posdef_matrices/matrices#readme
