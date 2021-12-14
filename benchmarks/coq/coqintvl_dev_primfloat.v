@@ -401,7 +401,7 @@ Qed.
 (* plot(cos(x)-sin(x)/x, [0, pi]); *)
 Lemma MT22' : forall x : R, eps <= x <= PI -> cos x < sin x / x.
 idtac "MT22'".
-Time intros x H; apply Rminus_lt; interval with (i_bisect_taylor x, i_depth 16).
+Time intros x H; apply Rminus_lt; interval with (i_bisect x, i_taylor x, i_depth 16).
 Qed.
 
 (* plot(cos(x) - (sin(x)/x)^2, [0, pi/2]); *)
@@ -815,7 +815,7 @@ Lemma example20140221_1 :
 Proof.
 intros x H.
 idtac "example20140221_1".
-Time interval with (i_bisect x, i_autodiff x, i_depth 16)).
+Time interval with (i_bisect x, i_autodiff x, i_depth 16).
 Qed.
 
 Lemma example20140221_2 :
