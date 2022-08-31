@@ -58,12 +58,7 @@ $(DIR_OUT):
 # 	cp $< $@
 # 	@echo Step 1: Finished $@
 
-$(DIR_OUT)/coqintvl_bigz_%.v: $(DIR_COQ)/coqintvl_bigz_%.v | $(DIR_OUT)
-	@echo Step 1: Building $@
-	cp $< $@
-	@echo Step 1: Finished $@
-
-$(DIR_OUT)/coqintvl_dev_%.v: $(DIR_COQ)/coqintvl_dev_%.v | $(DIR_OUT)
+$(DIR_OUT)/coqintvl_%.v: $(DIR_COQ)/coqintvl_%.v | $(DIR_OUT)
 	@echo Step 1: Building $@
 	cp $< $@
 	@echo Step 1: Finished $@

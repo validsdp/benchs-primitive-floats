@@ -32,7 +32,7 @@ DIR_COQ := ./coq
 
 SRC_COQ_1 := coqintvl_bigz_int63_prec53.v
 SRC_COQ_2 := coqintvl_bigz_int63_prec30.v
-SRC_COQ_3 := coqintvl_dev_primfloat.v
+SRC_COQ_3 := coqintvl_primfloat.v
 
 FIL_COQ_1 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_1))
 FIL_COQ_2 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_2))
