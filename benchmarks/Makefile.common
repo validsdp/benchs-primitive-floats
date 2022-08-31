@@ -3,7 +3,7 @@
 # User parameters
 #================
 
-COQ814_INTVL := "registry.gitlab.com/erikmd/docker-coq-interval-primitive-floats/master_coq-8.14-interval-4.3.1:14"
+COQ_INTVL := "registry.gitlab.com/erikmd/docker-coq-interval-primitive-floats/master_coq-8.15-interval-4.5.2:latest"
 
 OPAM_INFO_COMMAND := opam repo list; opam config list; opam pin list
 # OPAM_INTVL_DEV := echo -n coq-interval:; opam show -f source-hash coq-interval.dev
@@ -31,7 +31,7 @@ DIR_COQ := ./coq
 
 
 SRC_COQ_1 := coqintvl_bigz_int63_prec53.v
-SRC_COQ_2 := coqintvl_bigz_int63.v
+SRC_COQ_2 := coqintvl_bigz_int63_prec30.v
 SRC_COQ_3 := coqintvl_dev_primfloat.v
 
 FIL_COQ_1 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_1))

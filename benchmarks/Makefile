@@ -4,9 +4,9 @@
 
 # USAGE:
 # $ make -s # to make all benchmarks (-s = --silent)
-# $ make -s 431-bigz-prec53
-# $ make -s 431-bigz-int63
-# $ make -s 431-primfloat
+# $ make -s 452-bigz-prec53
+# $ make -s 452-bigz-prec30
+# $ make -s 452-primfloat
 
 include Makefile.common
 
@@ -19,14 +19,14 @@ include Makefile.common
 ### Rules
 .SECONDARY: $(TMP_KEEP)
 .PHONY: all clean dist-clean \
-  431-bigz-prec53 431-bigz-int63 431-primfloat \
+  452-bigz-prec53 452-bigz-prec30 452-primfloat \
   tar dist-tar
 
 all:
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ814_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); $(OPAM_INTVL_DEV); make 431-primfloat" | tee make.$$(date +'%Y%m%d_%H%M%S').431-primfloat.log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); $(OPAM_INTVL_DEV); make 452-primfloat" | tee make.$$(date +'%Y%m%d_%H%M%S').452-primfloat.log
 	#
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ814_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 431-bigz-prec53" | tee make.$$(date +'%Y%m%d_%H%M%S').431-bigz-prec53.log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ814_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 431-bigz-int63" | tee make.$$(date +'%Y%m%d_%H%M%S').431-bigz-int63.log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 452-bigz-prec53" | tee make.$$(date +'%Y%m%d_%H%M%S').452-bigz-prec53.log
+	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 452-bigz-prec30" | tee make.$$(date +'%Y%m%d_%H%M%S').452-bigz-prec30.log
 	$(MAKE) $(FINAL)
 
 coq: $(CSV_COQ)
@@ -35,9 +35,9 @@ clean:
 dist-clean: clean
 	$(RM) $(FINAL) $(FINAL_AUX)
 
-431-bigz-prec53: $(FIL_COQ_1:=.out.csv)
-431-bigz-int63: $(FIL_COQ_2:=.out.csv)
-431-primfloat: $(FIL_COQ_3:=.out.csv)
+452-bigz-prec53: $(FIL_COQ_1:=.out.csv)
+452-bigz-prec30: $(FIL_COQ_2:=.out.csv)
+452-primfloat: $(FIL_COQ_3:=.out.csv)
 
 # STEP 1: Make directory $(DIR_OUT)
 $(DIR_OUT):
@@ -53,7 +53,7 @@ $(DIR_OUT):
 # 	./step1.perl $< >> $@ || ( RV=$$?; rm -f "$@"; exit $${RV} )
 # 	@echo Step 1: Finished $@
 
-# $(DIR_OUT)/%_stable_bigz_int31.v $(DIR_OUT)/%_stable_bigz_int63.v: $(DIR_COQ)/%_stable.v | $(DIR_OUT)
+# $(DIR_OUT)/%_stable_bigz_int31.v $(DIR_OUT)/%_stable_bigz_prec30.v: $(DIR_COQ)/%_stable.v | $(DIR_OUT)
 # 	@echo Step 1: Building $@
 # 	cp $< $@
 # 	@echo Step 1: Finished $@
