@@ -1,3 +1,7 @@
+(* Deprecated file with minimal-working precision with BigZ/Int63 floats,
+   which is kept for informative purpose only, because the corresponding
+   timings are not intended to be optimal in any sense. *)
+
 Require Import Reals Interval.Tactic.
 Local Open Scope R_scope.
 
