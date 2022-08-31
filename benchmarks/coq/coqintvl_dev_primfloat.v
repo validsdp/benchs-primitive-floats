@@ -3,11 +3,13 @@ Local Open Scope R_scope.
 
 (* From bench-ineqs/benchmarks/coq/multi_poly.v *)
 
+Optimize Heap.
 Lemma RD : forall x1 x2 x3 : R, -5 <= x1 <= 5 -> -5 <= x2 <= 5 -> -5 <= x3 <= 5 -> -367126907/10000000 <= -x1 + 2*x2 - x3 - 835634534/1000000000 * x2 * (1 + x2).
 idtac "RD".
 Time intros x1 x2 x3 H1 H2 H3; interval with (i_bisect x2).
 Qed.
 
+Optimize Heap.
 Lemma adaptiveLV : forall x1 x2 x3 x4 : R,
     -2 <= x1 <= 2 -> -2 <= x2 <= 2 -> -2 <= x3 <= 2 -> -2 <= x4 <= 2 ->
     -20801/1000 <= x1*x2^2 + x1 * x3^2 + x1*x4^2 - 11/10 * x1 + 1.
@@ -15,6 +17,7 @@ idtac "adaptiveLV".
 Time intros x1 x2 x3 x4 H1 H2 H3 H4; interval with (i_bisect x1, i_autodiff x1).
 Qed.
 
+Optimize Heap.
 Lemma butcher : forall x1 x2 x3 x4 x5 x6 : R,
     -1 <= x1 <= 0 -> -1/10 <= x2 <= 9/10 -> -1/10 <= x3 <= 1/2 ->
     -1 <= x4 <= -1/10 -> -1/10 <= x5 <= -5/100 -> -1/10 <= x6 <= -3/100 ->
@@ -24,6 +27,7 @@ Time intros x1 x2 x3 x4 x5 x6 H1 H2 H3 H4 H5 H6;
   interval with (i_bisect x4, i_autodiff x4).
 Qed.
 
+Optimize Heap.
 Lemma magnetism : forall x1 x2 x3 x4 x5 x6 x7 : R,
     -1 <= x1 <= 1 -> -1 <= x2 <= 1 -> -1 <= x3 <= 1 -> -1 <= x4 <= 1 ->
     -1 <= x5 <= 1 -> -1 <= x6 <= 1 -> -1 <= x7 <= 1 ->
@@ -41,6 +45,7 @@ Notation meps := (-1/1024)%R (only parsing).
 (** MetiTarski_JAR2010 paper *)
 
 (* plot(2 * abs(x) / (2 + x) - abs(log(1+x)), [-1, 10]); *)
+Optimize Heap.
 Lemma MT1 :
   forall x : R, -1 + eps <= x <= 10 ->
            2 * Rabs x / (2 + x) <= Rabs (ln (1 + x)) + eps.
@@ -50,6 +55,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x).
 Qed.
 
 (* plot(abs(log(1+x)) + log(1 - abs(x)), [-1, 1]); *)
+Optimize Heap.
 Lemma MT2 :
   forall x : R, -1 + eps <= x <= 1 - eps ->
            Rabs (ln (1 + x)) <= - ln (1 - Rabs x) + eps.
@@ -59,6 +65,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x, i_taylor x).
 Qed.
 
 (* plot(abs(x)/(1 + abs(x)) - abs(log(1+x)), [-1, 1]); *)
+Optimize Heap.
 Lemma MT3 :
   forall x : R, -1 + eps <= x <= 1 ->
            Rabs x / (1 + Rabs x) <= Rabs (ln (1 + x)) + eps.
@@ -68,6 +75,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x).
 Qed.
 
 (* plot(abs(log(1+x)) - abs(x)*(1+abs(x))/abs(1+x), [-1, 10]); *)
+Optimize Heap.
 Lemma MT4 :
   forall x : R, -1 + eps <= x <= 1 ->
                 Rabs (ln (1 + x)) <= (Rabs x) * (1 + Rabs x) / Rabs (1 + x) + eps.
@@ -77,6 +85,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x).
 Qed.
 
 (* plot(abs(x) / 4 - abs(exp(x) - 1), [-1, 1]); *)
+Optimize Heap.
 Lemma MT5 :
   forall x : R, (-1 <= x <= meps \/ eps <= x <= 1) ->
            Rabs x / 4 < Rabs (exp x - 1).
@@ -86,6 +95,7 @@ Time intros x [H|H]; apply Rminus_lt; interval with (i_bisect x).
 Qed.
 
 (* plot(abs(exp(x) - 1) - 7 * abs(x)/4, [0, 1]); *)
+Optimize Heap.
 Lemma MT6 :
   forall x : R, (-1 <= x <= meps \/ eps <= x <= 1) ->
                 Rabs (exp x - 1) < 7 * (Rabs x) / 4.
@@ -95,6 +105,7 @@ Time intros x [H|H]; apply Rminus_lt; interval with (i_bisect x).
 Qed.
 
 (* plot(abs(exp(x) - 1) - (exp(abs(x)) - 1), [-10, 10]); *)
+Optimize Heap.
 Lemma MT7 : forall x : R, -10 <= x <= meps -> Rabs (exp x - 1) <= exp (Rabs x) - 1.
 Proof.
 idtac "MT7".
@@ -102,6 +113,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x, i_autodiff x).
 Qed.
 
 (* plot(abs(exp(x)-(1+x)) - abs(exp(abs(x))-(1+abs(x))), [-10, 10]); *)
+Optimize Heap.
 Lemma MT8 :
   forall x : R, -10 <= x <= meps ->
   Rabs (exp x - (1 + x)) <= Rabs (exp (Rabs x) - (1 + Rabs x)).
@@ -111,6 +123,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x, i_taylor x).
 Qed.
 
 (* plot(abs(exp(x)-(1+x/2)^2) - abs(exp(abs(x))-(1+abs(x)/2)^2), [-10, 10]); *)
+Optimize Heap.
 Lemma MT9 :
   forall x : R, -10 <= x <= meps ->
   Rabs (exp x - (1 + x / 2) ^ 2) <= Rabs (exp (Rabs x) - (1 + (Rabs x) / 2) ^ 2).
@@ -120,6 +133,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x, i_taylor x).
 Qed.
 
 (* plot(2*x/(2+x) - log(1+x), [0, 10]); *)
+Optimize Heap.
 Lemma MT10 :
   forall x : R, 0 <= x <= 10 -> 2 * x / (2 + x) <= ln (1 + x) + eps.
 Proof.
@@ -128,6 +142,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x).
 Qed.
 
 (* plot(x/sqrt(1+x) - log(1+x), [-1/3,0]); *)
+Optimize Heap.
 Lemma MT11 :
   forall x : R, -1/3 <= x <= 0 -> x / sqrt (1 + x) <= ln (1 + x) + eps.
 Proof.
@@ -136,6 +151,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x).
 Qed.
 
 (* plot(log((1+x)/x)-(12*x^2 + 12*x + 1)/(12*x^3 + 18*x^2 + 6*x), [1/3, 10]); *)
+Optimize Heap.
 Lemma MT12 :
   forall x : R, 1/3 <= x <= 10 ->
   ln ((1 + x) / x) <= (12*x^2 + 12*x + 1) / (12*x^3 + 18*x^2 + 6*x).
@@ -145,6 +161,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x, i_taylor x).
 Qed.
 
 (* plot(log((1+x)/x)-1/sqrt(x^2 + x), [1/3, 10]); *)
+Optimize Heap.
 Lemma MT13 :
   forall x : R, 1/3 <= x <= 10 ->
   ln ((1 + x) / x) <= 1 / sqrt (x ^ 2 + x).
@@ -154,6 +171,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x).
 Qed.
 
 (* plot(exp(x - x^2) - 1 - x, [0, 1]); *)
+Optimize Heap.
 Lemma MT14 : forall x : R, 0 <= x <= 1 -> exp (x - x^2) <= 1 + x + eps.
 Proof.
 idtac "MT14".
@@ -161,6 +179,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x, i_autodiff x).
 Qed.
 
 (* plot(exp(-x/(1-x))-(1-x), [-10,1/2]); *)
+Optimize Heap.
 Lemma MT15 : forall x : R, -10 <= x <= 1/2 -> exp(-x/(1 - x)) <= 1 - x + eps.
 Proof.
 idtac "MT15".
@@ -168,6 +187,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x).
 Qed.
 
 (* plot(abs(sin(x)) - 6/5 * abs(x), [-1, 1]); *)
+Optimize Heap.
 Lemma MT16 : forall x : R, -1 <= x <= 1 -> Rabs (sin x) <= 6/5 * Rabs x + eps.
 Proof.
 idtac "MT16".
@@ -175,6 +195,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x, i_autodiff x).
 Qed.
 
 (* plot(1 - 2 * x - cos(pi * x), [0, 1/2]); *)
+Optimize Heap.
 Lemma MT17 : forall x : R, eps <= x <= 100/201 -> cos (PI * x) > 1 - 2 * x.
 Proof.
 idtac "MT17".
@@ -182,6 +203,7 @@ Time intros x H; apply Rminus_lt; interval with (i_bisect x).
 Qed.
 
 (* plot(cos(x) - 1 + x^2/2, [-10,10]); *)
+Optimize Heap.
 Lemma MT18 : forall x : R, -10 <= x <= 10 -> cos x - 1 + x^2 / 2 + eps >= 0.
 Proof.
 idtac "MT18".
@@ -189,6 +211,7 @@ Time intros x H; apply Rminus_ge; interval with (i_bisect x).
 Qed.
 
 (* plot(8 * sqrt(3) * x / (3 * sqrt(3) + sqrt(75 + 80 * x^2)) - atan(x), [0, 10]); *)
+Optimize Heap.
 Lemma MT19 :
   forall x : R, 0 <= x <= 10 ->
   eps + atan x >= 8 * sqrt 3 * x / (3 * sqrt 3 + sqrt (75 + 80 * x^2)).
@@ -198,6 +221,7 @@ Time intros x H; apply Rminus_ge; interval with (i_bisect x).
 Qed.
 
 (* plot((x + 1/x) * arctan(x) - 1, [0,5]); *)
+Optimize Heap.
 Lemma MT20 : forall x : R, eps <= x <= 10 -> (x + 1 / x) * atan x > 1.
 Proof.
 idtac "MT20".
@@ -205,6 +229,7 @@ Time intros x H; interval with (i_bisect x, i_autodiff x, i_depth 25).
 Qed.
 
 (* plot(3 * x / (1 + 2 * sqrt(1 + x^2)) - atan(x), [0, 10]); *)
+Optimize Heap.
 Lemma MT21 :
   forall x : R, 0 <= x <= 10 -> eps + atan x > 3 * x / (1 + 2 * sqrt (1 + x^2)).
 Proof.
@@ -214,6 +239,7 @@ Qed.
 
 (* plot(cos(x)-sin(x)/x, [0, pi]); *)
 (* TODO Plot *)
+Optimize Heap.
 Lemma MT22 : forall x : R, eps <= x <= PI -> cos x <= sin x / x.
 Proof.
 idtac "MT22".
@@ -221,6 +247,7 @@ Time intros x H; apply Rminus_le; interval with (i_bisect x, i_taylor x, i_depth
 Qed.
 
 (* plot(cos(x) - (sin(x)/x)^2, [0, pi/2]); *)
+Optimize Heap.
 Lemma MT23 : forall x : R, eps <= x <= PI / 2 -> cos x < (sin x / x) ^ 2.
 Proof.
 idtac "MT23".
@@ -228,6 +255,7 @@ Time intros x H; apply Rminus_lt; interval with (i_bisect x, i_taylor x).
 Qed.
 
 (* plot(sin(x)/3 + sin(3*x)/6, [pi/3-1, 2*pi/3+1]); *)
+Optimize Heap.
 Lemma MT24 :
   forall x : R, PI/3 <= x <= 2*PI/3 - eps -> (sin x) / 3 + (sin (3*x)) / 6 > 0.
 Proof.
@@ -236,6 +264,7 @@ Time intros x H; interval with (i_bisect x).
 Qed.
 
 (* plot(12-14.2*exp(-.318*x)+(3.25*cos(1.16*x)-.155*sin(1.16*x))*exp(-1.34*x),[-1/2,2]); *)
+Optimize Heap.
 Lemma MT25 :
   forall x : R, 0 <= x <= 2 ->
   12 - 142/10 * exp(-318/1000*x) + (325/100*cos(116/100*x) - 155/1000*sin(116/100*x)) * exp(-134/100*x) > 0.
@@ -258,7 +287,8 @@ Notation eps' := (1/1048576)%R (only parsing).
 Notation meps' := (-1/1048576)%R (only parsing).
 
 (* foire : normal vu la précision *)
-(* Lemma crlibm_exp : *)
+(* Optimize Heap.
+Lemma crlibm_exp : *)
 (*   forall x : R, *)
 (*   (-355/4194304 <= x <= meps') \/ (eps' <= x <= 355/4194304) -> *)
 (*   Rabs ((p x - exp x + 1) / (exp x - 1)) <= 1/4611686018427387904. *)
@@ -273,6 +303,7 @@ End CRlibm_exp.
 (* plot(abs(sqrt(x) - (((((122 / 7397 * x + (-1733) / 13547) * x
   + 529 / 1274) * x + (-767) / 999) * x
   + 407 / 334) * x + 227 / 925)) - 5/65536, [1/2, 2]); *)
+Optimize Heap.
 Lemma remez_sqrt :
   forall x, 1/2 <= x <= 2 ->
   Rabs (sqrt x - (((((122 / 7397 * x + (-1733) / 13547) * x
@@ -288,6 +319,7 @@ Qed.
 (** Daumas_Lester_Munoz_TC2009 paper with a tighter bound *)
 
 (* plot(abs(atan(x)-(x-(11184811/33554432)*x^3-(13421773/67108864)*x^5))-5/2^28, [-1/30, 1/30]); *)
+Optimize Heap.
 Lemma abs_err_atan :
   forall x : R, -1/30 <= x <= 1/30 ->
   Rabs (atan x - (x - (11184811/33554432) * x^3 - (13421773/67108864) * x^5))
@@ -311,6 +343,7 @@ Notation arp phi :=
     13868737/64 + x * (13233647/2048 + x * (
       -1898597/16384 + x * (-6661427/131072)))))) (only parsing).
 
+Optimize Heap.
 Lemma rel_err_geodesic :
   forall phi, 0 <= phi <= max ->
   Rabs ((rp phi - arp phi) / rp phi) <= 23/16777216.
@@ -320,6 +353,7 @@ Time unfold (*rp, arp,*) a, umf2, f, max; intros phi Hphi;
   interval with (i_bisect phi, i_autodiff phi).
 Qed.
 
+Optimize Heap.
 Lemma rel_err_geodesic' :
   forall phi, 0 <= phi <= max ->
   Rabs ((rp phi - arp phi) / rp phi) <= 23/16777216.
@@ -335,24 +369,28 @@ End Rel_err_geodesic.
 (** MetiTarski_JAR2010 paper *)
 
 (* plot(abs(sin(x)) - 6/5 * abs(x), [-1, 1]); *)
+Optimize Heap.
 Lemma MT16__1 : forall x : R, (-1 <= x <= 0) -> (sin x) > - (6/5 * - x + eps).
 Proof.
 idtac "MT16__1".
 Time intros x H; apply Rminus_lt; interval with (i_bisect x, i_autodiff x).
 Qed.
 
+Optimize Heap.
 Lemma MT16__2 : forall x : R, (-1 <= x <= 0) -> (sin x) < 6/5 * - x + eps.
 Proof.
 idtac "MT16__2".
 Time intros x H; apply Rminus_lt; interval with (i_bisect x).
 Qed.
 
+Optimize Heap.
 Lemma MT16__3 : forall x : R, (0 <= x <= 1) -> (sin x) > - (6/5 * x + eps).
 Proof.
 idtac "MT16__3".
 Time intros x H; apply Rminus_lt; interval with (i_bisect x).
 Qed.
 
+Optimize Heap.
 Lemma MT16__4 : forall x : R, (0 <= x <= 1) -> (sin x) < 6/5 * x + eps.
 Proof.
 idtac "MT16__4".
@@ -360,6 +398,7 @@ Time intros x H; apply Rminus_lt; interval with (i_bisect x, i_autodiff x).
 Qed.
 
 (* plot(1 - 2 * x - cos(pi * x), [0, 1/2]); *)
+Optimize Heap.
 Lemma MT17' : forall x : R, eps <= x <= 100/201 -> cos (PI * x) > 1 - 2 * x.
 Proof.
 idtac "MT17'".
@@ -367,6 +406,7 @@ Time intros x H; apply Rminus_lt; interval with (i_bisect x).
 Qed.
 
 (* plot(cos(x) - 1 + x^2/2, [-10,10]); *)
+Optimize Heap.
 Lemma MT18' : forall x : R, -10 <= x <= 10 -> cos x - 1 + x^2 / 2 + eps > 0.
 Proof.
 idtac "MT18'".
@@ -374,6 +414,7 @@ Time intros x H; interval with (i_bisect x).
 Qed.
 
 (* plot(8 * sqrt(3) * x / (3 * sqrt(3) + sqrt(75 + 80 * x^2)) - atan(x), [0, 10]); *)
+Optimize Heap.
 Lemma MT19' :
   forall x : R, 0 <= x <= 10 ->
   eps + atan x > 8 * sqrt 3 * x / (3 * sqrt 3 + sqrt (75 + 80 * x^2)).
@@ -383,6 +424,7 @@ Time intros x H; apply Rminus_lt; interval with (i_bisect x, i_autodiff x).
 Qed.
 
 (* plot((x + 1/x) * arctan(x) - 1, [0,5]); *)
+Optimize Heap.
 Lemma MT20' : forall x : R, eps <= x <= 10 -> (x + 1 / x) * atan x > 1.
 Proof.
 idtac "MT20'".
@@ -390,6 +432,7 @@ Time intros x H; interval with (i_bisect x, i_autodiff x, i_depth 25).
 Qed.
 
 (* plot(3 * x / (1 + 2 * sqrt(1 + x^2)) - atan(x), [0, 10]); *)
+Optimize Heap.
 Lemma MT21' :
   forall x : R, 0 <= x <= 10 -> eps + atan x > 3 * x / (1 + 2 * sqrt (1 + x^2)).
 Proof.
@@ -399,12 +442,14 @@ Qed.
 
 (* OK en flottants primitifs *)
 (* plot(cos(x)-sin(x)/x, [0, pi]); *)
+Optimize Heap.
 Lemma MT22' : forall x : R, eps <= x <= PI -> cos x < sin x / x.
 idtac "MT22'".
 Time intros x H; apply Rminus_lt; interval with (i_bisect x, i_taylor x, i_depth 16).
 Qed.
 
 (* plot(cos(x) - (sin(x)/x)^2, [0, pi/2]); *)
+Optimize Heap.
 Lemma MT23' : forall x : R, eps <= x <= PI / 2 ->
   cos x < (sin x / x) * (sin x / x).
 Proof.
@@ -413,6 +458,7 @@ Time intros x H; apply Rminus_lt; interval with (i_bisect x, i_taylor x).
 Qed.
 
 (* plot(sin(x)/3 + sin(3*x)/6, [pi/3-1, 2*pi/3+1]); *)
+Optimize Heap.
 Lemma MT24' :
   forall x : R, PI/3 <= x <= 2*PI/3 - eps -> (sin x) / 3 + (sin (3*x)) / 6 > 0.
 Proof.
@@ -434,6 +480,7 @@ Notation D x := (-1 <= x <= 1/2) (only parsing).
 Notation p2 x := (5009597 * 2^(-26) + x * (-3452481 * 2^(-36) + x * (10948483 * 2^(-24)))) (only parsing).
 Notation eps2 := (57 * 2^(-10)) (only parsing).
 
+Optimize Heap.
 Lemma cos_cos_d2 :
   forall x, D x -> Rabs ((p2 x - f x) / f x) <= eps2.
 Proof.
@@ -445,6 +492,7 @@ Qed.
 Notation p3 x := (9578005 * 2^(-27) + x * (-8411879 * 2^(-29) + x * (6079307 * 2^(-23) + x * (14167647 * 2^(-27))))) (only parsing).
 Notation eps3 := (51 * 2^(-11)) (only parsing).
 
+Optimize Heap.
 Lemma cos_cos_d3 :
   forall x, D x -> Rabs ((p3 x - f x) / f x) <= eps3.
 Proof.
@@ -456,6 +504,7 @@ Qed.
 Notation p4 x := (2366509 * 2^(-25) + x * (10537089 * 2^(-34) + x * (1593929 * 2^(-21) + x * (-3609977 * 2^(-29) + x * (-609875 * 2^(-22)))))) (only parsing).
 Notation eps4 := (51 * 2^(-14)) (only parsing).
 
+Optimize Heap.
 Lemma cos_cos_d4 :
   forall x, D x -> Rabs ((p4 x - f x) / f x) <= eps4.
 Proof.
@@ -467,6 +516,7 @@ Qed.
 Notation p5 x := (9491875 * 2^(-27) + x * (1388077 * 2^(-31) + x * (12575645 * 2^(-24) + x * (-3473267 * 2^(-28) + x * (-13477879 * 2^(-27) + x * (11406127 * 2^(-28))))))) (only parsing).
 Notation eps5 := (3 * 2^(-12)) (only parsing).
 
+Optimize Heap.
 Lemma cos_cos_d5 :
   forall x, D x -> Rabs ((p5 x - f x) / f x) <= eps5.
 Proof.
@@ -478,6 +528,7 @@ Qed.
 Notation p6 x := (9492545 * 2^(-27) + x * (12716483 * 2^(-36) + x * (3142515 * 2^(-22) + x * (-8980587 * 2^(-31) + x * (-12736139 * 2^(-27) + x * (8061261 * 2^(-29) + x * (-13450525 * 2^(-29)))))))) (only parsing).
 Notation eps6 := (17 * 2^(-16)) (only parsing).
 
+Optimize Heap.
 Lemma cos_cos_d6 :
   forall x, D x -> Rabs ((p6 x - f x) / f x) <= eps6.
 Proof.
@@ -489,6 +540,7 @@ Qed.
 Notation p7 x := (4747227 * 2^(-26) + x * (5795109 * 2^(-37) + x * (784233 * 2^(-20) + x * (-6099871 * 2^(-32) + x * (-10729417 * 2^(-27) + x * (12242037 * 2^(-30) + x * (-8892053 * 2^(-27) + x * (-14339757 * 2^(-29))))))))) (only parsing).
 Notation eps7 := (25 * 2^(-19)) (only parsing).
 
+Optimize Heap.
 Lemma cos_cos_d7 :
   forall x, D x -> Rabs ((p7 x - f x) / f x) <= eps7.
 Proof.
@@ -500,6 +552,7 @@ Qed.
 Notation p8 x := (9494185 * 2^(-27) + x * (12149587 * 2^(-41) + x * (6275713 * 2^(-23) + x * (-14107149 * 2^(-36) + x * (-2763427 * 2^(-25) + x * (14503039 * 2^(-33) + x * (-530509 * 2^(-23) + x * (-8256955 * 2^(-31) + x * (3638503 * 2^(-28)))))))))) (only parsing).
 Notation eps8 := (5 * 2^(-20)) (only parsing).
 
+Optimize Heap.
 Lemma cos_cos_d8 :
   forall x, D x -> Rabs ((p8 x - f x) / f x) <= eps8.
 Proof.
@@ -513,6 +566,7 @@ Qed.
 Notation "a * b ^(- n )" := (a / b ^ n)%R
   (at level 40, b at next level, only parsing) : R_scope.
 
+Optimize Heap.
 Lemma cos_cos_d2__1 :
   forall x, D x -> (p2 x - f x) / f x > - eps2.
 Proof.
@@ -520,6 +574,7 @@ idtac "cos_cos_d2__1".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d2__2 :
   forall x, D x -> (p2 x - f x) / f x < eps2.
 Proof.
@@ -527,6 +582,7 @@ idtac "cos_cos_d2__2".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d3__1 :
   forall x, D x -> (p3 x - f x) / f x > - eps3.
 Proof.
@@ -534,6 +590,7 @@ idtac "cos_cos_d3__1".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d3__2 :
   forall x, D x -> (p3 x - f x) / f x < eps3.
 Proof.
@@ -541,6 +598,7 @@ idtac "cos_cos_d3__2".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d4__1 :
   forall x, D x -> (p4 x - f x) / f x > - eps4.
 Proof.
@@ -548,6 +606,7 @@ idtac "cos_cos_d4__1".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d4__2 :
   forall x, D x -> (p4 x - f x) / f x < eps4.
 Proof.
@@ -555,6 +614,7 @@ idtac "cos_cos_d4__2".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d5__1 :
   forall x, D x -> (p5 x - f x) / f x > - eps5.
 Proof.
@@ -562,6 +622,7 @@ idtac "cos_cos_d5__1".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d5__2 :
   forall x, D x -> (p5 x - f x) / f x < eps5.
 Proof.
@@ -569,6 +630,7 @@ idtac "cos_cos_d5__2".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d6__1 :
   forall x, D x -> (p6 x - f x) / f x > - eps6.
 Proof.
@@ -576,6 +638,7 @@ idtac "cos_cos_d6__1".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d6__2 :
   forall x, D x -> (p6 x - f x) / f x < eps6.
 Proof.
@@ -583,6 +646,7 @@ idtac "cos_cos_d6__2".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d7__1 :
   forall x, D x -> (p7 x - f x) / f x > - eps7.
 Proof.
@@ -590,6 +654,7 @@ idtac "cos_cos_d7__1".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d7__2 :
   forall x, D x -> (p7 x - f x) / f x < eps7.
 Proof.
@@ -597,6 +662,7 @@ idtac "cos_cos_d7__2".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d8__1 :
   forall x, D x -> (p8 x - f x) / f x > - eps8.
 Proof.
@@ -604,6 +670,7 @@ idtac "cos_cos_d8__1".
 Time intros x H; interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma cos_cos_d8__2 :
   forall x, D x -> (p8 x - f x) / f x < eps8.
 Proof.
@@ -613,6 +680,7 @@ Qed.
 
 (* From coq-interval/testsuite/bug-20120927.v *)
 
+Optimize Heap.
 Lemma bug20120927 :
   forall x, (-1/2 <= x <= 0)%R ->
   True.
@@ -625,12 +693,14 @@ Qed.
 
 (* From coq-interval/testsuite/bug-20140723.v *)
 
+Optimize Heap.
 Lemma bug20140723_1 : True.
 idtac "bug20140723_1".
 Time interval_intro PI lower.
 exact I.
 Qed.
 
+Optimize Heap.
 Lemma bug20140723_2 : True.
 idtac "bug20140723_2".
 Time interval_intro (PI/2)%R upper.
@@ -639,6 +709,7 @@ Qed.
 
 (* From coq-interval/testsuite/bug-20140728.v *)
 
+Optimize Heap.
 Lemma bug20140728 : forall x : R, exp x >= 0.
 idtac "bug20140728".
 Time intros; interval.
@@ -647,6 +718,7 @@ Qed.
 (*
 (* From coq-interval/testsuite/bug-20150924.v *)
 
+Optimize Heap.
 Lemma bug20150924 : forall x : R,
   (Rabs (x - x) <= 1/5)%R.
 Proof.
@@ -657,6 +729,7 @@ Qed.
 
 (* From coq-interval/testsuite/bug-20150925.v *)
 
+Optimize Heap.
 Lemma bug20150925 : forall x, (-1 / 3 <= x - x <= 1 / 7)%R.
 Proof.
 intros x.
@@ -667,6 +740,7 @@ Qed.
 
 (* From coq-interval/testsuite/example_20071016.v *)
 
+Optimize Heap.
 Lemma example20071016_1 :
   forall x, -1 <= x <= 1 ->
   sqrt (1 - x) <= 3/2.
@@ -676,6 +750,7 @@ idtac "example20071016_1".
   Time interval.
 Qed.
 
+Optimize Heap.
 Lemma example20071016_2 :
   forall x, -1 <= x <= 1 ->
   sqrt (1 - x) <= 141422/100000.
@@ -685,6 +760,7 @@ idtac "example20071016_2".
   Time interval.
 Qed.
 
+Optimize Heap.
 Lemma example20071016_3 :
   forall x, -1 <= x <= 1 ->
   sqrt (1 - x) <= 141422/100000.
@@ -697,6 +773,7 @@ idtac "example20071016_3'".
   Time interval.
 Qed.
 
+Optimize Heap.
 Lemma example20071016_4 :
   forall x, 3/2 <= x <= 2 ->
   forall y, 1 <= y <= 33/32 ->
@@ -707,6 +784,7 @@ idtac "example20071016_4".
   Time interval with (i_bisect x).
 Qed.
 
+Optimize Heap.
 Lemma example20071016_5 :
   forall x, 1/2 <= x <= 2 ->
   Rabs (sqrt x - (((((122 / 7397 * x + (-1733) / 13547) * x
@@ -719,6 +797,7 @@ idtac "example20071016_5".
   Time interval with (i_bisect x, i_taylor x).
 Qed.
 
+Optimize Heap.
 Lemma example20071016_6 :
   forall x, -1 <= x ->
   x < 1 + powerRZ x 3.
@@ -731,6 +810,7 @@ Qed.
 
 Require Import Coquelicot.Coquelicot.
 
+Optimize Heap.
 Lemma example20071016_7 :
   Rabs (RInt (fun x => atan (sqrt (x*x + 2)) / (sqrt (x*x + 2) * (x*x + 1))) 0 1
         - 5/96*PI*PI) <= 1/1000.
@@ -741,6 +821,7 @@ Time integral with (i_fuel 2, i_degree 5).
 Qed.
 
 (*
+Optimize Heap.
 Lemma example20071016_8 :
   RInt_gen (fun x => 1 * (powerRZ x 3 * ln x^2))
            (at_right 0) (at_point 1) = 1/32.
@@ -752,6 +833,7 @@ Qed.
 *)
 
 (* TODO/FIXME: Ltac bug?
+Optimize Heap.
 Lemma example20071016_9 :
   Rabs (RInt_gen (fun t => 1/sqrt t * exp (-(1*t)))
                  (at_point 1) (Rbar_locally p_infty)
@@ -763,6 +845,7 @@ Qed. *)
 
 (* From coq-interval/testsuite/example-20120205.v *)
 
+Optimize Heap.
 Lemma example20120205_1 :
   forall x, (1 <= x)%R -> (0 < x)%R.
 Proof.
@@ -772,6 +855,7 @@ Time interval.
 Qed.
 
 (*
+Optimize Heap.
 Lemma example20120205_2 : forall x, (1 <= x)%R -> (x <= x * x)%R.
 Proof.
 intros.
@@ -781,6 +865,7 @@ Time interval with (i_bisect x, i_autodiff x, i_prec 1).
 Qed.
  *)
 
+Optimize Heap.
 Lemma example20120205_3 : forall x, (2 <= x)%R -> (x < x * x)%R.
 Proof.
 intros.
@@ -789,6 +874,7 @@ idtac "example20120205_3".
 Time interval with (i_bisect x, i_autodiff x).
 Qed.
 
+Optimize Heap.
 Lemma example20120205_4 : forall x, (-1 <= x)%R -> (x < 1 + powerRZ x 3)%R.
 Proof.
 intros.
@@ -807,6 +893,7 @@ John Harrison, Verifying the Accuracy of Polynomial Approximations in HOL.
 In TPHOLs, pages 137-152, 1997.
 *)
 
+Optimize Heap.
 Lemma example20140221_1 :
   forall x : R,
     (-10831/1000000 <= x /\ x <= 10831/1000000) -> (* TODO Rabs *)
@@ -818,6 +905,7 @@ idtac "example20140221_1".
 Time interval with (i_bisect x, i_autodiff x, i_depth 16).
 Qed.
 
+Optimize Heap.
 Lemma example20140221_2 :
   forall x : R,
     (-10831/1000000 <= x /\ x <= 10831/1000000) ->
@@ -849,6 +937,7 @@ Definition arp phi :=
     13868737/64 + x * (13233647/2048 + x * (
       -1898597/16384 + x * (-6661427/131072))))).
 
+Optimize Heap.
 Lemma example20140610_1 : forall phi, 0 <= phi <= max ->
   Rabs ((rp phi - arp phi) / rp phi) <= 23/16777216.
 Proof.
@@ -858,6 +947,7 @@ idtac "example20140610_1".
 Time interval with (i_bisect phi, i_autodiff phi).
 Qed.
 
+Optimize Heap.
 Lemma example20140610_2 : forall phi, 0 <= phi <= max ->
   Rabs ((rp phi - arp phi) / rp phi) <= 23/16777216.
 Proof.
@@ -877,6 +967,7 @@ William J. Cody Jr. and William Waite
 Software Manual for the Elementary Functions
 *)
 
+Optimize Heap.
 Lemma example20150105 : forall x : R, Rabs x <= 35/100 ->
   let p := fun t => 1 * pow2 (-2) + t * (1116769 * pow2 (-28)) in
   let q := fun t => 1 * pow2 (-1) + t * (13418331 * pow2 (-28)) in
@@ -891,6 +982,7 @@ Qed.
 
 (* From coq-interval/testsuite/example-20160218.v *)
 
+Optimize Heap.
 Lemma exp_0_3 :
   Rabs (RInt (fun x => exp x) 0 3 - (exp(1) ^ 3 - 1)) <= 1/(1000*1000).
 Proof.
@@ -898,6 +990,7 @@ idtac "exp_0_3".
 Time integral with (i_fuel 1).
 Qed.
 
+Optimize Heap.
 Lemma x_ln1p_0_1 :
   Rabs (RInt (fun x => x * ln(1 + x)) 0 1 - 1/4) <= 1/1000.
 Proof.
@@ -905,6 +998,7 @@ idtac "x_ln1p_0_1".
 Time integral with (i_fuel 1).
 Qed.
 
+Optimize Heap.
 Lemma circle :
   Rabs (RInt (fun x => sqrt(1 - x * x)) 0 1 - PI / 4) <= 1/100.
 Proof.
@@ -912,6 +1006,7 @@ idtac "circle".
 Time integral with (i_fuel 7, i_degree 1).
 Qed.
 
+Optimize Heap.
 Lemma exp_cos_0_1 :
   Rabs (RInt (fun x => sin(x) * exp(cos x)) 0 1 - (exp 1 - exp(cos 1))) <= 1/1000.
 Proof.
@@ -919,6 +1014,7 @@ idtac "exp_cos_0_1".
 Time integral with (i_fuel 1).
 Qed.
 
+Optimize Heap.
 Lemma arctan_0_1 :
   Rabs (RInt (fun x => 1 / (1 + x*x)) 0 1 - PI / 4) <= 1/1000.
 Proof.
@@ -928,6 +1024,7 @@ Qed.
 
 (* From coq-interval/testsuite/example-20171018.v *)
 
+Optimize Heap.
 Lemma h_54_ln_2  h :
   -53 <= h <= 0 ->
   -  Basic.Rnearbyint Basic.rnd_DN (h * ln 2 / ln 5) * ln 5 <= 54 * ln 2.
@@ -939,11 +1036,13 @@ Qed.
 
 (* From coq-interval/testsuite/example_ln.v *)
 
+Optimize Heap.
 Lemma example_ln_1 : forall x : R, (0 <= x <= 1 -> ln (exp x) <= 1 + 1/1024)%R.
 idtac "example_ln_1".
 Time intros; interval.
 Qed.
 
+Optimize Heap.
 Lemma example_ln_2 : (693/1000 < ln 2 < 694/1000)%R.
 idtac "example_ln_2".
 Time split; interval.
@@ -951,18 +1050,21 @@ Qed.
 
 (* From [Formally Verified Approx. of Definite Integrals by Mahboubi, Melquiond, Sibut-Pinote] *)
 
+Optimize Heap.
 Lemma bissect :
   Rabs (RInt (fun x => x * sin x / (1 + cos x * cos x)) 0 PI - PI*PI/4) <= 1/1000000000000.
 idtac "bissect".
 Time integral with (i_degree 13, i_fuel 13).
 Qed.
 
+Optimize Heap.
 Lemma Chebyshev :
   (RInt (fun x => (2048 * x^12 - 6144 * x^10 + 6912 * x^8 - 3584 * x^6 + 840 * x^4 - 72 * x^2 + 1) * exp (-(x - 3/4)^2) * sqrt (1 - x*x)) (-1) 1 + 32555895745 / 10000000000000000) <= 1/100000000000.
 idtac "Chebyshev".
 Time integral with (i_degree 10, i_fuel 100).
 Qed.
 
+Optimize Heap.
 Lemma Rump_Tucker :
   Rabs (RInt (fun x => sin (x + exp x)) 0 8 - 3474/10000) <= 1/1000000.
 idtac "Rump_Tucker".
