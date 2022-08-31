@@ -33,12 +33,18 @@ DIR_COQ := ./coq
 SRC_COQ_1 := coqintvl_bigz_int63_prec53.v
 SRC_COQ_2 := coqintvl_bigz_int63_prec30.v
 SRC_COQ_3 := coqintvl_primfloat.v
+SRC_COQ_1N := coqintvl_bigz_int63_prec53_native.v
+SRC_COQ_2N := coqintvl_bigz_int63_prec30_native.v
+SRC_COQ_3N := coqintvl_primfloat_native.v
 
 FIL_COQ_1 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_1))
 FIL_COQ_2 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_2))
 FIL_COQ_3 := $(addprefix $(DIR_OUT)/,$(SRC_COQ_3))
+FIL_COQ_1N := $(addprefix $(DIR_OUT)/,$(SRC_COQ_1N))
+FIL_COQ_2N := $(addprefix $(DIR_OUT)/,$(SRC_COQ_2N))
+FIL_COQ_3N := $(addprefix $(DIR_OUT)/,$(SRC_COQ_3N))
 
-FILES_COQ := $(FIL_COQ_1) $(FIL_COQ_2) $(FIL_COQ_3)
+FILES_COQ := $(FIL_COQ_1) $(FIL_COQ_2) $(FIL_COQ_3) $(FIL_COQ_1N) $(FIL_COQ_2N) $(FIL_COQ_3N)
 
 OUT_COQ := $(FILES_COQ:=.out)
 TMP_COQ := $(FILES_COQ:=.time) \
