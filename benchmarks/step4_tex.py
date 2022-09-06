@@ -99,18 +99,22 @@ def main():
     def emit_start():
         print("""\\begingroup
 \\setlength\\tabcolsep{3pt} % 6pt by default
-\\begin{tabular}{lllllll}
+\\begin{tabular}{lllllllllllll}
 \\toprule
 Problems """, end='')
 
         for f in filenames:
-            print(' & \\col{%s}' % get_title(f), end='')
+            print(' & \\col{%s} &' % get_title(f), end='')
 
         print(" \\\\")
         ### BEGIN Hack duplication
         print(col0.replace('_', '\\_'), end='')
+
+        # Shorten col1
+        col1 = col1.replace("Coq CPU ", "")
+
         for f in filenames:
-            print(" & %s" % col1, end='')
+            print(" & %s & speedup" % col1, end='')
         print(""" \\\\
 \\midrule""")
         ### END Hack duplication
@@ -119,12 +123,15 @@ Problems """, end='')
     for p in problems:
         i += 1
         print(p.replace('_', '\\_'), end='')
+        base_value_fl = float(res[p][filenames[0]]) # assuming it is found
         for f in filenames:
             if f in res[p]:
                 value = res[p][f]
+                ratio = "×{:.2f}".format(base_value_fl / float(value))
             else:
                 value = "N/A"
-            print(" & %s" % value, end='')
+                ratio = ""
+            print(" & %s & %s" % (value, ratio), end='')
         print(""" \\\\
 \\midrule""")
 
