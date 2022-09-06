@@ -111,10 +111,10 @@ Problems """, end='')
         print(col0.replace('_', '\\_'), end='')
 
         # Shorten col1
-        col1 = col1.replace("Coq CPU ", "")
+        col1prime = col1.replace("Coq CPU ", "")
 
         for f in filenames:
-            print(" & %s & speedup" % col1, end='')
+            print(" & %s & speedup" % col1prime, end='')
         print(""" \\\\
 \\midrule""")
         ### END Hack duplication
