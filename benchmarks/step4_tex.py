@@ -3,9 +3,12 @@ import csv
 import sys
 
 # dictionary {"filename.v": "tabular-caption"}
-configs = {"coqintvl_bigz_int63_prec53.v": [0, "431-bigz-prec53"],
-           "coqintvl_bigz_int63.v": [1, "431-bigz-int63"],
-           "coqintvl_dev_primfloat.v": [2, "431-primfloat"]}
+configs = {"coqintvl_bigz_int63_prec53.v": [0, "452-bigz-prec53"],
+           "coqintvl_bigz_int63_prec30.v": [1, "452-bigz-prec30"],
+           "coqintvl_primfloat.v": [2, "452-primfloat"],
+           "coqintvl_bigz_int63_prec53_native.v": [3, "452-bigz-prec53-native"],
+           "coqintvl_bigz_int63_prec30_native.v": [4, "452-bigz-prec30-native"],
+           "coqintvl_primfloat_native.v": [5, "452-primfloat-native"]}
 
 filenames = sorted(list(configs.keys()), key=(lambda x: configs[x]))
 
@@ -51,7 +54,7 @@ def main():
 
 \\pagestyle{empty}
 \\thispagestyle{empty}
-\\title{Benchs Coq 8.14 + coq-interval 4.3.1}
+\\title{Benchs Coq 8.15 + coq-interval 4.5.2}
 \\begin{document}
 \\maketitle
 """, end='')
@@ -96,7 +99,7 @@ def main():
     def emit_start():
         print("""\\begingroup
 \\setlength\\tabcolsep{3pt} % 6pt by default
-\\begin{tabular}{llllll}
+\\begin{tabular}{lllllll}
 \\toprule
 Problems """, end='')
 
