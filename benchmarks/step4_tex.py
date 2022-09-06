@@ -13,7 +13,7 @@ configs = {"coqintvl_bigz_int63_prec53.v": [0, "452-bigz-prec53"],
 filenames = sorted(list(configs.keys()), key=(lambda x: configs[x]))
 
 
-nrows = 20
+nrows = 34
 
 
 def get_full_filename(filename):
@@ -40,7 +40,7 @@ def get_title(filename):
 def main():
 
     print("""
-\\documentclass[a4paper,landscape,10pt]{article}
+\\documentclass[a4paper,10pt]{article}
 %%% BEGIN OF SECTION TO BE ADDED INTO THE LATEX PREAMBLE
 \\usepackage{calc}
 \\usepackage{rotating}
@@ -50,6 +50,7 @@ def main():
 <{\\end{minipage}\\end{turn}}%
 }
 \\newcommand{\\col}[1]{\\multicolumn{1}{R{\\widthof{(partly verified)\\,}}}{#1}}
+\\newcommand{\\colz}[1]{\\multicolumn{1}{R{\\widthof{\\,}}}{#1}}
 %%% END OF SECTION TO BE ADDED INTO THE LATEX PREAMBLE
 
 \\pagestyle{empty}
@@ -101,7 +102,7 @@ def main():
     def emit_start():
         print("""\\begingroup
 \\setlength\\tabcolsep{3pt} % 6pt by default
-\\begin{tabular}{llllllllllll}
+\\begin{tabular}{l|lllll|llllll}
 \\toprule
 Problems """, end='')
 
@@ -122,7 +123,7 @@ Problems """, end='')
             if f == basefile:
                 print(" & %s" % col1prime, end='')
             else:
-                print(" & %s & \\col{speedup}" % col1prime, end='')
+                print(" & %s & \\colz{speedup}" % col1prime, end='')
         print(""" \\\\
 \\midrule""")
         ### END Hack duplication
