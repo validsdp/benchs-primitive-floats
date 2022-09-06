@@ -96,15 +96,20 @@ def main():
     col0 = columns[0]
     col1 = columns[1] # Note: only keep the row 1
 
+    basefile = filenames[0]
+
     def emit_start():
         print("""\\begingroup
 \\setlength\\tabcolsep{3pt} % 6pt by default
-\\begin{tabular}{lllllllllllll}
+\\begin{tabular}{llllllllllll}
 \\toprule
 Problems """, end='')
 
         for f in filenames:
-            print(' & \\col{%s} &' % get_title(f), end='')
+            if f == basefile:
+                print(' & \\col{%s}' % get_title(f), end='')
+            else:
+                print(' & \\col{%s} &' % get_title(f), end='')
 
         print(" \\\\")
         ### BEGIN Hack duplication
@@ -114,7 +119,10 @@ Problems """, end='')
         col1prime = col1.replace("Coq CPU ", "")
 
         for f in filenames:
-            print(" & %s & speedup" % col1prime, end='')
+            if f == basefile:
+                print(" & %s" % col1prime, end='')
+            else:
+                print(" & %s & \\col{speedup}" % col1prime, end='')
         print(""" \\\\
 \\midrule""")
         ### END Hack duplication
@@ -123,15 +131,18 @@ Problems """, end='')
     for p in problems:
         i += 1
         print(p.replace('_', '\\_'), end='')
-        base_value_fl = float(res[p][filenames[0]]) # assuming it is found
+        basefile_value_fl = float(res[p][basefile]) # assuming it is found
         for f in filenames:
             if f in res[p]:
                 value = res[p][f]
-                ratio = "×{:.2f}".format(base_value_fl / float(value))
+                ratio = "{:.1f}x".format(basefile_value_fl / float(value))
             else:
                 value = "N/A"
                 ratio = ""
-            print(" & %s & %s" % (value, ratio), end='')
+            if f == basefile:
+                print(" & %s" % value, end='')
+            else:
+                print(" & %s & %s" % (value, ratio), end='')
         print(""" \\\\
 \\midrule""")
 
