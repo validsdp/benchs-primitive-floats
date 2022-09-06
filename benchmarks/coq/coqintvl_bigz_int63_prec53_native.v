@@ -738,7 +738,6 @@ intros x.
 idtac "bug20150925".
 Time interval with (i_native_compute, i_prec 53, i_autodiff x).
 Qed.
-*
 
 (* From coq-interval/testsuite/example_20071016.v *)
 
