@@ -10,6 +10,9 @@
 # $ make -s 452-bigz-prec53-native
 # $ make -s 452-bigz-prec30-native
 # $ make -s 452-primfloat-native
+# or
+# $ sudo apt-get install time
+# $ \time -v -o $(date -I).time -a make |& tee $(date -I).make
 
 include Makefile.common
 
