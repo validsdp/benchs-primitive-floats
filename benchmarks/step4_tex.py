@@ -102,7 +102,7 @@ def main():
     def emit_start():
         print("""\\begingroup
 \\setlength\\tabcolsep{3pt} % 6pt by default
-\\begin{tabular}{l|lllll|llllll}
+\\hspace{-3em}\\begin{tabular}{l|lllll|llllll}
 \\toprule
 Problems """, end='')
 
