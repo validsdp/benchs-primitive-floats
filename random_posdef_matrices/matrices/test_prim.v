@@ -3,7 +3,7 @@
 From Bignums Require Import BigZ.
 Require Import mathcomp.ssreflect.seq.
 Require Import Interval.Float.Specific_bigint.
-Require Import Interval.Interval.Interval.
+Require Import Interval.Float.Basic.
 Require Import Interval.Float.Specific_ops.
 Require Import CoqEAL.refinements.seqmx.
 Require Import CoqEAL.refinements.refinements.

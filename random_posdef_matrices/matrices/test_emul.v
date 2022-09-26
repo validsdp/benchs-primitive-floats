@@ -3,7 +3,7 @@
 From Bignums Require Import BigZ.
 Require Import mathcomp.ssreflect.seq.
 Require Import Interval.Float.Specific_bigint.
-Require Import Interval.Interval.Interval.
+Require Import Interval.Float.Basic.
 Require Import Interval.Float.Specific_ops.
 Require Import CoqEAL.refinements.seqmx.
 Require Import CoqEAL.refinements.refinements.
@@ -38,9 +38,9 @@ Section test_CoqInterval.
 Local Notation T := F.type (only parsing).
 Definition two := Eval compute in
       let one := Float 1%bigZ 0%bigZ in
-      F.add rnd_NE 53%bigZ one one.
+      F.add_slow rnd_NE 53%bigZ one one.
 
-Instance : add_of T := fun a b => no_doubling1 (F.add rnd_NE 53%bigZ a b).
+Instance : add_of T := fun a b => no_doubling1 (F.add_slow rnd_NE 53%bigZ a b).
 Instance : mul_of T := fun a b => no_doubling1 (F.mul rnd_NE 53%bigZ a b).
 Instance : sqrt_of T := fun a => (F.sqrt rnd_NE 53%bigZ a).
 Instance : div_of T := fun a b => (F.div rnd_NE 53%bigZ a b).
