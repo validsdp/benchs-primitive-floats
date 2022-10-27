@@ -9,8 +9,8 @@ OPS := add mul none
 
 VER := prim emul
 
-TAC_VFILES := mat0050.v mat0100.v mat0150.v mat0200.v mat0250.v mat0300.v mat0350.v mat0400.v
-OPS_VFILES := mat0200.v mat0250.v mat0300.v mat0350.v mat0400.v
+TAC_VFILES := mat0050.v mat0100.v mat0150.v mat0200.v mat0250.v mat0300.v mat0350.v mat0400.v mat0450.v mat0500.v
+OPS_VFILES := mat0200.v mat0250.v mat0300.v mat0350.v mat0400.v mat0450.v mat0500.v
 
 TAC_VBENCHS := $(foreach ver,$(VER),$(foreach f,$(TAC_VFILES:.v=),$(foreach n,1 2 3 4 5,tac_$(ver)_$(f)_$(n).v)))
 OPS_VBENCHS := $(foreach ver,$(VER),$(foreach f,$(OPS_VFILES:.v=),$(foreach o,$(OPS),$(foreach n,1 2 3 4 5,test_$(ver)_$(f)_$(o)_$(n).v))))
