@@ -767,7 +767,7 @@ Lemma example20071016_3 :
 Proof.
   intros.
 idtac "example20071016_3".
-  Time interval_intro (sqrt (1 - x)) upper with (i_native_compute) as H'.
+  Time interval_intro (sqrt (1 - x)) upper as H'.
   apply Rle_trans with (1 := H').
 idtac "example20071016_3'".
   Time interval.
