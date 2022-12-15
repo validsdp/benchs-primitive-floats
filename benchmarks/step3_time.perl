@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Getopt::Long;
 
-# Parse Coq output, Compute total CPU time (user+sys) & Print CSV data
+# Parse Coq output, Compute total CPU time & Print CSV data
 # Author: Erik Martin-Dorel, 2014
 
 ### Get the timings
@@ -29,8 +29,11 @@ while (<>) {
             die "Match failed for \"$_\".\n";
         }
         my $t = 0.0;
-        if ($str =~ /^.*\(([.0-9e-]+?)u,([.0-9e-]+?)s\)/) {
-            $t = $1 + $2;
+        # if ($str =~ /^.*\(([.0-9e-]+?)u,([.0-9e-]+?)s\)/) {
+        #     $t = $1 + $2;
+        # }
+        if ($str =~ /^.*([.0-9e-]+?) secs/) {
+            $t = $1;
         } else {
             die "Match failed for \"$str\".";
         }
