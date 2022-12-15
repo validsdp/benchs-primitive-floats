@@ -32,7 +32,7 @@ while (<>) {
         # if ($str =~ /^.*\(([.0-9e-]+?)u,([.0-9e-]+?)s\)/) {
         #     $t = $1 + $2;
         # }
-        if ($str =~ /^.*([.0-9e-]+?) secs/) {
+        if ($str =~ /^([.0-9e-]+?) secs/) {
             $t = $1;
         } else {
             die "Match failed for \"$str\".";
