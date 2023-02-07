@@ -47,25 +47,9 @@ docker pull registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_coq-8.
 # note that this may take a while as the compressed size of this Docker image is 998 MB,
 # and you'll need enough space (in the '/' partition) as its uncompressed size is 3.14 GB.
 
-docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_coq-8.15-validsdp-1.0.1 ./run_example.sh
+docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_coq-8.15-validsdp-1.0.1 ./run.sh
 
-pdflatex tac_benchs_ex.tex
-pdflatex tac_benchs_native_ex.tex
-pdflatex ops_benchs_ex.tex
-pdflatex ops_benchs_native_ex.tex
-```
-
-The `docker run` command above will only run one example benchmark with a 100x100 matrix.
-
-To run all benchmarks, you should execute instead:
-
-```bash
-docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_coq-8.15-validsdp-1.0.1 ./run_full.sh
-
-pdflatex tac_benchs.tex
-pdflatex tac_benchs_native.tex
-pdflatex ops_benchs.tex
-pdflatex ops_benchs_native.tex
+pdflatex primfloat_comparison.tex
 ```
 
 To just experience with primitive floats in Coq, one can simply run:

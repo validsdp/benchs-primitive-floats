@@ -3,8 +3,6 @@
 # User parameters
 #================
 
-COQ_INTVL := "registry.gitlab.com/erikmd/docker-coq-interval-primitive-floats/master_coq-8.15-interval-4.5.2:latest"
-
 OPAM_INFO_COMMAND := opam repo list; opam config list; opam pin list
 # OPAM_INTVL_DEV := echo -n coq-interval:; opam show -f source-hash coq-interval.dev
 OPAM_INTVL_DEV := echo -n coq-interval:; opam show -f version coq-interval

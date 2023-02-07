@@ -24,19 +24,24 @@ include Makefile.common
 
 ### Rules
 .SECONDARY: $(TMP_KEEP)
-.PHONY: all clean dist-clean \
-  452-bigz-prec53 452-bigz-prec30 452-primfloat \
-  tar dist-tar
+.PHONY: all config benchs final clean dist-clean tar dist-tar \
+  452-bigz-prec53 \
+  452-bigz-prec30 \
+  452-primfloat \
+  452-bigz-prec53-native \
+  452-bigz-prec30-native \
+  452-primfloat-native
 
-all:
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); $(OPAM_INTVL_DEV); make 452-primfloat" | tee make.$$(date +'%Y%m%d_%H%M%S').452-primfloat.log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 452-bigz-prec53" | tee make.$$(date +'%Y%m%d_%H%M%S').452-bigz-prec53.log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 452-bigz-prec30" | tee make.$$(date +'%Y%m%d_%H%M%S').452-bigz-prec30.log
-	#
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); $(OPAM_INTVL_DEV); make 452-primfloat-native" | tee make.$$(date +'%Y%m%d_%H%M%S').452-primfloat-native.log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 452-bigz-prec53-native" | tee make.$$(date +'%Y%m%d_%H%M%S').452-bigz-prec53-native.log
-	sudo docker run --rm -it -v "$(CURDIR):$(CURDIR)" -w "$(CURDIR)" --init $(COQ_INTVL) /bin/bash --login -c "$(OPAM_INFO_COMMAND); make 452-bigz-prec30-native" | tee make.$$(date +'%Y%m%d_%H%M%S').452-bigz-prec30-native.log
-	#
+all: config benchs final
+
+config:
+	$(OPAM_INFO_COMMAND)
+	$(OPAM_INTVL_DEV)
+
+benchs: 452-primfloat 452-bigz-prec53 452-bigz-prec30 452-primfloat-native 452-bigz-prec53-native 452-bigz-prec30-native
+
+
+final:
 	$(MAKE) $(FINAL)
 
 coq: $(CSV_COQ)
