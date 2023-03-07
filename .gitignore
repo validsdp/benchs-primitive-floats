@@ -108,3 +108,7 @@ setup.log
 _opam/
 
 # End of https://www.gitignore.io/api/emacs,ocaml,coq
+
+### Project-specific ###
+coq-interval/benchmarks/output/
+coq-interval/benchmarks/primfloat_comparison*
