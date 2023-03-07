@@ -47,7 +47,7 @@ docker pull registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_coq-8.
 # note that this may take a while as the compressed size of this Docker image is 998 MB,
 # and you'll need enough space (in the '/' partition) as its uncompressed size is 3.14 GB.
 
-docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_coq-8.15-validsdp-1.0.1 ./run.sh
+docker run --rm -it -v "$PWD:$PWD" -w "$PWD" registry.gitlab.com/erikmd/docker-coq-primitive-floats/master_coq-8.15-validsdp-1.0.1 make
 
 pdflatex primfloat_comparison.tex
 ```
