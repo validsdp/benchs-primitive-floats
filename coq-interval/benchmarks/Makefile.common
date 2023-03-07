@@ -56,6 +56,13 @@ TMP_KEEP := $(FILES_COQ) $(OUT_COQ) $(TMP_COQ) $(FILES_CSV)
 
 FINAL := primfloat_comparison.tex
 
+TABLES := \
+  big53-primfloat.table \
+  big53-big30.table \
+  big53-big53-native.table \
+  primfloat-primfloat-native.table \
+  big53-native-primfloat-native.table
+
 # Variables for tar generation
 SRC_PERL := step1.perl step3_stmt.perl step3_time.perl step4_alex.perl \
   step4_bern.perl step4_interval.perl step4_metit.perl step4_sos.perl \

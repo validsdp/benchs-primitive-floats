@@ -96,11 +96,16 @@ $(DIR_OUT)/coqintvl_%.v: $(DIR_COQ)/coqintvl_%.v | $(DIR_OUT)
 	@echo Step 3: Finished $@
 
 # STEP 4: Generate the LaTeX
-$(FINAL): ./step4_tex.py
+$(FINAL): ./step4_tex.py $(TABLES)
 	# & $(FILES_CSV)
 	@echo Step 4: Building $@
 	./step4_tex.py > $@ || ( RV=$$?; rm -f "$@"; exit $${RV} )
 	@echo Step 4: Finished $@
+
+# STEP pre4: Generate the tables for the LaTeX
+$(TABLES): ./plot_of_csv.py
+	# & $(FILES_CSV)
+	./plot_of_csv.py $@ > $@ || ( RV=$$?; rm -f "$@"; exit $${RV} )
 
 tar:
 	@echo Building $(PACK).tar.gz

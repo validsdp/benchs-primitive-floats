@@ -46,18 +46,116 @@ def main():
 \\usepackage{rotating}
 \\usepackage{array}
 \\usepackage{booktabs}
+\\usepackage{tikz}
 \\newcolumntype{R}[1]{>{\\begin{turn}{90}\\begin{minipage}{#1}}l%
 <{\\end{minipage}\\end{turn}}%
 }
 \\newcommand{\\col}[1]{\\multicolumn{1}{R{\\widthof{(partly verified)\\,}}}{#1}}
 \\newcommand{\\colz}[1]{\\multicolumn{1}{R{\\widthof{\\,}}}{#1}}
+
+\\usetikzlibrary{calc,fit,intersections,shapes,calc}
+
+\\newcommand{\\loglog}[5][]{
+  \\pgfmathparse{int(#3-1)}\\let\\Xmax\\pgfmathresult
+  \\foreach \\ee in{#2,...,\\Xmax}{
+    \\foreach \\x in {2,3,4,5,6,7,8,9}{
+      \\draw[very thin,color=white!70!gray] ({log10(\\x)+\\ee},#4) -- ({log10(\\x)+\\ee},#5);
+    }
+  }
+  \\pgfmathparse{int(#5-1)}\\let\\Ymax\\pgfmathresult
+  \\foreach \\yy in  {#4,...,\\Ymax}{
+    \\foreach \\x in {2,3,4,5,6,7,8,9}{
+      \\draw[very thin,color=white!70!gray] (#2,{log10(\\x)+\\yy}) -- (#3,{log10(\\x)+\\yy});
+    }
+  }
+  \\foreach \\ee in{#2,...,\\Xmax}{
+    \\draw[very thin,color=white!15!gray] (\\ee,#4)node[below,color=black]{$10^{\\ee}$} -- ({\\ee},#5);
+  }
+  \\draw[very thin,color=white!15!gray] ({#3},#4)node[name=TextX,below,color=black]{$10^{#3}$} -- ({#3},#5);
+  \\foreach \\yy in  {#4,...,\\Ymax}{
+    \\draw[very thin,color=white!15!gray] ({#2},\\yy)node[name=TextY,left,color=black]{$10^{\\yy}$} -- ({#3},\\yy);
+  }
+  \\draw[very thin,color=white!15!gray] ({#2},#5)node[name=TextY,left,color=black]{$10^{#3}$} -- ({#3},#5);
+  % \\node[  above of= TextY,node distance=0.6em,right] { \\Unity};
+  % \\node[ right]at (#3,#4){ \\Unitx};
+}
+
 %%% END OF SECTION TO BE ADDED INTO THE LATEX PREAMBLE
 
 \\pagestyle{empty}
 \\thispagestyle{empty}
 \\title{Benchs Coq 8.15 + coq-interval 4.5.2}
+
 \\begin{document}
 \\maketitle
+
+\\begin{tikzpicture}[scale=0.95]
+  \\loglog{-3}{3}{-3}{3}
+  \\draw[->] (-3.1, -3) -- (3.1, -3) node[right] {prec53-vm (s)};
+  \\draw[->] (-3, -3.1) -- (-3, 3.1) node[above] {hardware-vm (s)};
+  \\draw[very thin, color=gray] (-3, -3) -- (3, 3);
+  \\draw[very thin, color=gray] (-2, -3) -- (3, 2) node [right] {$\\times 10$};
+  \\draw[very thin, color=gray] (-1.699, -3) -- (3, 1.699) node [right] {$\\times 20$};
+  \\path plot [mark=x] file {big53-primfloat.table};
+\\end{tikzpicture}\\\\
+Comparison of proof times between hardware and emulated
+  53-bit floating-point arithmetic using \\texttt{vm\\_compute}. The
+  graph uses a log-log scale, so diagonals represent equivalent
+  speedups. Out of the 101 examples, 4 proofs fail with hardware
+  numbers due to the pessimistic outward rounding. The corresponding points
+  appear at the top of the graph.
+
+\\begin{tikzpicture}[scale=0.95]
+  \\loglog{-3}{3}{-3}{3}
+  \\draw[->] (-3.1, -3) -- (3.1, -3) node[right] {prec53-vm (s)};
+  \\draw[->] (-3, -3.1) -- (-3, 3.1) node[above] {prec30-vm (s)};
+  \\draw[very thin, color=gray] (-3, -3) -- (3, 3);
+  \\draw[very thin, color=gray] (-2.6990, -3) -- (3, 2.6990) node [right] {$\\times 2$};
+  \\path plot [mark=x] file {big53-big30.table};
+\\end{tikzpicture}\\\\
+Comparison of proof times between emulated 53-bit and 30-bit
+  floating-point arithmetic using \\texttt{vm\\_compute}. Out of the 101
+  examples, 14 proofs fail with the reduced precision.
+
+\\begin{tikzpicture}[scale=0.95]
+  \\loglog{-3}{3}{-3}{3}
+  \\draw[->] (-3.1, -3) -- (3.1, -3) node[right] {prec53-vm (s)};
+  \\draw[->] (-3, -3.1) -- (-3, 3.1) node[above] {prec53-native (s)};
+  \\draw[very thin, color=gray] (-3, -3) -- (3, 3);
+  \\draw[very thin, color=gray] (-2.5229, -3) -- (3, 2.5229) node [right] {$\\times 3$};
+  \\path plot [mark=x] file {big53-big53-native.table};
+\\end{tikzpicture}\\\\
+Comparison of proof times for emulated 53-bit
+  floating-point arithmetic between \\texttt{vm\\_compute} and
+  \\texttt{native\\_compute}.
+
+\\begin{tikzpicture}[scale=0.95]
+  \\loglog{-3}{3}{-3}{3}
+  \\draw[->] (-3.1, -3) -- (3.1, -3) node[right] {hardware-vm (s)};
+  \\draw[->] (-3, -3.1) -- (-3, 3.1) node[above] {hardware-native (s)};
+  \\draw[very thin, color=gray] (-3, -3) -- (3, 3);
+  \\draw[very thin, color=gray] (-2.5229, -3) -- (3, 2.5229) node [right] {$\\times 3$};
+  \\path plot [mark=x] file {primfloat-primfloat-native.table};
+\\end{tikzpicture}\\\\
+Comparison of proof times for hardware floating-point
+  arithmetic between \\texttt{vm\\_compute} and
+  \\texttt{native\\_compute}. The 4 proofs that fail in both cases
+  appear as a cluster at the top right of the graph.
+
+\\begin{tikzpicture}[scale=0.95]
+  \\loglog{-3}{3}{-3}{3}
+  \\draw[->] (-3.1, -3) -- (3.1, -3) node[right] {prec53-native (s)};
+  \\draw[->] (-3, -3.1) -- (-3, 3.1) node[above] {hardware-native (s)};
+  \\draw[very thin, color=gray] (-3, -3) -- (3, 3);
+  \\draw[very thin, color=gray] (-2, -3) -- (3, 2) node [right] {$\\times 10$};
+  \\draw[very thin, color=gray] (-1.699, -3) -- (3, 1.699) node [right] {$\\times 20$};
+  \\path plot [mark=x] file {big53-native-primfloat-native.table};
+\\end{tikzpicture}\\\\
+Comparison of proof times between hardware and 53-bit
+  emulated floating-point arithmetic using
+  \\texttt{native\\_compute}. The 4 proofs that fail with hardware
+  numbers appear as a cluster at the top of the graph.
+
 """, end='')
 
     def emit_end():

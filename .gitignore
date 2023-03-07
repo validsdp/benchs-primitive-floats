@@ -112,3 +112,4 @@ _opam/
 ### Project-specific ###
 coq-interval/benchmarks/output/
 coq-interval/benchmarks/primfloat_comparison*
+coq-interval/benchmarks/*.table
